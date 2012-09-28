@@ -638,19 +638,24 @@ package org.bigbluebutton.modules.present.business {
 					getPresentationInfo();	
 					break;			
 				case "NetConnection.Connect.Failed":
+          LogUtil.debug("PresentSO connection failed");
 					addError("PresentSO connection failed");			
 					break;					
 				case "NetConnection.Connect.Closed":
+          LogUtil.debug("Connection to PresentSO was closed.");	
 					addError("Connection to PresentSO was closed.");									
 					notifyConnectionStatusListener(false, _soErrors);
 					break;					
 				case "NetConnection.Connect.InvalidApp":
-					addError("PresentSO not found in server");				
+          LogUtil.debug("PresentSO not found in server");	
+          addError("PresentSO not found in server");
 					break;					
 				case "NetConnection.Connect.AppShutDown":
-					addError("PresentSO is shutting down");
+          LogUtil.debug("PresentSO is shutting down");
+          addError("PresentSO is shutting down");
 					break;					
 				case "NetConnection.Connect.Rejected":
+          LogUtil.debug("No permissions to connect to the PresentSO");
 					addError("No permissions to connect to the PresentSO");
 					break;					
 				default :
@@ -660,6 +665,7 @@ package org.bigbluebutton.modules.present.business {
 		}
 			
 		private function asyncErrorHandler (event:AsyncErrorEvent):void {
+      LogUtil.debug("PresentSO asynchronous error.");
 			addError("PresentSO asynchronous error.");
 		}
 		

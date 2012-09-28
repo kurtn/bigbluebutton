@@ -103,7 +103,7 @@
 			private var slideModel:SlideViewModel = new SlideViewModel();
 			
       // Send update of mouse location to other users.
-      private var _sendCurrentMouseLocTimer:Timer = new Timer(1000);
+      private var _sendCurrentMouseLocTimer:Timer = new Timer(1);
       private var _lastMouseXPosition:Number = 0;
       private var _lastMouseYPosition:Number = 0;
       
@@ -348,14 +348,14 @@
 			 */
 			private function notifyOthersOfPresentersCursorPosition(cursorXPosition:int, cursorYPosition:int):void {
         // Only update the other users if the mouse moved a certain delta
-        if ( (Math.abs(cursorXPosition - _lastMouseXPosition) < 0.1) 
-          && (Math.abs(cursorYPosition - _lastMouseYPosition) < 0.1) ) {
-          return;
-        }
-        
+ //       if ( (Math.abs(cursorXPosition - _lastMouseXPosition) < 0.1) 
+ //         && (Math.abs(cursorYPosition - _lastMouseYPosition) < 0.1) ) {
+ //         return;
+ //       }
+ //       LogUtil.debug("Cursor @ [" + cursorXPosition + "," + cursorYPosition + "]");
         if (cursorXPosition > this.width || cursorXPosition < 1 
               || cursorYPosition > this.height || cursorYPosition < 1) {
-          LogUtil.debug("Cursor outside the window...not sending [" + cursorXPosition + "," + cursorYPosition + "]");
+//          LogUtil.debug("Cursor outside the window...not sending [" + cursorXPosition + "," + cursorYPosition + "]");
           return;
         }
           

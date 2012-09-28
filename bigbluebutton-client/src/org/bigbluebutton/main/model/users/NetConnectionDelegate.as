@@ -70,10 +70,10 @@ package org.bigbluebutton.main.model.users
 			
 			_netConnection = new NetConnection();				
 			_netConnection.client = this;
-			_netConnection.addEventListener( NetStatusEvent.NET_STATUS, netStatus );
-			_netConnection.addEventListener( AsyncErrorEvent.ASYNC_ERROR, netASyncError );
-			_netConnection.addEventListener( SecurityErrorEvent.SECURITY_ERROR, netSecurityError );
-			_netConnection.addEventListener( IOErrorEvent.IO_ERROR, netIOError );
+			_netConnection.addEventListener(NetStatusEvent.NET_STATUS, netStatus);
+			_netConnection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
+			_netConnection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
+			_netConnection.addEventListener(IOErrorEvent.IO_ERROR, netIOError);
 		}
 		
         public function setUri(uri:String):void {
@@ -158,6 +158,8 @@ package org.bigbluebutton.main.model.users
 			try {	
 				var uri:String = _applicationURI + "/" + _conferenceParameters.room;
 				
+ //       uri = "RTMPT://192.168.153.128:5080/bigbluebutton/183f0bf3a0982a127bdb8161e0c44eb696b3e75c-1348868926451"
+          
 				LogUtil.debug(NAME + "::Connecting to " + uri + " [" + _conferenceParameters.username + "," + _conferenceParameters.role + "," + 
 					_conferenceParameters.conference + "," + _conferenceParameters.record + "," + _conferenceParameters.room + "]");	
 				_netConnection.connect(uri, _conferenceParameters.username, _conferenceParameters.role, _conferenceParameters.conference, 
@@ -178,21 +180,24 @@ package org.bigbluebutton.main.model.users
 			}	
 		}
 			
-		public function disconnect(logoutOnUserCommand:Boolean) : void
+		public function disconnect(logoutOnUserCommand:Boolean):void
 		{
+      LogUtil.debug("************ UNKNOWN Error! Something telling us to close. ************ ");
 			this.logoutOnUserCommand = logoutOnUserCommand;
 			_netConnection.close();
 		}
 					
-		protected function netStatus( event : NetStatusEvent ) : void 
+		protected function netStatus(event:NetStatusEvent):void 
 		{
-			handleResult( event );
+			handleResult(event);
 		}
 		
-		public function handleResult(  event : Object  ) : void {
-			var info : Object = event.info;
-			var statusCode : String = info.code;
-
+		public function handleResult(event:Object):void {
+			var info:Object = event.info;
+			var statusCode:String = info.code;
+      
+      LogUtil.debug("************ Connection level [" + info.level + "] code [" + statusCode + "] ************ ");
+      
 			switch ( statusCode ) 
 			{
 				case CONNECT_SUCCESS :
@@ -232,12 +237,14 @@ package org.bigbluebutton.main.model.users
 					
 				case CONNECT_CLOSED :	
 					LogUtil.debug(NAME + ":Connection to viewers application closed");					
-					sendConnectionFailedEvent(ConnectionFailedEvent.CONNECTION_CLOSED);								
+//					sendConnectionFailedEvent(ConnectionFailedEvent.CONNECTION_CLOSED);	
+          Alert.show(":Connection to viewers application closed");
 					break;
 					
 				case INVALID_APP :	
 					LogUtil.debug(NAME + ":viewers application not found on server");			
-					sendConnectionFailedEvent(ConnectionFailedEvent.INVALID_APP);				
+					sendConnectionFailedEvent(ConnectionFailedEvent.INVALID_APP);	
+          
 					break;
 					
 				case APP_SHUTDOWN :

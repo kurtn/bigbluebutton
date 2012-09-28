@@ -72,7 +72,7 @@ package org.bigbluebutton.main.model.modules
 		}
 		
 		public function useProtocol(protocol:String):void {
-			_protocol = protocol;			
+			_protocol = protocol;		
 		}
 		
 		public function get portTestHost():String {
