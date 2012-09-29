@@ -20,7 +20,9 @@
   $Id: $
 -->
 
-<EventMap xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://mate.asfusion.com/" xmlns:mate="org.bigbluebutton.common.mate.*">
+<EventMap xmlns:mx="http://www.adobe.com/2006/mxml" 
+          xmlns="http://mate.asfusion.com/" 
+          xmlns:mate="org.bigbluebutton.common.mate.*">
 	<mx:Script>
 		<![CDATA[
 			import org.bigbluebutton.main.events.ModuleStartedEvent;

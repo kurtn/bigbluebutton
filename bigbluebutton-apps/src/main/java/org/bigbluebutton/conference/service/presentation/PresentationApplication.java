@@ -25,15 +25,20 @@ package org.bigbluebutton.conference.service.presentation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.bigbluebutton.conference.ClientMessage;
+import org.bigbluebutton.conference.ConnectionInvokerService;
 import org.red5.logging.Red5LoggerFactory;
-import java.util.ArrayList;
+import org.red5.server.api.Red5;import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+
 public class PresentationApplication {
 
 	private static Logger log = Red5LoggerFactory.getLogger( PresentationApplication.class, "bigbluebutton" );	
 		
 	private static final String APP = "PRESENTATION";
 	private PresentationRoomsManager roomsManager;
+	private ConnectionInvokerService connInvokerService;
 	
 	public boolean createRoom(String name) {
 		roomsManager.addRoom(new PresentationRoom(name));
@@ -119,12 +124,16 @@ public class PresentationApplication {
 	}
 	
 	public void sendCursorUpdate(String room, Double xPercent, Double yPercent) {
-		if (roomsManager.hasRoom(room)){
-			log.debug("Request to update cursor[" + xPercent + "," + yPercent + "]");
-			roomsManager.sendCursorUpdate(room, xPercent, yPercent);
-			return;
-		}
-		log.warn("resizeAndMoveSlide on a non-existant room " + room);
+		Map<String, Object> message = new HashMap<String, Object>();		
+		ClientMessage m = new ClientMessage(ClientMessage.BROADCAST, getMeetingId(), "PresentationCursorUpdateCommand", message);
+		connInvokerService.sendMessage(m);	
+		
+//		if (roomsManager.hasRoom(room)){
+//			log.debug("Request to update cursor[" + xPercent + "," + yPercent + "]");
+//			roomsManager.sendCursorUpdate(room, xPercent, yPercent);
+//			return;
+//		}
+//		log.warn("resizeAndMoveSlide on a non-existant room " + room);
 	}
 	
 	public void resizeAndMoveSlide(String room, Double xOffset, Double yOffset, Double widthRatio, Double heightRatio) {
@@ -159,6 +168,12 @@ public class PresentationApplication {
 		roomsManager = r;
 		log.debug("Done setting room manager");
 	}
-
 	
+	private String getMeetingId(){
+		return Red5.getConnectionLocal().getScope().getName();
+	}
+
+	public void setConnInvokerService(ConnectionInvokerService connInvokerService) {
+		this.connInvokerService = connInvokerService;
+	}	
 }

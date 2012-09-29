@@ -27,10 +27,11 @@ package org.bigbluebutton.modules.present.business
 	import mx.rpc.IResponder;
 	import mx.rpc.http.HTTPService;
 	
+	import org.bigbluebutton.common.LogUtil;
 	import org.bigbluebutton.modules.present.events.PresentationEvent;
 	import org.bigbluebutton.modules.present.managers.PresentationSlides;
 	import org.bigbluebutton.modules.present.managers.Slide;
-	import org.bigbluebutton.common.LogUtil;
+	import org.bigbluebutton.modules.present.services.MessageReceiver;
 	        	
 	/**
 	 * This class directly communicates with an HTTP service in order to send and recives files (slides
@@ -47,11 +48,13 @@ package org.bigbluebutton.modules.present.business
 		private var urlLoader:URLLoader;
 		private var slideUri:String;
 		private var dispatcher:Dispatcher;
-		
+		private var _messageReceiver:MessageReceiver;
+    
 		public function PresentationService()
 		{
 			service = new HTTPService();
-			dispatcher = new Dispatcher();
+      _messageReceiver = new MessageReceiver();
+      dispatcher = new Dispatcher();
 		}
 		
 		/**
@@ -117,7 +120,7 @@ package org.bigbluebutton.modules.present.business
 		 * @param event
 		 * 
 		 */		
-		public function result(event : Object):void
+		public function result(event:Object):void
 		{
 			var xml:XML = new XML(event.result);
 			var list:XMLList = xml.presentations;
@@ -135,7 +138,7 @@ package org.bigbluebutton.modules.present.business
 		 * @param event
 		 * 
 		 */
-		public function fault(event : Object):void
+		public function fault(event:Object):void
 		{
 			LogUtil.debug("Got fault [" + event.fault.toString() + "]");		
 		}		

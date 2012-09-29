@@ -62,7 +62,7 @@ package org.bigbluebutton.modules.present.business
 		 */		
 		public function upload(presentationName:String, file:FileReference):void {
 			sendVars.presentation_name = presentationName;
-			var fileToUpload : FileReference = new FileReference();
+			var fileToUpload:FileReference = new FileReference();
 			fileToUpload = file;
 			
 			fileToUpload.addEventListener(ProgressEvent.PROGRESS, onUploadProgress);

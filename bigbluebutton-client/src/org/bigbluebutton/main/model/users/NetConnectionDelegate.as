@@ -267,9 +267,7 @@ package org.bigbluebutton.main.model.users
 				   break;
 			}
 		}
-		
-
-        
+		       
 		private function rtmptRetryTimerHandler(event:TimerEvent):void {
             LogUtil.debug(NAME + "rtmptRetryTimerHandler: " + event);
             connect(_conferenceParameters, true);

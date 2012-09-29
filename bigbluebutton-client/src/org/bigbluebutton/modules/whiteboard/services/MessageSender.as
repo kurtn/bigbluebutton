@@ -170,7 +170,7 @@ package org.bigbluebutton.modules.whiteboard.services
 			);
 		}
 		
-		public function setActivePresentation(e:PresentationEvent):void{
+		public function setActivePresentation(e:PresentationEvent):void {
 //			LogUtil.debug("Sending [whiteboard.isWhiteboardEnabled] to server.");
 			
 			var message:Object = new Object();
