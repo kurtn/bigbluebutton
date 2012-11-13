@@ -26,7 +26,6 @@
 	<property name="PHONE" value="PhoneModule" />
 	<property name="VIDEO" value="VideoconfModule" />
 	<property name="WHITEBOARD" value="WhiteboardModule" />
-	<property name="SETTINGS" value="SettingsModule" />
 	<property name="VIDEO_DOCK" value="VideodockModule" />
 	<property name="LAYOUT" value="LayoutModule" />
 	
@@ -201,10 +200,6 @@
 		</copy>		
 	</target>
 
-	<target name="build-settings" description="Compile Settings Module">
-		<build-module src="${SRC_DIR}" target="${SETTINGS}" />
-	</target>
-	
 	<target name="build-video" description="Compile Video Module">
 		<build-module src="${SRC_DIR}" target="${VIDEO}" />
 	</target>
@@ -229,7 +224,7 @@
 	
 	<!-- just a grouping of modules to compile -->
 	<target name="build-deskshare-phone-video-whiteboard" 
-			depends="build-deskshare, build-phone, build-video, build-videodock, build-whiteboard, build-settings"
+			depends="build-deskshare, build-phone, build-video, build-videodock, build-whiteboard"
 			description="Compile deskshare, phone, video, whiteboard modules">
 	</target>
 	
