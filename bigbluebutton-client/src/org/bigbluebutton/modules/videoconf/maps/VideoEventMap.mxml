@@ -23,13 +23,16 @@
 <EventMap xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://mate.asfusion.com/">
 	<mx:Script>
 		<![CDATA[
-      import mx.collections.ArrayCollection;      
+      import mx.collections.ArrayCollection;
+      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.events.OpenWindowEvent;
       import org.bigbluebutton.common.events.ToolbarButtonEvent;
+      import org.bigbluebutton.core.UsersUtil;
       import org.bigbluebutton.core.managers.UserManager;
       import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.main.events.MadePresenterEvent;
+      import org.bigbluebutton.main.events.ParticipantJoinEvent;
       import org.bigbluebutton.main.model.users.BBBUser;
       import org.bigbluebutton.main.model.users.events.BroadcastStartedEvent;
       import org.bigbluebutton.main.model.users.events.BroadcastStoppedEvent;
@@ -51,37 +54,64 @@
 			private var button:ToolbarButton;
 			private var publishWindow:PublishWindow;
 			public var proxy:VideoProxy;
+      
+      private var webcamWindows:WindowManager = new WindowManager();
 
 			// This variable is used to avoid dispatching the BroadcastStoppedEvent
 			// when the user just open the publish window and close it before start
 			// publishing
 			private var _publishing:Boolean = false;		
 			
-			private function viewCamera(userid:String, stream:String, name:String, mock:Boolean = false):void {
-        LogUtil.debug("Viewing [" + userid + " stream [" + stream + "]");
-				if (UserManager.getInstance().getConference().amIThisUser(userid)) return;
+      private function openWebcamWindows():void {
+        var uids:ArrayCollection = UsersUtil.getUserIDs();
+        
+        for (var i:int = 0; i < uids.length; i++) {
+          var u:String = uids.getItemAt(i) as String;
+          openWebcamWindow(u);
+        }
+      }
+      
+      private function openVideoWindow(event:ParticipantJoinEvent):void {
+        var userID:String = event.userID;
+        if (webcamWindows.hasWindow(userID)) return;
+        
+        openWebcamWindow(userID);
+      }
+      
+      private function openWebcamWindow(userID:String):void {
+        if (UsersUtil.isMe(userID)) return;
+        
+        if (webcamWindows.hasWindow(userID)) return;
+        
+        var window:VideoWindow = webcamWindows.addWindow(userID);
+        window.videoOptions = proxy.videoOptions;
+        window.title = UsersUtil.getUserName(userID);
+        
+        var windowEvent:OpenWindowEvent = new OpenWindowEvent(OpenWindowEvent.OPEN_WINDOW_EVENT);
+        windowEvent.window = window;
+        globalDispatcher.dispatchEvent(windowEvent);
+        
+        // this event will dock the window, if it's enabled
+        var openVideoEvent:OpenVideoWindowEvent = new OpenVideoWindowEvent();
+        openVideoEvent.window = window;
+        globalDispatcher.dispatchEvent(openVideoEvent);        
+      }
+      
+			private function viewCamera(userID:String, stream:String, name:String, mock:Boolean = false):void {
+        if (! webcamWindows.hasWindow(userID)) {
+          openWebcamWindow(userID);
+        }
 				
-				var window:VideoWindow = new VideoWindow();
-//				window.userId = userid;
-				window.videoOptions = proxy.videoOptions;
-				
-				window.resolutions = module.resolutions.split(",");
-				
-				if (mock) {
-					window.startVideo(module.mockConnection, stream);
-				}
-				else {
-					window.startVideo(module.connection, stream);
-				}
-				window.title = name;
-				var windowEvent:OpenWindowEvent = new OpenWindowEvent(OpenWindowEvent.OPEN_WINDOW_EVENT);
-				windowEvent.window = window;
-				globalDispatcher.dispatchEvent(windowEvent);
-				
-				// this event will dock the window, if it's enabled
-				var openVideoEvent:OpenVideoWindowEvent = new OpenVideoWindowEvent();
-				openVideoEvent.window = window;
-				globalDispatcher.dispatchEvent(openVideoEvent);
+        if (webcamWindows.hasWindow(userID)) {
+          var window:VideoWindow = webcamWindows.getWindow(userID);
+          window.resolutions = module.resolutions.split(",");
+          
+          if (mock) {
+            window.startVideo(module.mockConnection, stream);
+          } else {
+            window.startVideo(module.connection, stream);
+          }          
+        }
 			}
 
 			private function viewVideoFile(e:BBBEvent):void {
@@ -114,12 +144,9 @@
 				globalDispatcher.dispatchEvent(windowEvent);
 			}
 			
-
-
 			private function closePublishWindow():void{
 				publishWindow.close();
 			}
-
 
 			private function startPublishing(e:StartBroadcastEvent):void{
 			    LogUtil.debug("Publishing stream to: " + proxy.connection.uri + "/" + e.stream);
@@ -176,8 +203,7 @@
 					if (publishWindow != null) publishWindow.close();
 				}
 			}
-			
-			
+					
 		]]>
 	</mx:Script>
 	
@@ -196,7 +222,11 @@
 	<EventHandlers type="{StopBroadcastEvent.STOP_BROADCASTING}" >
 		<InlineInvoker method="stopPublishing" arguments="{event}" />
 	</EventHandlers>
-	
+
+  <EventHandlers type="{BBBEvent.OPEN_WEBCAM_WINDOWS}" >
+    <InlineInvoker method="openWebcamWindows"/>
+  </EventHandlers>
+  
 	<EventHandlers type="{BBBEvent.START_VIDEO_STREAM}" >
 		<InlineInvoker method="viewVideoFile" arguments="{event}" />
 	</EventHandlers>
@@ -204,7 +234,11 @@
 	<EventHandlers type="{BBBEvent.START_VIDEO_CONNECTION}">
 		<InlineInvoker method="mockConnect" />
 	</EventHandlers>
-	
+
+  <EventHandlers type="{ParticipantJoinEvent.PARTICIPANT_JOINED_EVENT}">
+    <InlineInvoker method="mockConnect" />
+  </EventHandlers>
+  
 	<EventHandlers type="{StreamStartedEvent.STREAM_STARTED}">
 		<InlineInvoker method="viewCamera" arguments="{[event.userID, event.stream, event.user]}" />
 	</EventHandlers>

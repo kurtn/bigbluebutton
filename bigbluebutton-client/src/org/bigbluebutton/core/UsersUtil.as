@@ -1,5 +1,7 @@
 package org.bigbluebutton.core
 {
+  import mx.collections.ArrayCollection;
+  
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.core.managers.UserManager;
   import org.bigbluebutton.main.model.users.BBBUser;
@@ -36,6 +38,10 @@ package org.bigbluebutton.core
     
     public static function getMyUsername():String {
       return UserManager.getInstance().getConference().getMyName();
+    }
+    
+    public static function getUserIDs():ArrayCollection {
+      return UserManager.getInstance().getConference().getUserIDs();
     }
     
     public static function internalUserIDToExternalUserID(userID:String):String {

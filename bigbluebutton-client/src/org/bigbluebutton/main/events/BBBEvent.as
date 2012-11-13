@@ -34,7 +34,8 @@ package org.bigbluebutton.main.events {
 		public static const VIDEO_STARTED:String = 'BBB_VIDEO_STARTED';
 		public static const START_DESKSHARE:String = 'BBB_START_DESKSHARE';
 		public static const DESKSHARE_STARTED:String = 'BBB_DESKSHARE_STARTED';
-		
+		public static const OPEN_WEBCAM_WINDOWS:String = "Open webcam windows from video dock";
+    
 		public var message:String;
 		public var payload:Object = new Object();
 		

@@ -19,15 +19,19 @@
 
 package org.bigbluebutton.modules.videoconf.business
 {
-	import com.asfusion.mate.events.Dispatcher;	
+	import com.asfusion.mate.events.Dispatcher;
+	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import flash.media.Video;	
+	import flash.media.Video;
+	
 	import flexlib.mdi.containers.MDIWindow;
-	import flexlib.mdi.events.MDIWindowEvent;	
+	import flexlib.mdi.events.MDIWindowEvent;
+	
 	import mx.containers.Panel;
 	import mx.controls.Button;
-	import mx.core.UIComponent;	
+	import mx.core.UIComponent;
+	
 	import org.bigbluebutton.common.IBbbModuleWindow;
 	import org.bigbluebutton.common.Images;
 	import org.bigbluebutton.common.LogUtil;
@@ -65,7 +69,7 @@ package org.bigbluebutton.modules.videoconf.business
 		
 		public var streamName:String;
 
-    protected var _sharerUserID:String = null;
+    public var sharerUserID:String = null;
 
     protected var _controlButtons:ControlButtons = new ControlButtons();
 		
@@ -82,7 +86,7 @@ package org.bigbluebutton.modules.videoconf.business
         var uid:String = UserManager.getInstance().getConference().getMyUserId();
         LogUtil.debug("Stream resolution is [" + pattern.exec(stream)[1] + "]");
         LogUtil.debug("Userid [" + pattern.exec(stream)[2] + "]");
-        _sharerUserID = pattern.exec(stream)[2];
+        sharerUserID = pattern.exec(stream)[2];
         addControlButtons();
         return pattern.exec(stream)[1].split("x");
 			} else {
@@ -228,8 +232,11 @@ package org.bigbluebutton.modules.videoconf.business
     private var adminIcon:Class = images.admin;
     private var chatIcon:Class = images.chatIcon;
     
+    [Bindable]
+    protected var avatar:Class = images.avatar;
+    
     protected function addControlButtons():void {
-      _controlButtons.sharerUserID = _sharerUserID;
+      _controlButtons.sharerUserID = sharerUserID;
       _controlButtons.visible = true;
       this.addChild(_controlButtons);
     }

@@ -27,7 +27,7 @@
 	creationComplete="init()"
 	width="{defaultWidth + 6}" height="{defaultHeight + 75}" 
 	xmlns:mate="http://mate.asfusion.com/"
-	resize="onResize()"
+	resize="onResize()"  backgroundImage="{avatar}"
 	horizontalScrollPolicy="off"
 	verticalScrollPolicy="off"
 	layout="absolute">
@@ -131,7 +131,7 @@
       }
       
       private function handleUserTalkingEvent(event:CoreEvent):void {
-        if (event.message.userID ==  _sharerUserID) {
+        if (event.message.userID ==  sharerUserID) {
           if (event.message.talking) {
             notTalkingEffect.end();
             talkingEffect.play([_videoHolder]);            
@@ -145,7 +145,7 @@
 			private function loadPrefs():void{
 				var sharedObject:SharedObject = SharedObject.getLocal("bbbUserProperties", "/");
 				var webcam:String = sharedObject.data["webcam"] as String;
-				for (var i:Number = 0; i<Camera.names.length; i++){
+				for (var i:Number = 0; i < Camera.names.length; i++){
 					if (Camera.names[i] == webcam) cmbCameraSelector.selectedIndex = i;
 				}
 			}
@@ -285,7 +285,7 @@
 				
         // Store the userid for the publisher. This allows us to control
         // the user's status from the video window
-        _sharerUserID = UsersUtil.getMyUserID();
+        sharerUserID = UsersUtil.getMyUserID();
 				
         createButtons();
         addControlButtons();
