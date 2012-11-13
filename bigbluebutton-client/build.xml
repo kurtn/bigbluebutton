@@ -27,7 +27,6 @@
 	<property name="VIDEO" value="VideoconfModule" />
 	<property name="WHITEBOARD" value="WhiteboardModule" />
 	<property name="DYN_INFO" value="DynamicInfoModule" />
-	<property name="CLASSROOM_AUDIO" value="ClassroomAudioModule" />
 	<property name="SETTINGS" value="SettingsModule" />
 	<property name="VIDEO_DOCK" value="VideodockModule" />
 	<property name="LAYOUT" value="LayoutModule" />
@@ -203,10 +202,6 @@
 		</copy>		
 	</target>
 
-	<target name="build-classroom-audio" description="Compile Classroom Audio Module">
-		<build-module src="${SRC_DIR}" target="${CLASSROOM_AUDIO}" />
-	</target>
-	
 	<target name="build-settings" description="Compile Settings Module">
 		<build-module src="${SRC_DIR}" target="${SETTINGS}" />
 	</target>
@@ -239,7 +234,7 @@
 	
 	<!-- just a grouping of modules to compile -->
 	<target name="build-deskshare-phone-video-whiteboard-dyn" 
-			depends="build-deskshare, build-phone, build-video, build-videodock, build-whiteboard, build-dyn, build-classroom-audio, build-settings"
+			depends="build-deskshare, build-phone, build-video, build-videodock, build-whiteboard, build-dyn, build-settings"
 			description="Compile deskshare, phone, video, whiteboard, dynamic info modules">
 	</target>
 	
@@ -458,5 +453,5 @@
                         description="Build BBB client without locales"/>		
 	<target name="cleanandmake" depends="clean-build-all" description="Build BBB client including locales"/>
 
-	<target name="build-custom" depends="init-ant-contrib, build-classroom-audio" description="Build a custom defined module only, to save time as each build takes several minutes" />
+	<target name="build-custom" depends="init-ant-contrib" description="Build a custom defined module only, to save time as each build takes several minutes" />
 </project>
