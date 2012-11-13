@@ -27,7 +27,6 @@
 	<property name="VIDEO" value="VideoconfModule" />
 	<property name="WHITEBOARD" value="WhiteboardModule" />
 	<property name="DYN_INFO" value="DynamicInfoModule" />
-	<property name="BREAKOUT" value="BreakoutModule" />
 	<property name="CLASSROOM_AUDIO" value="ClassroomAudioModule" />
 	<property name="SETTINGS" value="SettingsModule" />
 	<property name="VIDEO_DOCK" value="VideodockModule" />
@@ -163,10 +162,6 @@
 		</copy>		
 	</target>
 	
-	<target name="build-breakout" description="Compile Breakout Module" >
-		<build-module src="${SRC_DIR}" target="${BREAKOUT}" />
-	</target>
-	
 	<target name="build-chat" description="Compile Chat Module">
 		<build-module src="${SRC_DIR}" target="${CHAT}" />
 	</target>
@@ -238,8 +233,8 @@
 	
 	<!-- just a grouping of modules to compile -->
 	<target name="build-main-chat-viewers-listeners-present" 
-			depends="build-bbb-main, build-bbb-main-test, build-chat, build-viewers, build-listeners, build-present, build-breakout, build-layout"
-			description="Compile main, chat, viewers, listeners, present, breakout modules">
+			depends="build-bbb-main, build-bbb-main-test, build-chat, build-viewers, build-listeners, build-present, build-layout"
+			description="Compile main, chat, viewers, listeners, present modules">
 	</target>
 	
 	<!-- just a grouping of modules to compile -->
