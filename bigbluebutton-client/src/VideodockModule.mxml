@@ -24,7 +24,6 @@
 				eventMap.startModule();
         proxy = new VideoProxy("rtmp://192.168.0.249/video");
         
-        vidEventMap.module = this;
         vidEventMap.proxy = proxy;
         vidEventMap.addToolbarButton();
 			}
