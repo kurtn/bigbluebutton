@@ -4,6 +4,12 @@ package org.bigbluebutton.modules.videodock.model
 	
 	public class VideoConfOptions
 	{
+    [Bindable]
+    public var videoQuality:Number = 100;
+
+    [Bindable]
+    public var resolutions:String = "320x240,640x480,1280x720";
+    
 		[Bindable]
 		public var autoStart:Boolean = false;
 		
@@ -69,8 +75,14 @@ package org.bigbluebutton.modules.videodock.model
     }
     
 		public function parseOptions():void {
-			var vxml:XML = BBB.getConfigForModule("VideoconfModule");
+			var vxml:XML = BBB.getConfigForModule("VideodockModule");
 			if (vxml != null) {
+        if (vxml.@videoQuality != undefined) {
+          videoQuality = Number(vxml.@videoQuality.toString());
+        }	
+        if (vxml.@resolutions != undefined) {
+          resolutions = vxml.@resolutions.toString();
+        }		
 				if (vxml.@showCloseButton != undefined) {
 					showCloseButton = (vxml.@showCloseButton.toString().toUpperCase() == "TRUE") ? true : false;
 				}

@@ -44,19 +44,22 @@
       import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
       import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
       import org.bigbluebutton.modules.videodock.events.StopBroadcastEvent;
+      import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
       import org.bigbluebutton.modules.videodock.views.PublishWindow;
       import org.bigbluebutton.modules.videodock.views.ToolbarButton;
       import org.bigbluebutton.modules.videodock.views.VideoWindow;
       import org.bigbluebutton.modules.viewers.events.ViewCameraEvent;
       import org.flexunit.runner.manipulation.filters.IncludeAllFilter;
 			
-			public var module:VideoconfModule;
+//			public var module:VideoconfModule;
 			private var button:ToolbarButton;
 			private var publishWindow:PublishWindow;
 			public var proxy:VideoProxy;
       
       private var webcamWindows:WindowManager = new WindowManager();
 
+      private var videoOptions:VideoConfOptions = new VideoConfOptions();
+      
 			// This variable is used to avoid dispatching the BroadcastStoppedEvent
 			// when the user just open the publish window and close it before start
 			// publishing
@@ -122,7 +125,7 @@
 				module.mockConnect();
 			}
 			
-			public function addToolbarButton():void{
+			public function addToolbarButton():void {
 				if (proxy.videoOptions.showButton) {
 					button = new ToolbarButton();	  
 					button.isPresenter = !module.presenterShareOnly;

@@ -3,7 +3,8 @@
 		   xmlns:maps="org.bigbluebutton.modules.videodock.maps.*" implements="org.bigbluebutton.common.IBigBlueButtonModule">
 	<mx:Script>
 		<![CDATA[
-			import org.bigbluebutton.common.LogUtil;
+      import org.bigbluebutton.common.LogUtil;
+      import org.bigbluebutton.modules.videodock.business.VideoProxy;
 			
 			private var _moduleName:String = "Videodock Module";			
 			
@@ -15,10 +16,17 @@
 				return _moduleName;
 			}
 			
+      private var proxy:VideoProxy;
+      
 			public function start(attributes:Object):void {	
 				LogUtil.debug("Videodock attr: " + attributes.username);
 				
 				eventMap.startModule();
+        proxy = new VideoProxy("rtmp://192.168.0.249/video");
+        
+        vidEventMap.module = this;
+        vidEventMap.proxy = proxy;
+        vidEventMap.addToolbarButton();
 			}
 			
 			public function stop():void {
@@ -29,4 +37,5 @@
 	</mx:Script>
 	
 	<maps:VideoDockEventMap id="eventMap"/>
+  <maps:VideoEventMap id="vidEventMap"/>
 </mx:Module>
