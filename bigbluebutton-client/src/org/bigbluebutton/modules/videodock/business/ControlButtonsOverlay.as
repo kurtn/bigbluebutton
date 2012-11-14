@@ -17,7 +17,7 @@
  * 
  */
 
-package org.bigbluebutton.modules.videoconf.business
+package org.bigbluebutton.modules.videodock.business
 {
 	import mx.containers.HBox;
 	import mx.controls.Button;

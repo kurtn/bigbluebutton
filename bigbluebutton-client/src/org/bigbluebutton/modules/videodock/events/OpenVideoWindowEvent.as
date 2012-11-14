@@ -16,7 +16,7 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  * 
  */
-package org.bigbluebutton.modules.videoconf.events
+package org.bigbluebutton.modules.videodock.events
 {
 	import flash.events.Event;
 	

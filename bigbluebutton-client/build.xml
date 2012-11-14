@@ -24,7 +24,6 @@
 	<property name="DESKSHARE" value="DeskShareModule" />
 	<property name="DESKSHARE_SA" value="DeskshareStandalone" />
 	<property name="PHONE" value="PhoneModule" />
-	<property name="VIDEO" value="VideoconfModule" />
 	<property name="WHITEBOARD" value="WhiteboardModule" />
 	<property name="VIDEO_DOCK" value="VideodockModule" />
 	<property name="LAYOUT" value="LayoutModule" />
@@ -200,10 +199,6 @@
 		</copy>		
 	</target>
 
-	<target name="build-video" description="Compile Video Module">
-		<build-module src="${SRC_DIR}" target="${VIDEO}" />
-	</target>
-
 	<target name="build-videodock" description="Compile Video Dock Module">
 		<build-module src="${SRC_DIR}" target="${VIDEO_DOCK}" />
 	</target>
@@ -224,8 +219,8 @@
 	
 	<!-- just a grouping of modules to compile -->
 	<target name="build-deskshare-phone-video-whiteboard" 
-			depends="build-deskshare, build-phone, build-video, build-videodock, build-whiteboard"
-			description="Compile deskshare, phone, video, whiteboard modules">
+			depends="build-deskshare, build-phone, build-videodock, build-whiteboard"
+			description="Compile deskshare, phone, whiteboard modules">
 	</target>
 	
 	<macrodef name="build-main">

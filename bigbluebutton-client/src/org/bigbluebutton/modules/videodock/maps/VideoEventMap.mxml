@@ -37,16 +37,16 @@
       import org.bigbluebutton.main.model.users.events.BroadcastStartedEvent;
       import org.bigbluebutton.main.model.users.events.BroadcastStoppedEvent;
       import org.bigbluebutton.main.model.users.events.StreamStartedEvent;
-      import org.bigbluebutton.modules.videoconf.business.VideoProxy;
-      import org.bigbluebutton.modules.videoconf.events.CloseAllWindowsEvent;
-      import org.bigbluebutton.modules.videoconf.events.ClosePublishWindowEvent;
-      import org.bigbluebutton.modules.videoconf.events.OpenVideoWindowEvent;
-      import org.bigbluebutton.modules.videoconf.events.ShareCameraRequestEvent;
-      import org.bigbluebutton.modules.videoconf.events.StartBroadcastEvent;
-      import org.bigbluebutton.modules.videoconf.events.StopBroadcastEvent;
-      import org.bigbluebutton.modules.videoconf.views.PublishWindow;
-      import org.bigbluebutton.modules.videoconf.views.ToolbarButton;
-      import org.bigbluebutton.modules.videoconf.views.VideoWindow;
+      import org.bigbluebutton.modules.videodock.business.VideoProxy;
+      import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
+      import org.bigbluebutton.modules.videodock.events.ClosePublishWindowEvent;
+      import org.bigbluebutton.modules.videodock.events.OpenVideoWindowEvent;
+      import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
+      import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
+      import org.bigbluebutton.modules.videodock.events.StopBroadcastEvent;
+      import org.bigbluebutton.modules.videodock.views.PublishWindow;
+      import org.bigbluebutton.modules.videodock.views.ToolbarButton;
+      import org.bigbluebutton.modules.videodock.views.VideoWindow;
       import org.bigbluebutton.modules.viewers.events.ViewCameraEvent;
       import org.flexunit.runner.manipulation.filters.IncludeAllFilter;
 			

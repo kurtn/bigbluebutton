@@ -17,7 +17,7 @@
  * 
  */
 
-package org.bigbluebutton.modules.videoconf.business
+package org.bigbluebutton.modules.videodock.business
 {
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;	

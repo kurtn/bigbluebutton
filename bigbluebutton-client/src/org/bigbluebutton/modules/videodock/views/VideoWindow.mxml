@@ -20,14 +20,14 @@
   $Id: $
 -->
 
-<viewVid:VideoWindowItf  
+<business:VideoWindowItf  
   xmlns:viewVid="org.bigbluebutton.modules.videoconf.business.*"
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	creationComplete="init()"
 	implements="org.bigbluebutton.common.IBbbModuleWindow"
 	xmlns:mate="http://mate.asfusion.com/"
 	resize="onResize()"  backgroundImage="{avatar}"
-	layout="absolute">
+	layout="absolute" xmlns:business="org.bigbluebutton.modules.videodock.business.*">
 	
   <mate:Listener type="{EventConstants.USER_TALKING}" method="handleUserTalkingEvent" />
   <mate:Listener type="{EventConstants.NEW_ROLE}" method="handleNewRoleEvent" />
@@ -44,9 +44,9 @@
       import org.bigbluebutton.core.events.CoreEvent;
       import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.main.views.MainCanvas;
-      import org.bigbluebutton.modules.videoconf.business.TalkingButtonOverlay;
-      import org.bigbluebutton.modules.videoconf.events.CloseAllWindowsEvent;
-      import org.bigbluebutton.modules.videoconf.model.VideoConfOptions;
+      import org.bigbluebutton.modules.videodock.business.TalkingButtonOverlay;
+      import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
+      import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
       import org.bigbluebutton.common.Role;
       
 			private var ns:NetStream;			
@@ -137,15 +137,13 @@
 
 
 				if (videoOptions.smoothVideo) {
-					LogUtil.debug("Smoothing video.")
 					_video.smoothing = true;
 				} 
 				
 				if (videoOptions.applyConvolutionFilter) {
 					var filter:ConvolutionFilter = new flash.filters.ConvolutionFilter();
 					filter.matrixX = 3;
-					filter.matrixY = 3;
-					LogUtil.debug("Applying convolution filter =[" + videoOptions.convolutionFilter + "]");					
+					filter.matrixY = 3;			
 					filter.matrix = videoOptions.convolutionFilter;
 					filter.bias =  videoOptions.filterBias;
 					filter.divisor = videoOptions.filterDivisor;
@@ -214,4 +212,4 @@
            blurXFrom="10.0" blurXTo="0.0" blurYFrom="10.0" blurYTo="0.0" color="0xFF0000"/>
 	
   <mate:Listener type="{CloseAllWindowsEvent.CLOSE_ALL_WINDOWS}" method="closeWindow" />
-</viewVid:VideoWindowItf>
+</business:VideoWindowItf>

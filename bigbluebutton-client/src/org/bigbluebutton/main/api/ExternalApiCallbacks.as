@@ -13,7 +13,7 @@ package org.bigbluebutton.main.api
   import org.bigbluebutton.core.managers.UserManager;
   import org.bigbluebutton.main.events.BBBEvent;
   import org.bigbluebutton.modules.listeners.events.ListenersCommand;
-  import org.bigbluebutton.modules.videoconf.events.ShareCameraRequestEvent;
+  import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
 
   public class ExternalApiCallbacks
   {

@@ -17,7 +17,7 @@
  * 
  */
 
-package org.bigbluebutton.modules.videoconf.business
+package org.bigbluebutton.modules.videodock.business
 {
 	import com.asfusion.mate.events.Dispatcher;
 	
@@ -46,7 +46,7 @@ package org.bigbluebutton.modules.videoconf.business
 	import org.bigbluebutton.main.model.users.events.RoleChangeEvent;
 	import org.bigbluebutton.main.views.MainCanvas;
 	import org.bigbluebutton.modules.listeners.events.ListenersCommand;
-	import org.bigbluebutton.modules.videoconf.views.ControlButtons;
+	import org.bigbluebutton.modules.videodock.views.ControlButtons;
 	import org.bigbluebutton.util.i18n.ResourceUtil;
 	
 	public class VideoWindowItf extends MDIWindow implements IBbbModuleWindow

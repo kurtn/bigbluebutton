@@ -20,7 +20,7 @@
   $Id: $
 --> 
 
-<pubVid:VideoWindowItf
+<business:VideoWindowItf
 	xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:pubVid="org.bigbluebutton.modules.videoconf.business.*"
 	implements="org.bigbluebutton.common.IBbbModuleWindow"
@@ -30,7 +30,7 @@
 	resize="onResize()"  backgroundImage="{avatar}"
 	horizontalScrollPolicy="off"
 	verticalScrollPolicy="off"
-	layout="absolute">
+	layout="absolute" xmlns:business="org.bigbluebutton.modules.videodock.business.*">
 	
   <mate:Listener type="{EventConstants.USER_TALKING}" method="handleUserTalkingEvent" />
   <mate:Listener type="{EventConstants.NEW_ROLE}" method="handleNewRoleEvent" />
@@ -49,12 +49,12 @@
       import org.bigbluebutton.core.events.CoreEvent;
       import org.bigbluebutton.core.managers.UserManager;
       import org.bigbluebutton.main.views.MainCanvas;
-      import org.bigbluebutton.modules.videoconf.business.TalkingButtonOverlay;
-      import org.bigbluebutton.modules.videoconf.events.CloseAllWindowsEvent;
-      import org.bigbluebutton.modules.videoconf.events.OpenVideoWindowEvent;
-      import org.bigbluebutton.modules.videoconf.events.StartBroadcastEvent;
-      import org.bigbluebutton.modules.videoconf.events.StopBroadcastEvent;
-      import org.bigbluebutton.modules.videoconf.model.VideoConfOptions;
+      import org.bigbluebutton.modules.videodock.business.TalkingButtonOverlay;
+      import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
+      import org.bigbluebutton.modules.videodock.events.OpenVideoWindowEvent;
+      import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
+      import org.bigbluebutton.modules.videodock.events.StopBroadcastEvent;
+      import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
       import org.bigbluebutton.util.i18n.ResourceUtil;
       import org.bigbluebutton.common.Role;
       
@@ -142,7 +142,7 @@
         }
       }
       
-			private function loadPrefs():void{
+			private function loadPrefs():void {
 				var sharedObject:SharedObject = SharedObject.getLocal("bbbUserProperties", "/");
 				var webcam:String = sharedObject.data["webcam"] as String;
 				for (var i:Number = 0; i < Camera.names.length; i++){
@@ -433,4 +433,4 @@
 	</mx:ControlBar>
 	
 	<mate:Listener type="{CloseAllWindowsEvent.CLOSE_ALL_WINDOWS}" method="closeWindow" />
-</pubVid:VideoWindowItf>
+</business:VideoWindowItf>

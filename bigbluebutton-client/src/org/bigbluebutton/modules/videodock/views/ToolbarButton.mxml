@@ -35,8 +35,8 @@
 			
 			import org.bigbluebutton.common.Images;
 			import org.bigbluebutton.main.views.MainToolbar;
-			import org.bigbluebutton.modules.videoconf.events.ShareCameraRequestEvent;
-			import org.bigbluebutton.modules.videoconf.events.ClosePublishWindowEvent;
+			import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
+			import org.bigbluebutton.modules.videodock.events.ClosePublishWindowEvent;
 			import org.bigbluebutton.util.i18n.ResourceUtil;
 			
 			[Bindable] public var isPresenter:Boolean;

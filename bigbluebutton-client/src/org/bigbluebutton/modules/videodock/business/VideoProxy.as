@@ -16,7 +16,7 @@
 * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 * 
 */
-package org.bigbluebutton.modules.videoconf.business
+package org.bigbluebutton.modules.videodock.business
 {
 	import com.asfusion.mate.events.Dispatcher;
 	
@@ -35,8 +35,8 @@ package org.bigbluebutton.modules.videoconf.business
 	import org.bigbluebutton.core.BBB;
 	import org.bigbluebutton.main.model.users.BBBUser;
 	import org.bigbluebutton.main.model.users.events.StreamStartedEvent;
-	import org.bigbluebutton.modules.videoconf.events.StartBroadcastEvent;
-	import org.bigbluebutton.modules.videoconf.model.VideoConfOptions;
+	import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
+	import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
 
 // Uncomment if you want to build support for H264. But you need at least FP 11. (ralam july 23, 2011)		
 	 

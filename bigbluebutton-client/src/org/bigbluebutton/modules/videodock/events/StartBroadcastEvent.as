@@ -16,17 +16,19 @@
 * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 * 
 */
-package org.bigbluebutton.modules.videoconf.events
+package org.bigbluebutton.modules.videodock.events
 {
 	import flash.events.Event;
+	import flash.media.Camera;
 	
-	public class StopBroadcastEvent extends Event
+	public class StartBroadcastEvent extends Event
 	{
-		public static const STOP_BROADCASTING:String = "STOP_BROADCASTING";
+		public static const START_BROADCAST:String = "startBroadcastEvent";
 		
 		public var stream:String;
+		public var camera:Camera;
 		
-		public function StopBroadcastEvent(type:String = STOP_BROADCASTING)
+		public function StartBroadcastEvent(type:String = START_BROADCAST)
 		{
 			super(type, true, false);
 		}

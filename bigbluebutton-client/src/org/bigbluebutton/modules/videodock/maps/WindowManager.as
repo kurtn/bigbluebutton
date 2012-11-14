@@ -1,11 +1,11 @@
-package org.bigbluebutton.modules.videoconf.maps
+package org.bigbluebutton.modules.videodock.maps
 {
   import flash.media.Video;
   
   import mx.collections.ArrayCollection;
   
-  import org.bigbluebutton.modules.videoconf.business.VideoWindowItf;
-  import org.bigbluebutton.modules.videoconf.views.VideoWindow;
+  import org.bigbluebutton.modules.videodock.business.VideoWindowItf;
+  import org.bigbluebutton.modules.videodock.views.VideoWindow;
 
   public class WindowManager
   {

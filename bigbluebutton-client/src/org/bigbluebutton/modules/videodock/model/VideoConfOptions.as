@@ -1,4 +1,4 @@
-package org.bigbluebutton.modules.videoconf.model
+package org.bigbluebutton.modules.videodock.model
 {
 	import org.bigbluebutton.core.BBB;
 	

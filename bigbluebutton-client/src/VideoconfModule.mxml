@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300" 
-	xmlns:maps="org.bigbluebutton.modules.videoconf.maps.*" implements="org.bigbluebutton.common.IBigBlueButtonModule">
+	xmlns:maps="org.bigbluebutton.modules.videoconf.maps.*" implements="org.bigbluebutton.common.IBigBlueButtonModule" xmlns:maps1="org.bigbluebutton.modules.videodock.maps.*">
 	<mx:Script>
 		<![CDATA[
-			import org.bigbluebutton.modules.videoconf.events.ShareCameraRequestEvent;
+			import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
 			import com.asfusion.mate.events.Dispatcher;
 			
 			import mx.controls.Alert;
@@ -11,8 +11,8 @@
 			import org.bigbluebutton.common.LogUtil;
 			import org.bigbluebutton.common.events.CloseWindowEvent;
 			import org.bigbluebutton.common.events.OpenWindowEvent;
-			import org.bigbluebutton.modules.videoconf.business.VideoProxy;
-			import org.bigbluebutton.modules.videoconf.events.CloseAllWindowsEvent;
+			import org.bigbluebutton.modules.videodock.business.VideoProxy;
+			import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
 			
 			private var _moduleName:String = "Videoconf Module";			
 			private var _attributes:Object; 
@@ -103,5 +103,5 @@
 		]]>
 	</mx:Script>
 	
-	<maps:VideoEventMap id="eventMap"/>
+	<maps1:VideoEventMap id="eventMap"/>
 </mx:Module>
