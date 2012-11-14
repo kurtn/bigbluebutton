@@ -95,6 +95,7 @@
 				this.title = ResourceUtil.getInstance().getString('bbb.publishVideo.title');
 
 				checkIfMacCamera();
+        
 				if (UsersUtil.amIPresenter()) showResControls(true);
 				if (Camera.names.length > 1) showVideoControls(true);
 				if (! UsersUtil.amIPresenter() && Camera.names.length == 1) startPublishing();

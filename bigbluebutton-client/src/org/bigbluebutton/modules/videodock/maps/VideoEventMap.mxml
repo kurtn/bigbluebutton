@@ -23,8 +23,7 @@
 <EventMap xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://mate.asfusion.com/">
 	<mx:Script>
 		<![CDATA[
-      import mx.collections.ArrayCollection;
-      
+      import mx.collections.ArrayCollection;     
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.events.OpenWindowEvent;
       import org.bigbluebutton.common.events.ToolbarButtonEvent;
@@ -123,9 +122,9 @@
 	//			module.mockConnect();
 			}
 			
-			public function addToolbarButton():void {
-        proxy = new VideoProxy("rtmp://192.168.0.249/video");
+			public function addToolbarButton():void {     
         var videoOptions:VideoConfOptions = new VideoConfOptions();
+        proxy = new VideoProxy(videoOptions.uri);
         
 				if (videoOptions.showButton) {
 					button = new ToolbarButton();	  
@@ -236,11 +235,7 @@
 	<EventHandlers type="{BBBEvent.START_VIDEO_CONNECTION}">
 		<InlineInvoker method="mockConnect" />
 	</EventHandlers>
-
-  <EventHandlers type="{ParticipantJoinEvent.PARTICIPANT_JOINED_EVENT}">
-    <InlineInvoker method="mockConnect" />
-  </EventHandlers>
-  
+ 
 	<EventHandlers type="{StreamStartedEvent.STREAM_STARTED}">
 		<InlineInvoker method="viewCamera" arguments="{[event.userID, event.stream, event.user]}" />
 	</EventHandlers>

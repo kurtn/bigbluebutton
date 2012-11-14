@@ -52,14 +52,14 @@
       import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
       import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
       
-			private var ns:NetStream;			
+			private var ns:VideoStream;			
 			private var globalDispatcher:Dispatcher;
       
 			private var videoOptions:VideoConfOptions = new VideoConfOptions();
 			
 			private function init():void{
 				_videoHolder = new UIComponent();
-				_videoHolder.addChild(_video);
+				
 				this.addChild(_videoHolder);
 				
 				addEventListener(MDIWindowEvent.RESIZE_START, onResizeStart);
@@ -120,14 +120,8 @@
       
     
 			public function startVideo(connection:NetConnection, stream:String):void{
-				ns = new NetStream(connection);
-				ns.addEventListener( NetStatusEvent.NET_STATUS, onNetStatus );
-				ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
-				ns.client = this;
-				ns.bufferTime = 0;
-				ns.receiveVideo(true);
-				ns.receiveAudio(false);
-				
+				ns = new VideoStream(connection);
+        
 				var res:Array = getVideoResolution(stream);
 				if (res == null) // error
 					return;
@@ -135,9 +129,7 @@
 				_video.width = originalWidth = Number(res[0]);
 				_video.height = originalHeight = Number(res[1]);
 				setAspectRatio(Number(res[0]), Number(res[1])); 
-				_video.attachNetStream(ns);
-
-
+       
 				if (videoOptions.smoothVideo) {
 					_video.smoothing = true;
 				} 
@@ -151,17 +143,17 @@
 					filter.divisor = videoOptions.filterDivisor;
 					_video.filters = [filter];					
 				}
-						
+				
+        ns.attachVideo(_video);
 				ns.play(stream);
+        _videoHolder.addChild(_video);
 				this.streamName = stream;
 				
 				this.width = _video.width + paddingHorizontal;
 				this.height = _video.height + paddingVertical;	
 			}
 						
-			private function onAsyncError(e:AsyncErrorEvent):void{
-				LogUtil.debug("VideoWindow::asyncerror " + e.toString());
-			}
+
 			
 			public function onMetaData(info:Object):void{
 				LogUtil.debug("metadata: width=" + info.width + " height=" + info.height);
@@ -171,29 +163,7 @@
 				onResize();
 			}
 						
-			private function onNetStatus(e:NetStatusEvent):void{
-				switch(e.info.code){
-					case "NetStream.Publish.Start":
-						LogUtil.debug("NetStream.Publish.Start for broadcast stream " + streamName);
-						break;
-					case "NetStream.Play.UnpublishNotify":
-						ns.close();
-						this.close();
-						// shouldn't call onCloseEvent() here because of the viewer cam icon
-						super.close();
-						break;
-					case "NetStream.Play.Start":
-						LogUtil.debug("Netstatus: " + e.info.code);
-						globalDispatcher.dispatchEvent(new BBBEvent(BBBEvent.VIDEO_STARTED));						
-						break;
-					case "NetStream.Play.FileStructureInvalid":
-						LogUtil.debug("The MP4's file structure is invalid.");
-						break;
-					case "NetStream.Play.NoSupportedTrackFound":
-						LogUtil.debug("The MP4 doesn't contain any supported tracks");
-						break;
-				}
-			}
+
 			
 			override public function close(event:MouseEvent=null):void{
 				ns.close();

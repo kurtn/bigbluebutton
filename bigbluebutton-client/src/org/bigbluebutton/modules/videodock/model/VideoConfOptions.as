@@ -4,6 +4,8 @@ package org.bigbluebutton.modules.videodock.model
 	
 	public class VideoConfOptions
 	{
+    public var uri:String = "rtmp://localhost/video";
+    
     [Bindable]
     public var videoQuality:Number = 100;
 
@@ -80,6 +82,9 @@ package org.bigbluebutton.modules.videodock.model
 		public function parseOptions():void {
 			var vxml:XML = BBB.getConfigForModule("VideodockModule");
 			if (vxml != null) {
+        if (vxml.@uri != undefined) {
+          uri = vxml.@uri.toString();
+        }		
         if (vxml.@videoQuality != undefined) {
           videoQuality = Number(vxml.@videoQuality.toString());
         }	
