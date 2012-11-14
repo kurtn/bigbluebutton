@@ -13,6 +13,9 @@ package org.bigbluebutton.modules.videodock.model
 		[Bindable]
 		public var autoStart:Boolean = false;
 		
+    [Bindable]
+    public var displayAllUsers:Boolean = false;
+    
 		[Bindable]
 		public var showCloseButton:Boolean = true;
 		
@@ -83,6 +86,9 @@ package org.bigbluebutton.modules.videodock.model
         if (vxml.@resolutions != undefined) {
           resolutions = vxml.@resolutions.toString();
         }		
+        if (vxml.@displayAllUsers != undefined) {
+          displayAllUsers = (vxml.@displayAllUsers.toString().toUpperCase() == "TRUE") ? true : false;
+        }
 				if (vxml.@showCloseButton != undefined) {
 					showCloseButton = (vxml.@showCloseButton.toString().toUpperCase() == "TRUE") ? true : false;
 				}

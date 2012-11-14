@@ -34,11 +34,15 @@
   
 	<mx:Script>
 		<![CDATA[
-      import com.asfusion.mate.events.Dispatcher;      
-      import flexlib.mdi.events.MDIWindowEvent;      
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import flexlib.mdi.events.MDIWindowEvent;
+      
       import mx.controls.Alert;
-      import mx.core.UIComponent;      
+      import mx.core.UIComponent;
+      
       import org.bigbluebutton.common.LogUtil;
+      import org.bigbluebutton.common.Role;
       import org.bigbluebutton.common.events.CloseWindowEvent;
       import org.bigbluebutton.core.EventConstants;
       import org.bigbluebutton.core.events.CoreEvent;
@@ -47,13 +51,11 @@
       import org.bigbluebutton.modules.videodock.business.TalkingButtonOverlay;
       import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
       import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
-      import org.bigbluebutton.common.Role;
       
 			private var ns:NetStream;			
 			private var globalDispatcher:Dispatcher;
       
-			[Bindable]
-			public var videoOptions:VideoConfOptions;
+			private var videoOptions:VideoConfOptions = new VideoConfOptions();
 			
 			private function init():void{
 				_videoHolder = new UIComponent();

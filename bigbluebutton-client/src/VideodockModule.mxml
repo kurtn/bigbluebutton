@@ -16,15 +16,13 @@
 				return _moduleName;
 			}
 			
-      private var proxy:VideoProxy;
+
       
 			public function start(attributes:Object):void {	
 				LogUtil.debug("Videodock attr: " + attributes.username);
 				
 				eventMap.startModule();
-        proxy = new VideoProxy("rtmp://192.168.0.249/video");
-        
-        vidEventMap.proxy = proxy;
+
         vidEventMap.addToolbarButton();
 			}
 			

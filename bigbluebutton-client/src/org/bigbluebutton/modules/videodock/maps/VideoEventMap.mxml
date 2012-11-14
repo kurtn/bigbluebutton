@@ -51,10 +51,9 @@
       import org.bigbluebutton.modules.viewers.events.ViewCameraEvent;
       import org.flexunit.runner.manipulation.filters.IncludeAllFilter;
 			
-//			public var module:VideoconfModule;
 			private var button:ToolbarButton;
 			private var publishWindow:PublishWindow;
-			public var proxy:VideoProxy;
+      private var proxy:VideoProxy;
       
       private var webcamWindows:WindowManager = new WindowManager();
 
@@ -87,7 +86,6 @@
         if (webcamWindows.hasWindow(userID)) return;
         
         var window:VideoWindow = webcamWindows.addWindow(userID);
-        window.videoOptions = proxy.videoOptions;
         window.title = UsersUtil.getUserName(userID);
         
         var windowEvent:OpenWindowEvent = new OpenWindowEvent(OpenWindowEvent.OPEN_WINDOW_EVENT);
@@ -112,7 +110,7 @@
           if (mock) {
 //            window.startVideo(module.mockConnection, stream);
           } else {
-//            window.startVideo(module.connection, stream);
+            window.startVideo(proxy.connection, stream);
           }          
         }
 			}
@@ -126,7 +124,10 @@
 			}
 			
 			public function addToolbarButton():void {
-				if (proxy.videoOptions.showButton) {
+        proxy = new VideoProxy("rtmp://192.168.0.249/video");
+        var videoOptions:VideoConfOptions = new VideoConfOptions();
+        
+				if (videoOptions.showButton) {
 					button = new ToolbarButton();	  
 					button.isPresenter = ! videoOptions.presenterShareOnly;
 					var event:ToolbarButtonEvent = new ToolbarButtonEvent(ToolbarButtonEvent.ADD);
@@ -137,7 +138,6 @@
 			
 			private function openPublishWindow():void{
 				publishWindow = new PublishWindow();
-				publishWindow.videoOptions = proxy.videoOptions;
 				publishWindow.quality = videoOptions.videoQuality;
 				publishWindow.resolutions = videoOptions.resolutions.split(",");
 				

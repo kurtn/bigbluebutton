@@ -137,15 +137,9 @@ $Id: $
 				window.width = childrenDimension[window].width;
 				window.height = childrenDimension[window].height;
 			}
-			
-			private function repositionWindow(window:MDIWindow):void {
-				// \TODO reposition the window correctly between the windows
-				// one idea is to use a "shadow" window
-				// setChildIndex(window, ?);
-			}
-			
+					
 			private function isVideoWindow(window:Object):Boolean {
-				return (getQualifiedSuperclassName(window) == "org.bigbluebutton.modules.videoconf.business::VideoWindowItf")
+				return (getQualifiedSuperclassName(window) == "org.bigbluebutton.modules.videodock.business::VideoWindowItf")
 			}
 			
 			private function onCloseWindow(e:CloseWindowEvent):void {
