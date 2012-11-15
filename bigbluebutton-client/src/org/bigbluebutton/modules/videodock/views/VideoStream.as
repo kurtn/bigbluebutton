@@ -14,6 +14,7 @@ package org.bigbluebutton.modules.videodock.views
   public class VideoStream
   {
     private var ns:NetStream;
+    private var metadataListener:Function;
     
     public function VideoStream(connection:NetConnection)
     {

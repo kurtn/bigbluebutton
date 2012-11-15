@@ -34,13 +34,10 @@
   
 	<mx:Script>
 		<![CDATA[
-      import com.asfusion.mate.events.Dispatcher;
-      
-      import flexlib.mdi.events.MDIWindowEvent;
-      
+      import com.asfusion.mate.events.Dispatcher;     
+      import flexlib.mdi.events.MDIWindowEvent;     
       import mx.controls.Alert;
-      import mx.core.UIComponent;
-      
+      import mx.core.UIComponent;      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.Role;
       import org.bigbluebutton.common.events.CloseWindowEvent;
