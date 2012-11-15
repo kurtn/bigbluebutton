@@ -191,6 +191,8 @@ package org.bigbluebutton.modules.videodock.views
 //        _controlButtons.visible = false;							
 //      } 
  //     return _controlButtons;
+      
+      return null;
     }
     
     protected function createButtons():void {      
