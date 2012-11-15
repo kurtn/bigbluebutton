@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ControlBar xmlns:mx="http://www.adobe.com/2006/mxml" 
+               creationComplete="onCreationComplete()" visible="false">
+  <mx:Script>
+    <![CDATA[
+      import org.bigbluebutton.core.UsersUtil;
+      
+      private function onCreationComplete():void {
+        checkIfMacCamera();
+        
+        if (UsersUtil.amIPresenter()) showResControls(true);
+        if (Camera.names.length > 1) showVideoControls(true);  
+      }
+      
+      private function checkIfMacCamera():void {
+        for (var i:int = 0; i < Camera.names.length; i++){
+          if (Camera.names[i] == "USB Video Class Video") {
+            /**
+             * Set as default for Macs
+             */
+            cmbCameraSelector.selectedIndex = i;
+          }
+        }
+      }
+      
+      private function showVideoControls(show:Boolean):void {
+        if (show) {
+          this.visible = true;
+          btnStartPublish.visible = true;
+          cmbCameraSelector.visible = true;
+        } else{					
+          this.width = 0;
+          this.height = 0;
+          btnStartPublish.visible = false;
+          cmbCameraSelector.visible = false;
+          this.visible = false;
+        }
+      }
+      
+      private function showResControls(show:Boolean):void {
+        if (show) cmbResolution.visible = true;
+        else cmbResolution.visible = false;
+      }
+    ]]>
+  </mx:Script>
+  
+    <mx:Button id="btnStartPublish" toolTip="{ResourceUtil.getInstance().getString('bbb.publishVideo.startPublishBtn.toolTip')}" icon="{camIcon}" click="startPublishing()" enabled="false"/>
+    <mx:ComboBox id="cmbCameraSelector" dataProvider="{Camera.names}" width="150" visible="false" change="updateCamera()"/>
+    <mx:ComboBox id="cmbResolution" dataProvider="{resolutions}" width="20%" visible="false" change="updateCamera()"/>
+</mx:ControlBar>

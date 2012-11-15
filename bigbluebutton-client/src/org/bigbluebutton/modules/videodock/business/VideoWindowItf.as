@@ -19,7 +19,7 @@
 
 package org.bigbluebutton.modules.videodock.business
 {
-	import com.asfusion.mate.events.Dispatcher;
+	import com.asfusion.mate.events.Dispatcher;	
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.media.Video;	
@@ -79,14 +79,15 @@ package org.bigbluebutton.modules.videodock.business
 			var pattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
 			if (pattern.test(stream)) {
 				LogUtil.debug("The stream name is well formatted [" + stream + "]");
-        var uid:String = UserManager.getInstance().getConference().getMyUserId();
+        var uid:String = UsersUtil.getMyUserID();
         LogUtil.debug("Stream resolution is [" + pattern.exec(stream)[1] + "]");
         LogUtil.debug("Userid [" + pattern.exec(stream)[2] + "]");
         sharerUserID = pattern.exec(stream)[2];
         addControlButtons();
         return pattern.exec(stream)[1].split("x");
 			} else {
-				LogUtil.error("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>. However, the video resolution will be set to the lowest defined resolution in the config.xml: " + resolutions[0]);
+				LogUtil.error("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>.");
+        LogUtil.error("However, the video resolution will be set to the lowest defined resolution in the config.xml: " + resolutions[0]);
 				return resolutions[0].split("x");
 			}
 		}
@@ -106,16 +107,15 @@ package org.bigbluebutton.modules.videodock.business
 		private var resizeDirection:int = RESIZING_DIRECTION_BOTH;
 		
 		/**
-		 * when the window is resized by the user, the application doesn't know
-		 * about the resize direction
+		 * when the window is resized by the user, the application doesn't know about the resize direction
 		 */
 		public function onResizeStart(event:MDIWindowEvent = null):void {
 			resizeDirection = RESIZING_DIRECTION_UNKNOWN;
 		}
 		
 		/**
-		 * after the resize ends, the direction is set to BOTH because of the
-		 * non-user resize actions - like when the window is docked, and so on
+		 * after the resize ends, the direction is set to BOTH because of the non-user resize actions - like when the 
+     * window is docked, and so on
 		 */
 		public function onResizeEnd(event:MDIWindowEvent = null):void {
 			resizeDirection = RESIZING_DIRECTION_BOTH;
