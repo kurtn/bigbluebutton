@@ -15,23 +15,21 @@ package org.bigbluebutton.modules.videodock.views
   {
     private var ns:NetStream;
     private var metadataListener:Function;
+    private var stream:String;
+        
+    public function attachVideo(video:Video):void {
+      video.attachNetStream(ns);
+    }
     
-    public function SubscribeStream(connection:NetConnection)
-    {
+    public function attach(connection:NetConnection):void {
       ns = new NetStream(connection);
       ns.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
       ns.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
       ns.client = this;
       ns.bufferTime = 0;
       ns.receiveVideo(true);
-      ns.receiveAudio(false);
+      ns.receiveAudio(false);      
     }
-    
-    public function attachVideo(video:Video):void {
-      video.attachNetStream(ns);
-    }
-    
-    private var stream:String;
     
     public function play(stream:String):void {
       this.stream = stream;

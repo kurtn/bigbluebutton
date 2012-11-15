@@ -7,6 +7,8 @@ package org.bigbluebutton.modules.videodock.events
     public static const UP:String = "video connection up";
     public static const DOWN:String = "video connection down";
 
+    public var uri:String;
+    
     public function ConnectionEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
     {
       super(type, bubbles, cancelable);

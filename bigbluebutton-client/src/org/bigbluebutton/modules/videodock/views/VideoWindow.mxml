@@ -86,9 +86,10 @@
 				 */
 				onResize();				
 				
-				if (videoOptions.viewerWindowMaxed)
-					this.maximize();
-				
+				if (videoOptions.viewerWindowMaxed) {
+          this.maximize();
+        }
+									
 				this.showCloseButton = videoOptions.showCloseButton;
 			}
 			
@@ -116,8 +117,8 @@
       }
       
     
-			public function startVideo(connection:NetConnection, stream:String):void{
-				ns = new SubscribeStream(connection);
+			public function startVideo(subscribeStream:SubscribeStream, stream:String):void{
+				ns = subscribeStream;
         
 				var res:Array = getVideoResolution(stream);
 				if (res == null) // error
@@ -143,15 +144,16 @@
 				
         ns.attachVideo(_video);
 				ns.play(stream);
+        
         _videoHolder.addChild(_video);
+        
 				this.streamName = stream;
 				
 				this.width = _video.width + paddingHorizontal;
 				this.height = _video.height + paddingVertical;	
 			}
 						
-
-			
+	
 			public function onMetaData(info:Object):void{
 				LogUtil.debug("metadata: width=" + info.width + " height=" + info.height);
 				_video.width = info.width;
@@ -159,26 +161,22 @@
 				setAspectRatio(info.width, info.height);
 				onResize();
 			}
-						
-
-			
-			override public function close(event:MouseEvent=null):void{
+									
+			override public function close(event:MouseEvent=null):void {
 				ns.close();
 				onCloseEvent();
 				super.close(event);
 			}		
 			
-			private function closeWindow(e:CloseAllWindowsEvent):void{
+			private function closeWindow(e:CloseAllWindowsEvent):void {
 				this.close();
 			}
 												
 		]]>
 	</mx:Script>
   
-  <mx:Glow id="talkingEffect" duration="500" alphaFrom="1.0" alphaTo="0.3"
-           blurXFrom="0.0" blurXTo="10.0" blurYFrom="0.0" blurYTo="10.0" color="0xFF0000"/>
-  <mx:Glow id="notTalkingEffect" duration="500" alphaFrom="0.3" alphaTo="1.0"
-           blurXFrom="10.0" blurXTo="0.0" blurYFrom="10.0" blurYTo="0.0" color="0xFF0000"/>
+  <mx:Glow id="talkingEffect" duration="500" alphaFrom="1.0" alphaTo="0.3" blurXFrom="0.0" blurXTo="10.0" blurYFrom="0.0" blurYTo="10.0" color="0xFF0000"/>
+  <mx:Glow id="notTalkingEffect" duration="500" alphaFrom="0.3" alphaTo="1.0" blurXFrom="10.0" blurXTo="0.0" blurYFrom="10.0" blurYTo="0.0" color="0xFF0000"/>
 	
   <mate:Listener type="{CloseAllWindowsEvent.CLOSE_ALL_WINDOWS}" method="closeWindow" />
 </business:VideoWindowItf>

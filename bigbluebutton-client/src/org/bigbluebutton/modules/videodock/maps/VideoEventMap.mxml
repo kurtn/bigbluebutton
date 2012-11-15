@@ -224,10 +224,6 @@
 		<InlineInvoker method="stopPublishing" arguments="{event}" />
 	</EventHandlers>
 
-  <EventHandlers type="{BBBEvent.OPEN_WEBCAM_WINDOWS}" >
-    <InlineInvoker method="openWebcamWindows"/>
-  </EventHandlers>
-  
 	<EventHandlers type="{BBBEvent.START_VIDEO_STREAM}" >
 		<InlineInvoker method="viewVideoFile" arguments="{event}" />
 	</EventHandlers>

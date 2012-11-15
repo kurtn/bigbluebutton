@@ -9,17 +9,17 @@ package org.bigbluebutton.modules.videodock.maps
   
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.modules.videodock.events.ConnectionEvent;
+  import org.bigbluebutton.modules.videodock.views.SubscribeStream;
 
   public class Connection
   {
-    private var nc:NetConnection;
-    
-    public var dispatcher:IEventDispatcher;
-    
+    private var nc:NetConnection;   
+    private var _dispatcher:IEventDispatcher;   
     private var _uri:String;
     
-    public function Connection()
+    public function Connection(dispatcher:IEventDispatcher)
     {
+      _dispatcher = dispatcher;
       nc = new NetConnection();
       nc.client = this;
       nc.addEventListener(AsyncErrorEvent.ASYNC_ERROR, onAsyncError);
@@ -30,42 +30,51 @@ package org.bigbluebutton.modules.videodock.maps
     
     public function connect(uri:String):void {
       _uri = uri;
-
       nc.connect(uri);  
     }
     
+    private function broadcastConnectionDown():void {
+      var event:ConnectionEvent = new ConnectionEvent(ConnectionEvent.DOWN);
+      event.uri = _uri;
+      _dispatcher.dispatchEvent(event);
+    }
     private function onAsyncError(event:AsyncErrorEvent):void {
       LogUtil.debug("onAsyncError on [" + _uri + "]");
-      dispatcher.dispatchEvent(new ConnectionEvent(ConnectionEvent.DOWN));
+      broadcastConnectionDown();
     }
     
     private function onIOError(event:NetStatusEvent):void {
       LogUtil.debug("onIOError on [" + _uri + "]");
-      dispatcher.dispatchEvent(new ConnectionEvent(ConnectionEvent.DOWN));
+      broadcastConnectionDown();
     }
     
     private function onNetStatus(event:NetStatusEvent):void {
       switch(event.info.code){
         case "NetConnection.Connect.Success":
-          dispatcher.dispatchEvent(new ConnectionEvent(ConnectionEvent.UP));
-          break;
-        
+          var evt:ConnectionEvent = new ConnectionEvent(ConnectionEvent.UP);
+          evt.uri = _uri;
+          _dispatcher.dispatchEvent(evt);
+          break;        
         case "NetConnection.Connect.Failed":
         case "NetConnection.Connect.Rejected":
         case "NetConnection.Connect.Closed":
         case "NetConnection.Connect.InvalidApp":
         case "NetConnection.Connect.AppShutdown":
           LogUtil.debug("[" + event.info.code + "] on [" + _uri + "]");
-          dispatcher.dispatchEvent(new ConnectionEvent(ConnectionEvent.DOWN));
+          broadcastConnectionDown();
           break;
         default:
           LogUtil.debug("[" + event.info.code + "] on [" + _uri + "]");
       }
     }
     
+    public function attach(subscribeStream:SubscribeStream):void {
+      subscribeStream.attach(nc);
+    }
+    
     private function onSecurityError(event:NetStatusEvent):void {
       LogUtil.debug("onSecurityError on [" + _uri + "]");
-      dispatcher.dispatchEvent(new ConnectionEvent(ConnectionEvent.DOWN));
+      broadcastConnectionDown();
     }
     
     public function onBWCheck(... rest):Number { 

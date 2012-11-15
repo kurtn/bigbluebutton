@@ -77,8 +77,8 @@ $Id: $
 				
 				if (options.maximize) this.maximize();
         
-//        var globalDispatcher:Dispatcher = new Dispatcher();
-//        globalDispatcher.dispatchEvent(new BBBEvent(BBBEvent.OPEN_WEBCAM_WINDOWS));
+        var globalDispatcher:Dispatcher = new Dispatcher();
+        globalDispatcher.dispatchEvent(new BBBEvent(BBBEvent.OPEN_WEBCAM_WINDOWS));
 			}
 			
 			/**

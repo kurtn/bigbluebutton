@@ -3,8 +3,11 @@
 		   xmlns:maps="org.bigbluebutton.modules.videodock.maps.*" implements="org.bigbluebutton.common.IBigBlueButtonModule">
 	<mx:Script>
 		<![CDATA[
+      import com.asfusion.mate.events.Dispatcher;
+      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.modules.videodock.business.VideoProxy;
+      import org.bigbluebutton.modules.videodock.events.VideoDockEvent;
 			
 			private var _moduleName:String = "Videodock Module";			
 			
@@ -19,13 +22,13 @@
 			public function start(attributes:Object):void {	
 				LogUtil.debug("Videodock attr: " + attributes.username);
 				
-				eventMap.startModule();
-
-        vidEventMap.addToolbarButton();
+        var globalDispatcher:Dispatcher = new Dispatcher();
+        globalDispatcher.dispatchEvent(new VideoDockEvent(VideoDockEvent.START));
 			}
 			
 			public function stop():void {
-				eventMap.stopModule();
+        var globalDispatcher:Dispatcher = new Dispatcher();
+        globalDispatcher.dispatchEvent(new VideoDockEvent(VideoDockEvent.STOP));
 			}
 			
 		]]>

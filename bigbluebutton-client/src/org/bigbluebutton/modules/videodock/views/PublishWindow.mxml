@@ -37,11 +37,9 @@
   
 	<mx:Script>
 		<![CDATA[
-      import flexlib.mdi.events.MDIWindowEvent;
-      
+      import flexlib.mdi.events.MDIWindowEvent;      
       import mx.core.UIComponent;
-      import mx.events.ResizeEvent;
-      
+      import mx.events.ResizeEvent;      
       import org.bigbluebutton.common.Images;
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.Role;
@@ -217,8 +215,8 @@
    		      
 			private function onActivityEvent(e:ActivityEvent):void {
 			    if (_waitingForActivation && e.activating) {
-			        _activationTimer.stop();
-					showWarning('bbb.video.publish.hint.videoPreview', false, "0xFFFF00");
+			      _activationTimer.stop();
+					  showWarning('bbb.video.publish.hint.videoPreview', false, "0xFFFF00");
 			     	btnStartPublish.enabled = true;
 			     	_waitingForActivation = false;
 			    }
@@ -229,9 +227,9 @@
 					onCameraAccessAllowed();
 					// this is just to overwrite the message of waiting for approval
 				    showWarning('bbb.video.publish.hint.openingCamera');
-			    } else if (e.code == "Camera.Muted") {
-			    	onCameraAccessDisallowed();
-			    }
+			  } else if (e.code == "Camera.Muted") {
+			   	onCameraAccessDisallowed();
+			  }
 			}
 			
 			private function onCameraAccessAllowed():void {

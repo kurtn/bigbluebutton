@@ -12,6 +12,24 @@ package org.bigbluebutton.core
       return UserManager.getInstance().getConference().amIModerator();
     }
     
+    public static function hasWebcamStream(userID:String):Boolean {
+      var u:BBBUser = getUser(userID);
+      if (u != null) {
+        return u.hasStream;
+      }
+      
+      return false;
+    }
+
+    public static function getWebcamStream(userID:String):String {
+      var u:BBBUser = getUser(userID);
+      if (u != null) {
+        return u.streamName;
+      }
+      
+      return null;
+    }
+    
     public static function amIPresenter():Boolean {
       return UserManager.getInstance().getConference().amIPresenter();
     }

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dock:VideoWindowItf xmlns:mx="http://www.adobe.com/2006/mxml" 
+<ns:MDIWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
               xmlns:ns="http://code.google.com/p/flexlib/" 
               xmlns:dock="org.bigbluebutton.modules.videodock.views.*"
+              creationComplete="onCreationComplete()"
               layout="absolute">
   <mx:Script>
     <![CDATA[
-
+      private function onCreationComplete():void {
+      }
     ]]>
   </mx:Script>
   
   <ms:states>
     <mx:State name="displayAvatar">
       <mx:AddChild relativeTo="{userDisplay}">
-        <dock:AvatarDisplay width="100%" height="100%"/>
+        <mx:RemoveChild target="{videoDisplay}"/>
+        <dock:AvatarDisplay id="avatarDisplay" width="100%" height="100%"/>
       </mx:AddChild>
     </mx:State>
     <mx:State name="displayWebcam">
-      
+      <mx:RemoveChild target="{avatarDisplay}"/>
+      <mx:AddChild relativeTo="{userDisplay}">
+        <dock:VideoDisplay id="videoDisplay" width="100%" height="100%"/>
+      </mx:AddChild>      
     </mx:State>
   </ms:states>
   
-  <mx:VBox id="userDisplay" width="100%" height="100%">
-    
-  </mx:VBox>
-</dock:VideoWindowItf>
+  <mx:VBox id="userDisplay" width="100%" height="100%"/>
+</ns:MDIWindow>
