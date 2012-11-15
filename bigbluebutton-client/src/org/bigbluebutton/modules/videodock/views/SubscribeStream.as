@@ -11,12 +11,12 @@ package org.bigbluebutton.modules.videodock.views
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.main.events.BBBEvent;
 
-  public class VideoStream
+  public class SubscribeStream
   {
     private var ns:NetStream;
     private var metadataListener:Function;
     
-    public function VideoStream(connection:NetConnection)
+    public function SubscribeStream(connection:NetConnection)
     {
       ns = new NetStream(connection);
       ns.addEventListener(NetStatusEvent.NET_STATUS, onNetStatus);

@@ -49,7 +49,7 @@
       import org.bigbluebutton.modules.videodock.events.CloseAllWindowsEvent;
       import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
       
-			private var ns:VideoStream;			
+			private var ns:SubscribeStream;			
 			private var globalDispatcher:Dispatcher;
       
 			private var videoOptions:VideoConfOptions = new VideoConfOptions();
@@ -117,7 +117,7 @@
       
     
 			public function startVideo(connection:NetConnection, stream:String):void{
-				ns = new VideoStream(connection);
+				ns = new SubscribeStream(connection);
         
 				var res:Array = getVideoResolution(stream);
 				if (res == null) // error
