@@ -11,8 +11,8 @@ package org.bigbluebutton.modules.videodock.views
 
   public class CameraSettings
   {
-    private var camWidth:Number = 320;
-    private var camHeight:Number = 240;
+    public var camWidth:Number = 320;
+    public var camHeight:Number = 240;
     private var _camera:Camera = null;
     
     // Timer to auto-publish webcam. We need this timer to delay the auto-publishing until after the Viewers's window has loaded
@@ -26,8 +26,11 @@ package org.bigbluebutton.modules.videodock.views
     
     static private var _cameraAccessDenied:Boolean = false;
     
-    public function CameraSettings()
+    private var showWarning:Function;
+    
+    public function CameraSettings(showWarning:Function)
     {
+      this.showWarning = showWarning;
     }
     
     public function useCamera(name:String):void {
@@ -35,7 +38,7 @@ package org.bigbluebutton.modules.videodock.views
       
       _camera = Camera.getCamera(name);
       if (_camera == null) {
-//        showWarning('bbb.video.publish.hint.cantOpenCamera');
+        showWarning('bbb.video.publish.hint.cantOpenCamera');
         return;
       }
       
@@ -46,7 +49,7 @@ package org.bigbluebutton.modules.videodock.views
           onCameraAccessDisallowed();
           return;
         } else {
-//          showWarning('bbb.video.publish.hint.waitingApproval');
+          showWarning('bbb.video.publish.hint.waitingApproval');
         }
       } else {
         // if the camera isn't muted, that is because the user has
@@ -57,7 +60,7 @@ package org.bigbluebutton.modules.videodock.views
       _camera.addEventListener(ActivityEvent.ACTIVITY, onActivityEvent);
       _camera.addEventListener(StatusEvent.STATUS, onStatusEvent);
       
-      setComboResolution();
+//      setComboResolution();
       
       _camera.setKeyFrameInterval(videoOptions.camKeyFrameInterval);
       _camera.setMode(camWidth, camHeight, videoOptions.camModeFps);
@@ -65,14 +68,14 @@ package org.bigbluebutton.modules.videodock.views
       
       if (_camera.width != camWidth || _camera.height != camHeight) {
 //        LogUtil.debug("Resolution " + camWidth + "x" + camHeight + " is not supported, using " + _camera.width + "x" + _camera.height + " instead");
-        setResolution(_camera.width, _camera.height);
+//        setResolution(_camera.width, _camera.height);
       }	
     }
     
     private function onActivityEvent(e:ActivityEvent):void {
       if (_waitingForActivation && e.activating) {
         _activationTimer.stop();
-//        showWarning('bbb.video.publish.hint.videoPreview', false, "0xFFFF00");
+        showWarning('bbb.video.publish.hint.videoPreview', false, "0xFFFF00");
 //        controls.btnStartPublish.enabled = true;
         _waitingForActivation = false;
       }
@@ -82,7 +85,7 @@ package org.bigbluebutton.modules.videodock.views
       if (e.code == "Camera.Unmuted") {
         onCameraAccessAllowed();
         // this is just to overwrite the message of waiting for approval
-//        showWarning('bbb.video.publish.hint.openingCamera');
+        showWarning('bbb.video.publish.hint.openingCamera');
       } else if (e.code == "Camera.Muted") {
         onCameraAccessDisallowed();
       }
@@ -102,37 +105,14 @@ package org.bigbluebutton.modules.videodock.views
     }
     
     private function onCameraAccessDisallowed():void {
-//      showWarning('bbb.video.publish.hint.cameraDenied');
+      showWarning('bbb.video.publish.hint.cameraDenied');
       _cameraAccessDenied = true;
     }
     
     private function activationTimeout(e:TimerEvent):void {
-//      showWarning('bbb.video.publish.hint.cameraIsBeingUsed');
+      showWarning('bbb.video.publish.hint.cameraIsBeingUsed');
       // it will try to reopen the camera after the timeout
-      updateCamera();
-    } 
-    
-    private function updateCamera():void {
-      
-    }
-    
-    private function setComboResolution():void {
-      var res:Array = controls.cmbResolution.selectedLabel.split( "x" );
-      setResolution(Number(res[0]), Number(res[1]));
-    }
-    
-    private function setResolution(width:int, height:int):void {
-      camWidth = originalWidth = width;
-      camHeight = originalHeight = height;
-      setAspectRatio(camWidth, camHeight);
-      
-      /**
-       * Add timestamp to create a unique stream name. This way we can record	 	
-       * stream without overwriting previously recorded streams.	 	
-       */	 	
-      var curTime:Number = new Date().getTime();	
-      var uid:String = UsersUtil.getMyUserID();
-      this.streamName = controls.cmbResolution.selectedLabel.concat("-" + uid) + "-" + curTime;
-    }
+//      updateCamera();
+    }     
   }
 }

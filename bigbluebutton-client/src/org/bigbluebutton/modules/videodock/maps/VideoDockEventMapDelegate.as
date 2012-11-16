@@ -18,6 +18,7 @@ package org.bigbluebutton.modules.videodock.maps
   import org.bigbluebutton.modules.videodock.views.ToolbarButton;
   import org.bigbluebutton.modules.videodock.views.VideoDock;
   import org.bigbluebutton.modules.videodock.views.VideoWindow;
+  import org.bigbluebutton.modules.videodock.views.WebcamWindow;
 
   public class VideoDockEventMapDelegate
   {
@@ -57,7 +58,7 @@ package org.bigbluebutton.modules.videodock.maps
         }       
       }
     }
-    
+/*    
     private function openPublishWindow():void{
       publishWindow = new PublishWindow();
       publishWindow.quality = _options.videoQuality;
@@ -100,14 +101,14 @@ package org.bigbluebutton.modules.videodock.maps
       toolbarButton.publishingStatus(toolbarButton.STOP_PUBLISHING);
       //button.show();
     }
-    
+*/    
     private function openWebcamWindow(userID:String):void {
       if (UsersUtil.isMe(userID)) return;
       
       if (webcamWindows.hasWindow(userID)) return;
       
-      var window:VideoWindow = webcamWindows.addWindow(userID);
-      window.sharerUserID = userID;
+      var window:WebcamWindow = webcamWindows.addWindow(userID);
+      window.userID = userID;
       window.title = UsersUtil.getUserName(userID);
       
       openWidow(window);
@@ -116,24 +117,24 @@ package org.bigbluebutton.modules.videodock.maps
   
     }
     
-    private function playWebcamStream(window:VideoWindow, userID:String):void {
+    private function playWebcamStream(window:WebcamWindow, userID:String):void {
       if (UsersUtil.hasWebcamStream(userID)) {
         var subscribeStream:SubscribeStream = new SubscribeStream();
         _conn.attach(subscribeStream);
         var streamName:String = UsersUtil.getWebcamStream(userID);
         if (streamName != null) {
-          window.startVideo(subscribeStream, streamName);
+//          window.startVideo(subscribeStream, streamName);
         }
       }        
     }
     
-    private function openWidow(window:VideoWindow):void {
+    private function openWidow(window:WebcamWindow):void {
       var windowEvent:OpenWindowEvent = new OpenWindowEvent(OpenWindowEvent.OPEN_WINDOW_EVENT);
       windowEvent.window = window;
       _dispatcher.dispatchEvent(windowEvent);      
     }
     
-    private function dockWindow(window:VideoWindow):void {
+    private function dockWindow(window:WebcamWindow):void {
       // this event will dock the window, if it's enabled
       var openVideoEvent:OpenVideoWindowEvent = new OpenVideoWindowEvent();
       openVideoEvent.window = window;

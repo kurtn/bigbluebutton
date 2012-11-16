@@ -5,6 +5,8 @@
     <![CDATA[
       import org.bigbluebutton.core.UsersUtil;
       
+      public var camSettings:CameraSettings;
+      
       private function onCreationComplete():void {
         checkIfMacCamera();
         
@@ -37,14 +39,37 @@
         }
       }
       
+      private function updateCameraName():void {
+        camSettings.useCamera(cmbCameraSelector.selectedIndex.toString());
+      }
+      
       private function showResControls(show:Boolean):void {
         if (show) cmbResolution.visible = true;
         else cmbResolution.visible = false;
+      }
+      
+      private function setComboResolution():void {
+        var res:Array = cmbResolution.selectedLabel.split( "x" );
+        setResolution(Number(res[0]), Number(res[1]));
+      }
+      
+      private function setResolution(width:int, height:int):void {
+        camSettings.camWidth = width;
+        camSettings.camHeight = height;
+//        setAspectRatio(camWidth, camHeight);
+        
+        /**
+         * Add timestamp to create a unique stream name. This way we can record	 	
+         * stream without overwriting previously recorded streams.	 	
+         */	 	
+//        var curTime:Number = new Date().getTime();	
+//        var uid:String = UsersUtil.getMyUserID();
+//        this.streamName = controls.cmbResolution.selectedLabel.concat("-" + uid) + "-" + curTime;
       }
     ]]>
   </mx:Script>
   
     <mx:Button id="btnStartPublish" toolTip="{ResourceUtil.getInstance().getString('bbb.publishVideo.startPublishBtn.toolTip')}" icon="{camIcon}" click="startPublishing()" enabled="false"/>
-    <mx:ComboBox id="cmbCameraSelector" dataProvider="{Camera.names}" width="150" visible="false" change="updateCamera()"/>
+    <mx:ComboBox id="cmbCameraSelector" dataProvider="{Camera.names}" width="150" visible="false" change="updateCameraName()"/>
     <mx:ComboBox id="cmbResolution" dataProvider="{resolutions}" width="20%" visible="false" change="updateCamera()"/>
 </mx:ControlBar>

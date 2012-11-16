@@ -61,9 +61,9 @@ package org.bigbluebutton.modules.videodock.business
 		}
 		
 		public function startPublishing(e:StartBroadcastEvent):void{
-			ns.addEventListener( NetStatusEvent.NET_STATUS, onNetStatus );
-			ns.addEventListener( IOErrorEvent.IO_ERROR, onIOError );
-			ns.addEventListener( AsyncErrorEvent.ASYNC_ERROR, onAsyncError );
+//			ns.addEventListener( NetStatusEvent.NET_STATUS, onNetStatus );
+//			ns.addEventListener( IOErrorEvent.IO_ERROR, onIOError );
+//			ns.addEventListener( AsyncErrorEvent.ASYNC_ERROR, onAsyncError );
 			ns.client = this;
 			ns.attachCamera(e.camera);
 			if ((BBB.getFlashPlayerVersion() >= 11) && videoOptions.enableH264) {
