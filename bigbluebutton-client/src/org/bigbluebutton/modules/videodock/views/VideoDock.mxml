@@ -33,8 +33,11 @@ $Id: $
 	
 	<mx:Script>
 		<![CDATA[
-      import com.asfusion.mate.events.Dispatcher;     
-      import mx.events.ChildExistenceChangedEvent;     
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import mx.events.ChildExistenceChangedEvent;
+      
+      import org.bigbluebutton.common.IBbbModuleWindow;
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.events.CloseWindowEvent;
       import org.bigbluebutton.common.events.DragWindowEvent;
@@ -43,7 +46,6 @@ $Id: $
       import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.main.model.users.Conference;
       import org.bigbluebutton.main.views.MainCanvas;
-//      import org.bigbluebutton.modules.videodock.business.VideoWindowItf;
       import org.bigbluebutton.modules.videodock.events.OpenVideoWindowEvent;
       import org.bigbluebutton.util.i18n.ResourceUtil;
 			
@@ -142,8 +144,8 @@ $Id: $
 				window.height = childrenDimension[window].height;
 			}
 					
-			private function isVideoWindow(window:Object):Boolean {
-				return (getQualifiedClassName(window) == "org.bigbluebutton.modules.videodock.views::WebcamWindow")
+			private function isVideoWindow(window:IBbbModuleWindow):Boolean {
+				return (window.getWindowType() == WebcamWindow.WEBCAM_WINDOW)
 			}
 			
 			private function onCloseWindow(e:CloseWindowEvent):void {

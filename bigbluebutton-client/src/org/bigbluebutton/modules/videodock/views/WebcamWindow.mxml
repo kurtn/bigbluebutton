@@ -14,8 +14,10 @@
       static public var PADDING_HORIZONTAL:Number = 6;
       static public var PADDING_VERTICAL:Number = 29;
       
+      public static const WEBCAM_WINDOW:String = "WEBCAM_WINDOW";
+      
       public function getWindowType():String {
-        return "WEBCAM_WINDOW";
+        return WEBCAM_WINDOW;
       }
       
       public function updateWidth():void {
