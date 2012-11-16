@@ -52,7 +52,13 @@
 			private var ns:SubscribeStream;			
 			private var globalDispatcher:Dispatcher;
       
-			private var videoOptions:VideoConfOptions = new VideoConfOptions();
+      private var videoOptions:VideoConfOptions = new VideoConfOptions();
+      
+      override public function getWindowType():String {
+        return "WEBCAM_VIEW_WINDOW";
+      }
+      
+			
 			
 			private function init():void{
 				_videoHolder = new UIComponent();

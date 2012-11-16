@@ -11,6 +11,23 @@
       public var userID:String;
       public var isPublishWindow:Boolean = false;
       
+      static public var PADDING_HORIZONTAL:Number = 6;
+      static public var PADDING_VERTICAL:Number = 29;
+      
+      public function getWindowType():String {
+        return "WEBCAM_WINDOW";
+      }
+      
+      public function updateWidth():void {
+//        this.width = Math.floor((this.height - paddingVertical) * aspectRatio) + paddingHorizontal;
+//        onResize();
+      }
+      
+      public function updateHeight():void {
+//        this.height = Math.floor((this.width - paddingHorizontal) / aspectRatio) + paddingVertical;
+ //       onResize();
+      }
+      
       private function onCreationComplete():void {
         
       }

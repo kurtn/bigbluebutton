@@ -4,6 +4,7 @@ package org.bigbluebutton.modules.videodock.maps
   
   import mx.collections.ArrayCollection;
   
+  import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.common.events.OpenWindowEvent;
   import org.bigbluebutton.common.events.ToolbarButtonEvent;
   import org.bigbluebutton.core.UsersUtil;
@@ -53,9 +54,9 @@ package org.bigbluebutton.modules.videodock.maps
       for (var i:int = 0; i < uids.length; i++) {
         var u:String = uids.getItemAt(i) as String;
         
-        if ((! _options.displayAllUsers && UsersUtil.hasWebcamStream(u)) || _options.displayAllUsers) {
+//        if ((! _options.displayAllUsers && UsersUtil.hasWebcamStream(u)) || _options.displayAllUsers) {
           openWebcamWindow(u);
-        }       
+//        }       
       }
     }
 /*    
@@ -103,7 +104,7 @@ package org.bigbluebutton.modules.videodock.maps
     }
 */    
     private function openWebcamWindow(userID:String):void {
-      if (UsersUtil.isMe(userID)) return;
+//      if (UsersUtil.isMe(userID)) return;
       
       if (webcamWindows.hasWindow(userID)) return;
       
@@ -111,6 +112,7 @@ package org.bigbluebutton.modules.videodock.maps
       window.userID = userID;
       window.title = UsersUtil.getUserName(userID);
       
+      LogUtil.debug("*************** OPENING WINDOW FOR [" + userID + "]");
       openWidow(window);
       dockWindow(window);
       playWebcamStream(window, userID);

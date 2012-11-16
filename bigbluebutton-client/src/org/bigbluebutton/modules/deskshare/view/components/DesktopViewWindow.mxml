@@ -102,6 +102,10 @@
 				}
 			}
 			
+      public function getWindowType():String {
+        return "DESKTOP_VIEW_WINDOW";
+      }
+      
 			private function onUpdateCursorEvent(event:CursorEvent):void {	
 				cursor.x = ((event.x/videoWidth)) * videoHolder.width;
 				cursor.y = ((event.y/videoHeight)) * videoHolder.height;

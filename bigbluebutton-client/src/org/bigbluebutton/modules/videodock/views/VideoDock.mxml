@@ -43,7 +43,7 @@ $Id: $
       import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.main.model.users.Conference;
       import org.bigbluebutton.main.views.MainCanvas;
-      import org.bigbluebutton.modules.videodock.business.VideoWindowItf;
+//      import org.bigbluebutton.modules.videodock.business.VideoWindowItf;
       import org.bigbluebutton.modules.videodock.events.OpenVideoWindowEvent;
       import org.bigbluebutton.util.i18n.ResourceUtil;
 			
@@ -54,13 +54,17 @@ $Id: $
 			private var mutableChildrenArray:Array = new Array();
 			
 			private var _prioritizeWindow:Boolean = false;
-			private var priorityWindow:VideoWindowItf = null;
+			private var priorityWindow:WebcamWindow = null;
 			// the priority video will fit a portion of the dock that is represented by this weight
 			// bigger the weight, bigger will be the window and less space the other windows will have
 			private var priorityWindowWeight:Number = 2/3;
 			
 			private var options:DockOptions = new DockOptions();
 			
+      public function getWindowType():String {
+        return "VIDEO_DOCK_WINDOW";
+      }
+      
 			private function init():void {				
 				this.showCloseButton = false;		
 				
@@ -91,8 +95,8 @@ $Id: $
 			 */
 			private function updateMinAspectRatio(children:Array):void {
 				minChildAspectRatio = 0;
-				for each(var window:VideoWindowItf in children) {
-				    const windowAspectRatio:Number = (window.width - VideoWindowItf.PADDING_HORIZONTAL) / (window.height - VideoWindowItf.PADDING_VERTICAL);
+				for each (var window:WebcamWindow in children) {
+				    const windowAspectRatio:Number = (window.width - WebcamWindow.PADDING_HORIZONTAL) / (window.height - WebcamWindow.PADDING_VERTICAL);
 				    if (minChildAspectRatio == 0 || windowAspectRatio < minChildAspectRatio)
 				        minChildAspectRatio = windowAspectRatio;				        
 				}
@@ -139,21 +143,21 @@ $Id: $
 			}
 					
 			private function isVideoWindow(window:Object):Boolean {
-				return (getQualifiedSuperclassName(window) == "org.bigbluebutton.modules.videodock.business::VideoWindowItf")
+				return (getQualifiedClassName(window) == "org.bigbluebutton.modules.videodock.views::WebcamWindow")
 			}
 			
 			private function onCloseWindow(e:CloseWindowEvent):void {
 				// it should not just undock the window, it should close the window forever
-				if (isVideoWindow(e.window) && this.contains(e.window as VideoWindowItf))
-					this.removeChild(e.window as VideoWindowItf);
+				if (isVideoWindow(e.window) && this.contains(e.window as WebcamWindow))
+					this.removeChild(e.window as WebcamWindow);
 			}
 			
 			private function onOpenWindow(e:OpenVideoWindowEvent):void {
 				if (isVideoWindow(e.window) && options.autoDock)
-					addVideoChild(e.window as VideoWindowItf);
+					addVideoChild(e.window as WebcamWindow);
 			}
 			
-			private function addVideoChild(window:VideoWindowItf):void {
+			private function addVideoChild(window:WebcamWindow):void {
 				if (this.contains(window))
 					return;
 				
@@ -181,7 +185,7 @@ $Id: $
 				this.addChild(window);
 			}
 			
-			private function removeVideoChild(window:VideoWindowItf):void {
+			private function removeVideoChild(window:WebcamWindow):void {
 				if (!this.contains(window))
 					return;
 				
@@ -258,8 +262,8 @@ $Id: $
 				// we would like to maximize the window size
 				for (var rows:Number = 1; rows <= children.length - (_prioritizeWindow? 1: 0); ++rows) {
 					var columns:Number = Math.ceil((children.length - (_prioritizeWindow? 1: 0))/ rows);
-					var maxWidth:int = Math.floor((availableWidth - horizontalGap * (columns - 1)) / columns) - VideoWindowItf.PADDING_HORIZONTAL;
-					var maxHeight:int = Math.floor((availableHeight - verticalGap * (rows - 1)) / rows) - VideoWindowItf.PADDING_VERTICAL;
+					var maxWidth:int = Math.floor((availableWidth - horizontalGap * (columns - 1)) / columns) - WebcamWindow.PADDING_HORIZONTAL;
+					var maxHeight:int = Math.floor((availableHeight - verticalGap * (rows - 1)) / rows) - WebcamWindow.PADDING_VERTICAL;
 					
 					// the possible dimensions shouldn't be less or equal 0 (it could happen with many videos)
 					if (maxWidth <= 0 || maxHeight <=0)
@@ -281,8 +285,8 @@ $Id: $
 					}
 				}                        
 				
-				childWidth += VideoWindowItf.PADDING_HORIZONTAL;
-				childHeight += VideoWindowItf.PADDING_VERTICAL;
+				childWidth += WebcamWindow.PADDING_HORIZONTAL;
+				childHeight += WebcamWindow.PADDING_VERTICAL;
 
 				const horizontalBorder:int = availableWidth - nColumns * childWidth - (nColumns - 1) * horizontalGap;
 				const verticalBorder:int = availableHeight - nRows * childHeight - (nRows - 1) * verticalGap;
@@ -304,7 +308,7 @@ $Id: $
 				}
 									
 				for (var childIndex:int = (_prioritizeWindow? 1: 0); childIndex < children.length; ++childIndex) {
-					var window:VideoWindowItf = children[childIndex];
+					var window:WebcamWindow = children[childIndex];
 					const wWidth:int = childWidth;
 					const wHeight:int = childHeight;
 					

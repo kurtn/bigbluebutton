@@ -23,9 +23,12 @@ $Id: $
 <EventMap xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://mate.asfusion.com/">
 	<mx:Script>
 		<![CDATA[
+      import mx.events.FlexEvent;
+      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.events.CloseWindowEvent;
       import org.bigbluebutton.common.events.OpenWindowEvent;
+      import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.modules.videodock.events.ConnectionEvent;
       import org.bigbluebutton.modules.videodock.events.VideoDockEvent;
       import org.bigbluebutton.modules.videodock.views.VideoDock;
@@ -48,10 +51,11 @@ $Id: $
 	</mx:Script>
   
   <!-- ~~~~~~~~~~~~~~~~~~    HANDLERS     ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  
   <EventHandlers type="{VideoDockEvent.START}">
+    <ObjectBuilder generator="{VideoDockEventMapDelegate}" cache="global" constructorArguments="{scope.dispatcher}"/>
     <MethodInvoker generator="{VideoDockEventMapDelegate}" method="start"/>
   </EventHandlers>
+  
 <!--  
   <EventHandlers type="{VideoDockEvent.STOP}">
     <MethodInvoker generator="{WhiteboardManager}" method="handleStartModuleEvent" />
@@ -62,15 +66,15 @@ $Id: $
     <MethodInvoker generator="{VideoDockEventMapDelegate}" method="connectionUp" arguments="{event}"/>
   </EventHandlers>
  
- <!-- 
+ 
   <EventHandlers type="{BBBEvent.OPEN_WEBCAM_WINDOWS}" >
-    <InlineInvoker method="openWebcamWindows"/>
+    <MethodInvoker generator="{VideoDockEventMapDelegate}" method="openWebcamWindows"/>
   </EventHandlers>
--->
   
   <!-- ~~~~~~~~~~~~~~~~~~    INJECTORS     ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  <Injectors target="{VideoDockEventMapDelegate}">
+<!--
+  <Injectors target="{VideoDockEventMapDelegate}" >
     <ObjectBuilder generator="{VideoDockEventMapDelegate}" cache="global" constructorArguments="{scope.dispatcher}"/>
   </Injectors>
-	
+-->	
 </EventMap>

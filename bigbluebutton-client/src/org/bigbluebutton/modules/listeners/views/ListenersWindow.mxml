@@ -122,6 +122,10 @@
 				}	
 			}
 			
+      public function getWindowType():String {
+        return "LISTENERS_WINDOW";
+      }
+      
 			public function getPrefferedPosition():String{
 				return listenerOptions.position;
 			}

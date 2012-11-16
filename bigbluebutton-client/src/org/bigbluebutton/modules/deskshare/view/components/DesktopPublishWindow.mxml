@@ -120,6 +120,10 @@
 				this.width = width;
 			}
 			
+      public function getWindowType():String {
+        return "DESKTOP_PUBLISH_WINDOW";
+      }
+      
 			public function getPrefferedPosition():String{
 				return MainCanvas.DESKTOP_SHARING_PUBLISH;
 			}

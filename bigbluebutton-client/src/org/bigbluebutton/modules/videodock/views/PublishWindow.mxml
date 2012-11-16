@@ -213,6 +213,10 @@
 				dispatchEvent(openVideoEvent);					
 			}
 			
+      override public function getWindowType():String {
+        return "WEBCAM_PUBLISH_WINDOW";
+      }
+      
 			override public function close(event:MouseEvent=null):void{
 				stopPublishing();
 				super.close(event);

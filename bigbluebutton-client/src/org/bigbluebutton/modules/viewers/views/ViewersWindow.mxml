@@ -95,6 +95,10 @@
 					windowTitle = ResourceUtil.getInstance().getString('bbb.viewers.title', ["", ""]);
 			}
 			
+      public function getWindowType():String {
+        return "VIEWERS_WINDOW";
+      }
+          
 			public function getPrefferedPosition():String{
 				return MainCanvas.TOP_LEFT;
 			}

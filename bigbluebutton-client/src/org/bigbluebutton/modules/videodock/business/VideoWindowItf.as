@@ -75,6 +75,10 @@ package org.bigbluebutton.modules.videodock.business
       _controlButtons.handleNewRoleEvent(presenter);
     }
     
+    public function getWindowType():String {
+      return "VIDEO_WINDOW_ITF";
+    }
+    
 		protected function getVideoResolution(stream:String):Array {
 			var pattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
 			if (pattern.test(stream)) {

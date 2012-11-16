@@ -154,6 +154,10 @@
 				this.displaySlideNumber(e.columnIndex + 1);
 			}
 			
+      public function getWindowType():String {
+        return "PRESENTATION_WINDOW";
+      }
+      
 			private function onResizeEndEvent(event:MDIWindowEvent):void {
 //				LogUtil.debug("onResizeEndEvent");
 				fitSlideToWindowMaintainingAspectRatio();

@@ -57,6 +57,10 @@
 			private var dispState:String;
 			[Bindable] public var chatOptions:ChatOptions;
 			
+      public function getWindowType():String {
+        return "CHAT_WINDOW";
+      }
+      
 			public function getPrefferedPosition():String{
 				return chatOptions.position;
 			} 

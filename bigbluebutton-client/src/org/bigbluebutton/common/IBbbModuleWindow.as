@@ -37,5 +37,7 @@ package org.bigbluebutton.common
 		 * 
 		 */		
 		function getPrefferedPosition():String;
+    
+    function getWindowType():String;
 	}
 }
