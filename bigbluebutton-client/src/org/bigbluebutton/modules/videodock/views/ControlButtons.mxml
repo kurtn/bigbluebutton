@@ -5,7 +5,10 @@
     
   <mx:Script>
     <![CDATA[
-      import com.asfusion.mate.events.Dispatcher;      
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import mx.core.UIComponent;
+      
       import org.bigbluebutton.common.Images;
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.core.EventConstants;
@@ -107,6 +110,15 @@
           privateChatBtn.visible = true;
         } else {
           privateChatBtn.visible = false;
+        }
+      }
+      
+      public function updateButtonsPosition(display:UIComponent):void {
+        if (this.visible == false) {
+          this.y = this.x = 0;
+        } else {
+          this.y = display.y + display.height - this.height - this.padding;
+          this.x = display.x + display.width - this.width - this.padding;
         }
       }
     ]]>

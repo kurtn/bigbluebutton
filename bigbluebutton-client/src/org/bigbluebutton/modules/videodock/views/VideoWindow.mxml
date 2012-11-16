@@ -57,9 +57,7 @@
       override public function getWindowType():String {
         return "WEBCAM_VIEW_WINDOW";
       }
-      
-			
-			
+      		
 			private function init():void{
 				_videoHolder = new UIComponent();
 				

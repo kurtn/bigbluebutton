@@ -3,11 +3,14 @@
               xmlns:ns="http://code.google.com/p/flexlib/" 
               xmlns:dock="org.bigbluebutton.modules.videodock.views.*"
               implements="org.bigbluebutton.common.IBbbModuleWindow"
-              creationComplete="onCreationComplete()" currentState="displayAvatar"
+              creationComplete="onCreationComplete()"
               layout="absolute">
   <mx:Script>
     <![CDATA[
+      import flexlib.mdi.events.MDIWindowEvent;      
+      import mx.core.UIComponent;      
       import org.bigbluebutton.main.views.MainCanvas;
+      
       public var userID:String;
       public var isPublishWindow:Boolean = false;
       
@@ -17,51 +20,79 @@
       public static const WEBCAM_WINDOW:String = "WEBCAM_WINDOW";
       
       private var _mediator:WindowMediator;
+      private var _avatarDisplay:AvatarDisplay = new AvatarDisplay();
+      
+      private var _displayHolder:UIComponent;
       
       public function getWindowType():String {
         return WEBCAM_WINDOW;
       }
+          
+      private function onCreationComplete():void {
+        addEventListener(MDIWindowEvent.RESIZE_START, onResizeStart);
+        addEventListener(MDIWindowEvent.RESIZE_END, onResizeEnd);
+ //       addEventListener(MDIWindowEvent.CLOSE, onCloseEvent);
+        
+        addEventListener(MouseEvent.MOUSE_OVER, showButtons);
+        addEventListener(MouseEvent.MOUSE_OUT, hideButtons);
+        addEventListener(MouseEvent.DOUBLE_CLICK, onDoubleClick);
+        
+        _mediator = new WindowMediator(this);
+        _displayHolder = _avatarDisplay;
+        _mediator.setDisplayContainer(_displayHolder);
+      }
+      
+      public function getPrefferedPosition():String {
+          return MainCanvas.ABSOLUTE;
+      }
+      
+      private function onResizeStart(event:MDIWindowEvent = null):void {
+        _mediator.onResizeStart();
+      }
+      
+      private function onResizeEnd(event:MDIWindowEvent = null):void {
+        _mediator.onResizeEnd();
+      }
       
       public function updateWidth():void {
-//        this.width = Math.floor((this.height - paddingVertical) * aspectRatio) + paddingHorizontal;
-//        onResize();
+        _mediator.updateWidth();
       }
       
       public function updateHeight():void {
-//        this.height = Math.floor((this.width - paddingHorizontal) / aspectRatio) + paddingVertical;
- //       onResize();
+        _mediator.updateHeight();
       }
       
-      private function onCreationComplete():void {
-        _mediator = new WindowMediator(this);
+      private function showButtons(event:MouseEvent = null):void {
+//        if (controlButtons.visible == false) {
+//          controlButtons.visible = true;
+//          updateButtonsPosition();
+ //       }
       }
       
-      public function getPrefferedPosition():String{
-//        if (_controlButtonsEnabled)
-//          return MainCanvas.POPUP;
-//        else
-          // the window is docked, so it should not be moved on reset layout
-          return MainCanvas.ABSOLUTE;
+      private function hideButtons(event:MouseEvent = null):void {
+//        if (controlButtons.visible == true) {
+//          controlButtons.visible = false;
+//          updateButtonsPosition();
+ //       }
+      }
+      
+//      public function close(event:MouseEvent = null):void{
+//        var e:CloseWindowEvent = new CloseWindowEvent();
+//        e.window = this;
+//        dispatchEvent(e);
+        
+//        super.close(event);
+//      }
+      
+      private function onDoubleClick(event:MouseEvent = null):void {
+        // it occurs when the window is docked, for example
+        if (!this.maximizeRestoreBtn.visible) return;
+        
+        this.maximizeRestore();
       }
       
     ]]>
   </mx:Script>
-  
-  <ns:states>
-    <mx:State name="displayAvatar">
-      <mx:AddChild relativeTo="{userDisplay}">
-        <mx:RemoveChild target="{videoDisplay}"/>
-        <dock:AvatarDisplay id="avatarDisplay" width="100%" height="100%"/>
-      </mx:AddChild>
-    </mx:State>
-    <mx:State name="displayWebcam">
-      <mx:RemoveChild target="{avatarDisplay}"/>
-      <mx:AddChild relativeTo="{userDisplay}">
-        <dock:VideoDisplay id="videoDisplay" width="100%" height="100%"/>
-      </mx:AddChild>      
-    </mx:State>
-  </ns:states>
-  
-  <mx:VBox id="userDisplay" width="100%" height="100%"/>
-  
+
+ 
 </ns:MDIWindow>
