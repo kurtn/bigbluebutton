@@ -5,8 +5,7 @@
     
   <mx:Script>
     <![CDATA[
-      import com.asfusion.mate.events.Dispatcher;
-      
+      import com.asfusion.mate.events.Dispatcher;      
       import org.bigbluebutton.common.Images;
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.core.EventConstants;
@@ -21,6 +20,7 @@
       import org.bigbluebutton.util.i18n.ResourceUtil;
       
       public var sharerUserID:String;
+      
       [Bindable]
       private var BUTTONS_SIZE:int = 20;
       private var BUTTONS_PADDING:int = 10;
@@ -29,10 +29,13 @@
       
       [Bindable]
       private var img_mute_icon:Class = images.sound_mute;
+      
       [Bindable]
       private var signOutIcon:Class = images.signOutIcon;
+      
       [Bindable]
       private var adminIcon:Class = images.admin;
+      
       [Bindable]
       private var chatIcon:Class = images.chatIcon;
       

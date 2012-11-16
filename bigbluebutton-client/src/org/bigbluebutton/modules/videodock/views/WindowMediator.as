@@ -1,23 +1,30 @@
 package org.bigbluebutton.modules.videodock.views
 {
+  import flash.events.MouseEvent;
+  import flash.geom.Point;
+  import flash.media.Video;
+  
+  import mx.core.UIComponent;
+  
+  import org.bigbluebutton.common.Images;
+  import org.bigbluebutton.core.UsersUtil;
+
   public class WindowMediator
   {
-    protected var _video:Video;
-    protected var _videoHolder:UIComponent;
-    // images must be static because it needs to be created *before* the PublishWindow creation
-    static protected var images:Images = new Images();
-    
     static public var PADDING_HORIZONTAL:Number = 6;
     static public var PADDING_VERTICAL:Number = 29;
-    protected var _minWidth:int = 160 + PADDING_HORIZONTAL;
-    protected var _minHeight:int = 120 + PADDING_VERTICAL;
-    protected var aspectRatio:Number = 1;
-    protected var keepAspect:Boolean = false;
-    protected var originalWidth:Number;
-    protected var originalHeight:Number;
     
-    protected var mousePositionOnDragStart:Point;
-    
+    private var _videoHolder:UIComponent;
+    // images must be static because it needs to be created *before* the PublishWindow creation
+    static protected var images:Images = new Images();
+       
+    private var _minWidth:int = 160 + PADDING_HORIZONTAL;
+    private var _minHeight:int = 120 + PADDING_VERTICAL;
+    private var aspectRatio:Number = 1;
+    private var keepAspect:Boolean = false;
+    private var originalWidth:Number;
+    private var originalHeight:Number;
+        
     public var streamName:String;
     
     public var sharerUserID:String = null;
@@ -26,6 +33,11 @@ package org.bigbluebutton.modules.videodock.views
     
     [Bindable] public var resolutions:Array;
     
+    private var _window:WebcamWindow;
+    
+    public function WindowMediator(window:WebcamWindow) {
+      _window = window;  
+    }
     protected function switchRole(presenter:Boolean):void {
       _controlButtons.handleNewRoleEvent(presenter);
     }
@@ -33,26 +45,26 @@ package org.bigbluebutton.modules.videodock.views
     protected function getVideoResolution(stream:String):Array {
       var pattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
       if (pattern.test(stream)) {
-        LogUtil.debug("The stream name is well formatted [" + stream + "]");
+//        LogUtil.debug("The stream name is well formatted [" + stream + "]");
         var uid:String = UsersUtil.getMyUserID();
-        LogUtil.debug("Stream resolution is [" + pattern.exec(stream)[1] + "]");
-        LogUtil.debug("Userid [" + pattern.exec(stream)[2] + "]");
+//        LogUtil.debug("Stream resolution is [" + pattern.exec(stream)[1] + "]");
+//        LogUtil.debug("Userid [" + pattern.exec(stream)[2] + "]");
         sharerUserID = pattern.exec(stream)[2];
         addControlButtons();
         return pattern.exec(stream)[1].split("x");
       } else {
-        LogUtil.error("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>.");
-        LogUtil.error("However, the video resolution will be set to the lowest defined resolution in the config.xml: " + resolutions[0]);
+//        LogUtil.error("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>.");
+//        LogUtil.error("However, the video resolution will be set to the lowest defined resolution in the config.xml: " + resolutions[0]);
         return resolutions[0].split("x");
       }
     }
     
     protected function get paddingVertical():Number {
-      return this.borderMetrics.top + this.borderMetrics.bottom;
+      return _window.borderMetrics.top + _window.borderMetrics.bottom;
     }
     
     protected function get paddingHorizontal():Number {
-      return this.borderMetrics.left + this.borderMetrics.right;
+      return _window.borderMetrics.left + _window.borderMetrics.right;
     }
     
     static private var RESIZING_DIRECTION_UNKNOWN:int = 0; 
@@ -64,7 +76,7 @@ package org.bigbluebutton.modules.videodock.views
     /**
      * when the window is resized by the user, the application doesn't know about the resize direction
      */
-    public function onResizeStart(event:MDIWindowEvent = null):void {
+    public function onResizeStart():void {
       resizeDirection = RESIZING_DIRECTION_UNKNOWN;
     }
     
@@ -72,25 +84,25 @@ package org.bigbluebutton.modules.videodock.views
      * after the resize ends, the direction is set to BOTH because of the non-user resize actions - like when the 
      * window is docked, and so on
      */
-    public function onResizeEnd(event:MDIWindowEvent = null):void {
+    public function onResizeEnd():void {
       resizeDirection = RESIZING_DIRECTION_BOTH;
     }
     
     protected function onResize():void {
-      if (_video == null || _videoHolder == null || this.minimized) return;
+      if (_videoHolder == null || _window.minimized) return;
       
       // limits the window size to the parent size
-      this.width = (this.parent != null? Math.min(this.width, this.parent.width): this.width);
-      this.height = (this.parent != null? Math.min(this.height, this.parent.height): this.height); 
+      _window.width = (_window.parent != null? Math.min(_window.width, _window.parent.width): _window.width);
+      _window.height = (_window.parent != null? Math.min(_window.height, _window.parent.height): _window.height); 
       
-      var tmpWidth:Number = this.width - PADDING_HORIZONTAL;
-      var tmpHeight:Number = this.height - PADDING_VERTICAL;
+      var tmpWidth:Number = _window.width - PADDING_HORIZONTAL;
+      var tmpHeight:Number = _window.height - PADDING_VERTICAL;
       
       // try to discover in which direction the user is resizing the window
       if (resizeDirection != RESIZING_DIRECTION_BOTH) {
-        if (tmpWidth == _video.width && tmpHeight != _video.height)
+        if (tmpWidth == _videoHolder.width && tmpHeight != _videoHolder.height)
           resizeDirection = (resizeDirection == RESIZING_DIRECTION_VERTICAL || resizeDirection == RESIZING_DIRECTION_UNKNOWN? RESIZING_DIRECTION_VERTICAL: RESIZING_DIRECTION_BOTH);
-        else if (tmpWidth != _video.width && tmpHeight == _video.height)
+        else if (tmpWidth != _videoHolder.width && tmpHeight == _videoHolder.height)
           resizeDirection = (resizeDirection == RESIZING_DIRECTION_HORIZONTAL || resizeDirection == RESIZING_DIRECTION_UNKNOWN? RESIZING_DIRECTION_HORIZONTAL: RESIZING_DIRECTION_BOTH);
         else
           resizeDirection = RESIZING_DIRECTION_BOTH;
@@ -111,51 +123,52 @@ package org.bigbluebutton.modules.videodock.views
           break;
       }
       
-      _video.width = _videoHolder.width = tmpWidth;
-      _video.height = _videoHolder.height = tmpHeight;
+      _videoHolder.width = tmpWidth;
+      _videoHolder.height = tmpHeight;
       
-      if (!keepAspect || this.maximized) {
+      if (!keepAspect || _window.maximized) {
         // center the video in the window
-        _video.x = Math.floor ((this.width - PADDING_HORIZONTAL - tmpWidth) / 2);
-        _video.y = Math.floor ((this.height - PADDING_VERTICAL - tmpHeight) / 2);
+        _videoHolder.x = Math.floor ((_window.width - PADDING_HORIZONTAL - tmpWidth) / 2);
+        _videoHolder.y = Math.floor ((_window.height - PADDING_VERTICAL - tmpHeight) / 2);
       } else {
         // fit window dimensions on video
-        _video.x = 0;
-        _video.y = 0;
-        this.width = tmpWidth + PADDING_HORIZONTAL;
-        this.height = tmpHeight + PADDING_VERTICAL;
+        _videoHolder.x = 0;
+        _videoHolder.y = 0;
+        _window.width = tmpWidth + PADDING_HORIZONTAL;
+        _window.height = tmpHeight + PADDING_VERTICAL;
       }
       
       // reposition the window to fit inside the parent window
-      if (this.parent != null) {
-        if (this.x + this.width > this.parent.width)
-          this.x = this.parent.width - this.width;
-        if (this.x < 0)
-          this.x = 0;
-        if (this.y + this.height > this.parent.height)
-          this.y = this.parent.height - this.height;
-        if (this.y < 0)
-          this.y = 0;
+      if (_window.parent != null) {
+        if (_window.x + _window.width > _window.parent.width)
+          _window.x = this._window.width - _window.width;
+        if (_window.x < 0)
+          _window.x = 0;
+        if (_window.y + _window.height > _window.parent.height)
+          _window.y = _window.parent.height - _window.height;
+        if (_window.y < 0)
+          _window.y = 0;
       }
       
       updateButtonsPosition();
     }
     
     public function updateWidth():void {
-      this.width = Math.floor((this.height - paddingVertical) * aspectRatio) + paddingHorizontal;
+      _window.width = Math.floor((_window.height - paddingVertical) * aspectRatio) + paddingHorizontal;
       onResize();
     }
     
     public function updateHeight():void {
-      this.height = Math.floor((this.width - paddingHorizontal) / aspectRatio) + paddingVertical;
+      _window.height = Math.floor((_window.width - paddingHorizontal) / aspectRatio) + paddingVertical;
       onResize();
     }
     
     protected function setAspectRatio(width:int,height:int):void {
       aspectRatio = (width/height);
-      this.minHeight = Math.floor((this.minWidth - PADDING_HORIZONTAL) / aspectRatio) + PADDING_VERTICAL;
+      _window.minHeight = Math.floor((_window.minWidth - PADDING_HORIZONTAL) / aspectRatio) + PADDING_VERTICAL;
     }
-    
+
+/*
     public function getPrefferedPosition():String{
       if (_controlButtonsEnabled)
         return MainCanvas.POPUP;
@@ -171,6 +184,7 @@ package org.bigbluebutton.modules.videodock.views
       
       super.close(event);
     }
+*/
     
     private var _controlButtonsEnabled:Boolean = true;
     
@@ -189,7 +203,7 @@ package org.bigbluebutton.modules.videodock.views
     protected function addControlButtons():void {
       _controlButtons.sharerUserID = sharerUserID;
       _controlButtons.visible = true;
-      this.addChild(_controlButtons);
+      _window.addChild(_controlButtons);
     }
     
     protected function get controlButtons():ControlButtons {
@@ -208,8 +222,8 @@ package org.bigbluebutton.modules.videodock.views
       if (controlButtons.visible == false) {
         controlButtons.y = controlButtons.x = 0;
       } else {
-        controlButtons.y = _video.y + _video.height - controlButtons.height - controlButtons.padding;
-        controlButtons.x = _video.x + _video.width - controlButtons.width - controlButtons.padding;
+        controlButtons.y = _videoHolder.y + _videoHolder.height - controlButtons.height - controlButtons.padding;
+        controlButtons.x = _videoHolder.x + _videoHolder.width - controlButtons.width - controlButtons.padding;
       }
     }
     
@@ -229,15 +243,15 @@ package org.bigbluebutton.modules.videodock.views
     
     protected function onDoubleClick(event:MouseEvent = null):void {
       // it occurs when the window is docked, for example
-      if (!this.maximizeRestoreBtn.visible) return;
+      if (! _window.maximizeRestoreBtn.visible) return;
       
       this.maximizeRestore();
     }
     
-    override public function maximizeRestore(event:MouseEvent = null):void {
+    public function maximizeRestore(event:MouseEvent = null):void {
       // if the user is maximizing the window, the control buttons should disappear
-      buttonsEnabled = this.maximized;
-      super.maximizeRestore(event);
+      buttonsEnabled = _window.maximized;
+      _window.maximizeRestore(event);
     }
     
     public function set buttonsEnabled(enabled:Boolean):void {
@@ -247,19 +261,19 @@ package org.bigbluebutton.modules.videodock.views
     }
     
     protected function onOriginalSizeClick(event:MouseEvent = null):void {
-      _video.width = _videoHolder.width = originalWidth;
-      _video.height = _videoHolder.height = originalHeight;
+      _videoHolder.width = originalWidth;
+      _videoHolder.height = originalHeight;
       onFitVideoClick();
     }		
     
     protected function onFitVideoClick(event:MouseEvent = null):void {
-      var newWidth:int = _video.width + paddingHorizontal;
-      var newHeight:int = _video.height + paddingVertical;
+      var newWidth:int = _videoHolder.width + paddingHorizontal;
+      var newHeight:int = _videoHolder.height + paddingVertical;
       
-      this.x += (this.width - newWidth)/2;
-      this.y += (this.height - newHeight)/2;
-      this.width = newWidth;
-      this.height = newHeight;
+      _window.x += (_window.width - newWidth)/2;
+      _window.y += (_window.height - newHeight)/2;
+      _window.width = newWidth;
+      _window.height = newHeight;
       onResize();
     }
     

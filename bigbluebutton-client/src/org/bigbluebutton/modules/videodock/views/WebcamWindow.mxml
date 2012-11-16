@@ -16,6 +16,8 @@
       
       public static const WEBCAM_WINDOW:String = "WEBCAM_WINDOW";
       
+      private var _mediator:WindowMediator;
+      
       public function getWindowType():String {
         return WEBCAM_WINDOW;
       }
@@ -31,7 +33,7 @@
       }
       
       private function onCreationComplete():void {
-        
+        _mediator = new WindowMediator(this);
       }
       
       public function getPrefferedPosition():String{
