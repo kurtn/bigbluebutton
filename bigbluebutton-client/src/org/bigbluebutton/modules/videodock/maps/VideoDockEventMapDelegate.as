@@ -1,15 +1,20 @@
 package org.bigbluebutton.modules.videodock.maps
 {
   import flash.events.IEventDispatcher;
+  import flash.geom.Point;
   
   import mx.collections.ArrayCollection;
+  import mx.managers.PopUpManager;
   
   import org.bigbluebutton.common.LogUtil;
   import org.bigbluebutton.common.events.OpenWindowEvent;
   import org.bigbluebutton.common.events.ToolbarButtonEvent;
+  import org.bigbluebutton.core.BBB;
   import org.bigbluebutton.core.UsersUtil;
+  import org.bigbluebutton.main.events.BBBEvent;
   import org.bigbluebutton.main.model.users.events.BroadcastStartedEvent;
   import org.bigbluebutton.main.model.users.events.BroadcastStoppedEvent;
+  import org.bigbluebutton.main.views.CameraDisplaySettings;
   import org.bigbluebutton.modules.videodock.events.ConnectionEvent;
   import org.bigbluebutton.modules.videodock.events.OpenVideoWindowEvent;
   import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
@@ -102,7 +107,18 @@ package org.bigbluebutton.modules.videodock.maps
       toolbarButton.publishingStatus(toolbarButton.STOP_PUBLISHING);
       //button.show();
     }
-*/    
+*/  
+    
+    public function videoDisplayReady(userID:String):void {
+      LogUtil.debug("************* DISPATCHING OPEN_WEBCAM_PREVIEW *************");
+      var openEvent:BBBEvent = new BBBEvent(BBBEvent.OPEN_WEBCAM_PREVIEW);
+      openEvent.payload.resolutions = _options.resolutions;
+      
+        _dispatcher.dispatchEvent(openEvent);
+    }
+    
+
+    
     private function openWebcamWindow(userID:String):void {
 //      if (UsersUtil.isMe(userID)) return;
       
@@ -112,7 +128,6 @@ package org.bigbluebutton.modules.videodock.maps
       window.userID = userID;
       window.title = UsersUtil.getUserName(userID);
       
-      LogUtil.debug("*************** OPENING WINDOW FOR [" + userID + "]");
       openWidow(window);
       dockWindow(window);
       playWebcamStream(window, userID);

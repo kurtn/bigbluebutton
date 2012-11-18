@@ -30,6 +30,7 @@ $Id: $
       import org.bigbluebutton.common.events.OpenWindowEvent;
       import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.modules.videodock.events.ConnectionEvent;
+      import org.bigbluebutton.modules.videodock.events.VideoDisplayReadyEvent;
       import org.bigbluebutton.modules.videodock.events.VideoDockEvent;
       import org.bigbluebutton.modules.videodock.views.VideoDock;
 			
@@ -69,6 +70,10 @@ $Id: $
  
   <EventHandlers type="{BBBEvent.OPEN_WEBCAM_WINDOWS}" >
     <MethodInvoker generator="{VideoDockEventMapDelegate}" method="openWebcamWindows"/>
+  </EventHandlers>
+ 
+  <EventHandlers type="{VideoDisplayReadyEvent.DISPLAY_READY}" >
+    <MethodInvoker generator="{VideoDockEventMapDelegate}" method="videoDisplayReady" arguments="{event.userID}"/>
   </EventHandlers>
   
   <!-- ~~~~~~~~~~~~~~~~~~    INJECTORS     ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

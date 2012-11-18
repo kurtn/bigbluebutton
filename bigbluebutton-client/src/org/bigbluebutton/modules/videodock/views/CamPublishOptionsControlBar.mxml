@@ -3,8 +3,7 @@
                creationComplete="onCreationComplete()" visible="false">
   <mx:Script>
     <![CDATA[
-      import org.bigbluebutton.core.UsersUtil;
-      
+      import org.bigbluebutton.core.UsersUtil;     
       public var camSettings:CameraSettings;
       
       private function onCreationComplete():void {

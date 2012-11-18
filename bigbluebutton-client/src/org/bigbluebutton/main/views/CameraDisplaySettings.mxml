@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+		width="400" height="300" creationComplete="onCreationComplete()" 
+    showCloseButton="true" close="onCancelClicked()" keyDown="handleKeyDown(event)">
+	<mx:Script>
+		<![CDATA[
+      import flash.ui.Keyboard;
+      
+      import mx.events.CloseEvent;
+      import mx.events.ItemClickEvent;
+      import mx.managers.PopUpManager;
+      
+      import org.bigbluebutton.common.Images;
+      import org.bigbluebutton.common.LogUtil;
+      import org.bigbluebutton.core.UsersUtil;
+      import org.bigbluebutton.main.events.BBBEvent;
+      import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
+      import org.bigbluebutton.modules.videodock.views.CameraSettings;
+      import org.bigbluebutton.util.i18n.ResourceUtil;
+			
+			private var timer:Timer;
+
+			private var images:Images = new Images();
+			
+      [Bindable] 
+      private var cancelIcon:Class = images.control_play;
+      
+      [Bindable]
+      public var resolutions:Array;
+      
+      public var camSettings:CameraSettings;
+			
+      [Bindable]
+      private var camIcon:Class = images.webcam;
+      
+      private var _video:Video;
+      private var aspectRatio:Number = 1;
+      
+      private function onCreationComplete():void {   
+        camSettings = new CameraSettings(showWarning);
+        
+        checkIfMacCamera();
+        
+       // if (UsersUtil.amIPresenter()) 
+          showResControls(true);
+       // if (Camera.names.length > 1) 
+          showVideoControls(true);  
+      }
+      
+      private function checkIfMacCamera():void {
+        for (var i:int = 0; i < Camera.names.length; i++){
+          if (Camera.names[i] == "USB Video Class Video") {
+            /**
+             * Set as default for Macs
+             */
+            cmbCameraSelector.selectedIndex = i;
+          }
+        }
+      }
+      
+      private function showVideoControls(show:Boolean):void {
+        if (show) {
+          this.visible = true;
+          btnStartPublish.visible = true;
+          cmbCameraSelector.visible = true;
+        } else{					
+          this.width = 0;
+          this.height = 0;
+          btnStartPublish.visible = false;
+          cmbCameraSelector.visible = false;
+          this.visible = false;
+        }
+      }
+      
+      private function updateCameraName():void {
+ //       camSettings.useCamera(cmbCameraSelector.selectedIndex.toString());
+        var cam:Camera = Camera.getCamera(cmbCameraSelector.selectedIndex.toString()); 
+        if (cam == null) {
+          showWarning('bbb.video.publish.hint.cantOpenCamera');
+          return;
+        }
+        
+        _video = new Video();
+        _video.attachCamera(cam);
+        
+        aspectRatio = (_video.width / _video.height);
+        
+        if (aspectRatio > _videoHolder.width / _videoHolder.height) {
+          _video.width = _videoHolder.width;
+          _video.height = _videoHolder.width / aspectRatio;
+          _video.x = 0;
+          _video.y = (_videoHolder.height - _video.height) / 2;
+        } else {
+          _video.width = _videoHolder.height * aspectRatio;
+          _video.height = _videoHolder.height;
+          _video.x = (_videoHolder.width - _video.width) / 2;
+          _video.y = 0;
+        }				
+        
+        _videoHolder.addChild(_video);
+      }
+      
+      private function showResControls(show:Boolean):void {
+        if (show) cmbResolution.visible = true;
+        else cmbResolution.visible = false;
+      }
+      
+      private function setComboResolution():void {
+        var res:Array = cmbResolution.selectedLabel.split( "x" );
+        setResolution(Number(res[0]), Number(res[1]));
+      }
+      
+      private function setResolution(width:int, height:int):void {
+        camSettings.camWidth = width;
+        camSettings.camHeight = height;
+        //        setAspectRatio(camWidth, camHeight);
+        
+        /**
+         * Add timestamp to create a unique stream name. This way we can record	 	
+         * stream without overwriting previously recorded streams.	 	
+         */	 	
+        //        var curTime:Number = new Date().getTime();	
+        //        var uid:String = UsersUtil.getMyUserID();
+        //        this.streamName = controls.cmbResolution.selectedLabel.concat("-" + uid) + "-" + curTime;
+      }
+			
+      private function startPublishing():void {
+        
+      }
+      
+      private function handleKeyDown(event:KeyboardEvent):void {
+        if (event.charCode == Keyboard.ESCAPE) {
+          this.dispatchEvent(new CloseEvent(CloseEvent.CLOSE));
+        }
+      }
+      
+			private function showMicSettingsPanel():void {
+				Security.showSettings(SecurityPanel.MICROPHONE);
+			}
+			
+			private function onJoinClicked():void {
+
+				PopUpManager.removePopUp(this);
+			}	
+
+			private function onCancelClicked():void {
+				PopUpManager.removePopUp(this);
+			}
+
+      private var hideWarningTimer:Timer = null;
+      
+      private function showWarning(resourceName:String, autoHide:Boolean=false, color:String="0xFF0000"):void {
+        const text:String = ResourceUtil.getInstance().getString(resourceName);
+        
+        if (hideWarningTimer != null) {
+          hideWarningTimer.stop();
+        }
+        
+        if (autoHide) {
+          hideWarningTimer = new Timer(3000, 1);
+          hideWarningTimer.addEventListener(TimerEvent.TIMER, hideWarning);
+          hideWarningTimer.start();
+        }
+        
+        // bring the label to front
+        setChildIndex(lblWarning, getChildren().length - 1);
+        lblWarning.text = text;
+        lblWarning.setStyle("color", color);
+        lblWarning.visible = true;
+        LogUtil.debug("Showing warning: " + text);
+      }
+      
+      private function hideWarning(e:TimerEvent):void {
+        lblWarning.visible = false;
+      }
+
+		]]>
+	</mx:Script>
+  
+  <mx:Fade id="dissolveOut" duration="1000" alphaFrom="1.0" alphaTo="0.0"/>
+  <mx:Fade id="dissolveIn" duration="1000" alphaFrom="0.0" alphaTo="1.0"/>
+  
+	<mx:VBox width="100%" height="100%"  paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+    <mx:UIComponent id="_videoHolder" width="100%" height="90%"/>
+    <mx:Text id="lblWarning" width="100%" textAlign="right" fontSize="14" fontWeight="bold" 
+             y="{this.height - lblWarning.height - 30}" 
+             visible="true" selectable="false" hideEffect="{dissolveOut}" showEffect="{dissolveIn}"/>
+		<mx:HBox width="100%">
+      <mx:Button id="btnStartPublish" toolTip="{ResourceUtil.getInstance().getString('bbb.publishVideo.startPublishBtn.toolTip')}" icon="{camIcon}" click="startPublishing()" enabled="false"/>
+      <mx:ComboBox id="cmbCameraSelector" dataProvider="{Camera.names}" width="150" visible="false" change="updateCameraName()"/>
+      <mx:ComboBox id="cmbResolution" dataProvider="{resolutions}" width="20%" visible="false" change="updateCameraName()"/>
+		</mx:HBox>
+
+	</mx:VBox>		
+</mx:TitleWindow>
