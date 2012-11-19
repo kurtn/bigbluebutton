@@ -67,9 +67,12 @@ $Id: $
     <MethodInvoker generator="{VideoDockEventMapDelegate}" method="connectionUp" arguments="{event}"/>
   </EventHandlers>
  
- 
   <EventHandlers type="{BBBEvent.OPEN_WEBCAM_WINDOWS}" >
     <MethodInvoker generator="{VideoDockEventMapDelegate}" method="openWebcamWindows"/>
+  </EventHandlers>
+  
+  <EventHandlers type="{BBBEvent.CAMERA_SETTING}" >
+    <MethodInvoker generator="{VideoDockEventMapDelegate}" method="handleCameraSetting" arguments="{event}"/>
   </EventHandlers>
  
   <EventHandlers type="{VideoDisplayReadyEvent.DISPLAY_READY}" >

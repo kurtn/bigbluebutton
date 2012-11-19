@@ -48,7 +48,7 @@
   
   <mx:UIComponent id="_videoHolder"/>
   
-  <mx:Text id="lblWarning" width="100%" textAlign="right" fontSize="14" fontWeight="bold" 
+  <mx:Text id="lblWarning" width="100%" textAlign="center" fontSize="14" fontWeight="bold" 
            y="{this.height - lblWarning.height - 30}" 
            visible="true" selectable="false" hideEffect="{dissolveOut}" showEffect="{dissolveIn}"/>
 </mx:Canvas>

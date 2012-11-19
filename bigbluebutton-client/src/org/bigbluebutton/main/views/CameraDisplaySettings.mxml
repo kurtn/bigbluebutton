@@ -2,15 +2,18 @@
 <mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
                 xmlns:view="org.bigbluebutton.main.views.*"
     layout="absolute" 
-		width="400" height="300" creationComplete="onCreationComplete()" 
+		width="600" height="400" creationComplete="onCreationComplete()" 
     showCloseButton="true" close="onCancelClicked()" keyDown="handleKeyDown(event)">
 	<mx:Script>
 		<![CDATA[
-      import com.asfusion.mate.events.Dispatcher;      
-      import flash.ui.Keyboard;      
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import flash.ui.Keyboard;
+      
       import mx.events.CloseEvent;
       import mx.events.ItemClickEvent;
-      import mx.managers.PopUpManager;      
+      import mx.managers.PopUpManager;
+      
       import org.bigbluebutton.common.Images;
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.core.UsersUtil;
@@ -85,7 +88,12 @@
       }
       
       private function updateCamera():void {
-        _camera = Camera.getCamera(cmbCameraSelector.selectedIndex.toString()); 
+        
+        var camName:String = cmbCameraSelector.selectedIndex.toString();
+        
+        LogUtil.debug("************** Using camera[" + camName + "]");
+        
+        _camera = Camera.getCamera(); 
         if (_camera == null) {
           _videoHolder.showWarning('bbb.video.publish.hint.cantOpenCamera');
           return;
@@ -164,9 +172,13 @@
       }
 			
       private function startPublishing():void {
+        _video.attachCamera(null);
+        _video.clear();
+        _video = null;
+        
         var globalDispatcher:Dispatcher = new Dispatcher();
         var camEvent:BBBEvent = new BBBEvent(BBBEvent.CAMERA_SETTING);
-        camEvent.payload.cameraName = cmbCameraSelector.selectedIndex.toString();
+        camEvent.payload.cameraIndex = _camera.index;
         camEvent.payload.cameraWidth = camWidth;
         camEvent.payload.cameraHeight = camHeight;
         
@@ -226,6 +238,10 @@
         // it will try to reopen the camera after the timeout
         //      updateCamera();
       } 
+      
+      private function showCameraSettings():void {
+        Security.showSettings(SecurityPanel.CAMERA);
+      }
 
 		]]>
 	</mx:Script>
@@ -235,6 +251,7 @@
     <mx:HBox width="100%"> 
       <mx:Button id="btnStartPublish" toolTip="{ResourceUtil.getInstance().getString('bbb.publishVideo.startPublishBtn.toolTip')}" icon="{camIcon}" click="startPublishing()" enabled="true"/>
       <mx:ComboBox id="cmbCameraSelector" dataProvider="{Camera.names}" width="150" visible="false" change="updateCamera()"/>
+      <mx:Button id="changeCamera" label="Change Camera" toolTip="{ResourceUtil.getInstance().getString('bbb.publishVideo.startPublishBtn.toolTip')}" click="showCameraSettings()"/>
       <mx:ComboBox id="cmbResolution" dataProvider="{resolutions}" width="20%" visible="false" change="updateCamera()"/>
 		</mx:HBox>
 

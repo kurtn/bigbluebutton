@@ -53,6 +53,14 @@ package org.bigbluebutton.modules.videodock.maps
       openVideoDockWindow();
     }
     
+    public function handleCameraSetting(event:BBBEvent):void {
+      
+      var cameraName:String = event.payload.cameraIndex;
+      var camWidth:int = event.payload.cameraWidth;
+      var camHeight:int = event.payload.cameraHeight;
+      LogUtil.debug("****** handleCameraSetting [" + cameraName + "][" + camWidth + "," + camHeight + "]");
+    }
+    
     public function openWebcamWindows():void {
       var uids:ArrayCollection = UsersUtil.getUserIDs();
       
