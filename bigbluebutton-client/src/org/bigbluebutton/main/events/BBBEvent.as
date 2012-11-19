@@ -36,6 +36,7 @@ package org.bigbluebutton.main.events {
 		public static const DESKSHARE_STARTED:String = 'BBB_DESKSHARE_STARTED';
 		public static const OPEN_WEBCAM_WINDOWS:String = "Open webcam windows from video dock";
     public static const OPEN_WEBCAM_PREVIEW:String = "open webcam preview event";
+    public static const CAMERA_SETTING:String = "camera settings event";
     
 		public var message:String;
 		public var payload:Object = new Object();

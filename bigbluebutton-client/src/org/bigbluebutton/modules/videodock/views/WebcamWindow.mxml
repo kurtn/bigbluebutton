@@ -7,12 +7,9 @@
               layout="absolute">
   <mx:Script>
     <![CDATA[
-      import com.asfusion.mate.events.Dispatcher;
-      
-      import flexlib.mdi.events.MDIWindowEvent;
-      
-      import mx.core.UIComponent;
-      
+      import com.asfusion.mate.events.Dispatcher;      
+      import flexlib.mdi.events.MDIWindowEvent;     
+      import mx.core.UIComponent;      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.main.views.MainCanvas;
       import org.bigbluebutton.modules.videodock.events.VideoDisplayReadyEvent;
@@ -50,7 +47,6 @@
         var readyEvent:VideoDisplayReadyEvent = new VideoDisplayReadyEvent(VideoDisplayReadyEvent.DISPLAY_READY);
         readyEvent.userID = userID;
         
-        LogUtil.debug("************* DISPATCHING VIDEO DISPLAY READY *************");
         var globalDispatcher:Dispatcher = new Dispatcher();
         globalDispatcher.dispatchEvent(readyEvent);
       }
