@@ -4,8 +4,7 @@ package org.bigbluebutton.modules.videodock.views
   import flash.events.StatusEvent;
   import flash.events.TimerEvent;
   import flash.media.Camera;
-  import flash.utils.Timer;
-  
+  import flash.utils.Timer;  
   import org.bigbluebutton.core.UsersUtil;
   import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
 
@@ -60,7 +59,7 @@ package org.bigbluebutton.modules.videodock.views
       _camera.addEventListener(ActivityEvent.ACTIVITY, onActivityEvent);
       _camera.addEventListener(StatusEvent.STATUS, onStatusEvent);
       
-//      setComboResolution();
+      
       
       _camera.setKeyFrameInterval(videoOptions.camKeyFrameInterval);
       _camera.setMode(camWidth, camHeight, videoOptions.camModeFps);
