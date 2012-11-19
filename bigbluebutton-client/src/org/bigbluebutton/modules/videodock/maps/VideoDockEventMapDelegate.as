@@ -17,6 +17,7 @@ package org.bigbluebutton.modules.videodock.maps
   import org.bigbluebutton.main.views.CameraDisplaySettings;
   import org.bigbluebutton.modules.videodock.events.ConnectionEvent;
   import org.bigbluebutton.modules.videodock.events.OpenVideoWindowEvent;
+  import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
   import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
   import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
   import org.bigbluebutton.modules.videodock.views.PublishWindow;
@@ -53,8 +54,7 @@ package org.bigbluebutton.modules.videodock.maps
       openVideoDockWindow();
     }
     
-    public function handleCameraSetting(event:BBBEvent):void {
-      
+    public function handleCameraSetting(event:BBBEvent):void {      
       var cameraName:String = event.payload.cameraIndex;
       var camWidth:int = event.payload.cameraWidth;
       var camHeight:int = event.payload.cameraHeight;
@@ -118,13 +118,19 @@ package org.bigbluebutton.modules.videodock.maps
 */  
     
     public function videoDisplayReady(userID:String):void {
-      LogUtil.debug("************* DISPATCHING OPEN_WEBCAM_PREVIEW *************");
+      openWebcamPreview();
+    }
+    
+    public function handleShareCameraRequestEvent(event:ShareCameraRequestEvent):void {
+      openWebcamPreview();
+    }
+    
+    private function openWebcamPreview():void {
       var openEvent:BBBEvent = new BBBEvent(BBBEvent.OPEN_WEBCAM_PREVIEW);
       openEvent.payload.resolutions = _options.resolutions;
       
-        _dispatcher.dispatchEvent(openEvent);
+      _dispatcher.dispatchEvent(openEvent);      
     }
-    
 
     
     private function openWebcamWindow(userID:String):void {

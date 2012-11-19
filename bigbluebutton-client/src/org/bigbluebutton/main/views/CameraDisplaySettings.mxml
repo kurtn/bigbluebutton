@@ -88,19 +88,17 @@
       }
       
       private function updateCamera():void {
-        
-        var camName:String = cmbCameraSelector.selectedIndex.toString();
-        
-        LogUtil.debug("************** Using camera[" + camName + "]");
-        
         _camera = Camera.getCamera(); 
+
+        
         if (_camera == null) {
           _videoHolder.showWarning('bbb.video.publish.hint.cantOpenCamera');
           return;
         }
-               
-        _camera.setMotionLevel(5, 1000);
         
+        _camera.addEventListener(ActivityEvent.ACTIVITY, onActivityEvent);
+        _camera.addEventListener(StatusEvent.STATUS, onStatusEvent);
+                       
         if (_camera.muted) {
           if (_cameraAccessDenied) {
             onCameraAccessDisallowed();
@@ -113,19 +111,20 @@
           // previously allowed the camera capture on the flash privacy box
           onCameraAccessAllowed();
         }
-        
-        _camera.addEventListener(ActivityEvent.ACTIVITY, onActivityEvent);
-        _camera.addEventListener(StatusEvent.STATUS, onStatusEvent);
-        
+
+        displayVideoPreview();
+      }
+      
+      private function displayVideoPreview():void {       
         var videoOptions:VideoConfOptions = new VideoConfOptions();
-        
+        _camera.setMotionLevel(5, 1000);
         _camera.setKeyFrameInterval(videoOptions.camKeyFrameInterval);
         _camera.setMode(camWidth, camHeight, videoOptions.camModeFps);
         _camera.setQuality(videoOptions.camQualityBandwidth, videoOptions.camQualityPicture);
         
         if (_camera.width != camWidth || _camera.height != camHeight) {
-           LogUtil.debug("Resolution " + camWidth + "x" + camHeight + " is not supported, using " + _camera.width + "x" + _camera.height + " instead");
-           setResolution(_camera.width, _camera.height);
+          LogUtil.debug("Resolution " + camWidth + "x" + camHeight + " is not supported, using " + _camera.width + "x" + _camera.height + " instead");
+          setResolution(_camera.width, _camera.height);
         }
         
         setComboResolution();
@@ -172,28 +171,38 @@
       }
 			
       private function startPublishing():void {
-        _video.attachCamera(null);
-        _video.clear();
-        _video = null;
+        // Save the index of the camera. Need it to send the message.
+        var camIndex:int = _camera.index;
+        
+        disableCamera();
         
         var globalDispatcher:Dispatcher = new Dispatcher();
         var camEvent:BBBEvent = new BBBEvent(BBBEvent.CAMERA_SETTING);
-        camEvent.payload.cameraIndex = _camera.index;
+        camEvent.payload.cameraIndex = camIndex;
         camEvent.payload.cameraWidth = camWidth;
         camEvent.payload.cameraHeight = camHeight;
-        
+                
         globalDispatcher.dispatchEvent(camEvent);
         
         PopUpManager.removePopUp(this);
       }
       
+      private function disableCamera():void {
+        _camera = null;
+        _video.attachCamera(null);
+        _video.clear();
+        _video = null;        
+      }
+      
       private function handleKeyDown(event:KeyboardEvent):void {
         if (event.charCode == Keyboard.ESCAPE) {
+          disableCamera();
           this.dispatchEvent(new CloseEvent(CloseEvent.CLOSE));
         }
       }
 
 			private function onCancelClicked():void {
+        disableCamera();
 				PopUpManager.removePopUp(this);
 			}
           

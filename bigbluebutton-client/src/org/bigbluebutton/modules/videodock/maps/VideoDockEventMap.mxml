@@ -30,6 +30,7 @@ $Id: $
       import org.bigbluebutton.common.events.OpenWindowEvent;
       import org.bigbluebutton.main.events.BBBEvent;
       import org.bigbluebutton.modules.videodock.events.ConnectionEvent;
+      import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
       import org.bigbluebutton.modules.videodock.events.VideoDisplayReadyEvent;
       import org.bigbluebutton.modules.videodock.events.VideoDockEvent;
       import org.bigbluebutton.modules.videodock.views.VideoDock;
@@ -62,6 +63,10 @@ $Id: $
     <MethodInvoker generator="{WhiteboardManager}" method="handleStartModuleEvent" />
   </EventHandlers>
  -->
+  
+  <EventHandlers type="{ShareCameraRequestEvent.SHARE_CAMERA_REQUEST}">
+    <MethodInvoker generator="{VideoDockEventMapDelegate}" method="openWebcamPreview" />
+  </EventHandlers>
   
   <EventHandlers type="{ConnectionEvent.UP}">
     <MethodInvoker generator="{VideoDockEventMapDelegate}" method="connectionUp" arguments="{event}"/>
