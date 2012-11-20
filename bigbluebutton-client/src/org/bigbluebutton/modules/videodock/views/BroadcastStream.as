@@ -21,6 +21,7 @@ package org.bigbluebutton.modules.videodock.views
     private var _ns:NetStream;
     private var _stream:String;
     private var _userID:String;
+    private var _camera:Camera;
     
     public function BroadcastStream(userID:String, nc:NetConnection, dispatcher:IEventDispatcher)
     {

@@ -7,12 +7,17 @@
               layout="absolute">
   <mx:Script>
     <![CDATA[
-      import com.asfusion.mate.events.Dispatcher;      
-      import flexlib.mdi.events.MDIWindowEvent;     
-      import mx.core.UIComponent;      
+      import com.asfusion.mate.events.Dispatcher;
+      
+      import flexlib.mdi.events.MDIWindowEvent;
+      
+      import mx.core.UIComponent;
+      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.main.views.MainCanvas;
+      import org.bigbluebutton.modules.videoconf.views.Avatar;
       import org.bigbluebutton.modules.videodock.events.VideoDisplayReadyEvent;
+      import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
       
       public var userID:String;
       public var isPublishWindow:Boolean = false;
@@ -24,13 +29,36 @@
       
       private var _mediator:WindowMediator;
       private var _avatarDisplay:AvatarDisplay = new AvatarDisplay();
-      
-      private var _displayHolder:UIComponent;
+      private var _publishDisplay:PublishDisplay = new PublishDisplay();
       
       public function getWindowType():String {
         return WEBCAM_WINDOW;
       }
-          
+      
+      public function publish(camIndex:int, camWidth:int, camHeight:int):void {
+        _displayHolder.removeChild(_avatarDisplay);
+        _publishDisplay.width = _displayHolder.width;
+        _publishDisplay.height = _displayHolder.height;
+        
+        _displayHolder.addChild(_publishDisplay);
+        
+        trace("cam index=[" + camIndex + "] dim=[" + camWidth + "x" + camHeight +"]");
+        var videoOptions:VideoConfOptions = new VideoConfOptions();
+        var _camera:Camera = Camera.getCamera("0");
+        if (_camera == null) {
+          trace("CAMERA IS NULL!!!");
+        } else {
+          trace("CAMERA IS NOT NULL!!!");
+        }
+        _camera.setMotionLevel(5, 1000);
+        _camera.setKeyFrameInterval(videoOptions.camKeyFrameInterval);
+        _camera.setMode(camWidth, camHeight, videoOptions.camModeFps);
+        _camera.setQuality(videoOptions.camQualityBandwidth, videoOptions.camQualityPicture);
+        
+        _publishDisplay.publish(_camera);
+               
+      }
+      
       private function onCreationComplete():void {
         addEventListener(MDIWindowEvent.RESIZE_START, onResizeStart);
         addEventListener(MDIWindowEvent.RESIZE_END, onResizeEnd);
@@ -41,7 +69,7 @@
         addEventListener(MouseEvent.DOUBLE_CLICK, onDoubleClick);
         
         _mediator = new WindowMediator(this);
-        _displayHolder = _avatarDisplay;
+        _displayHolder.addChild(_avatarDisplay);
         _mediator.setDisplayContainer(_displayHolder);
         
         var readyEvent:VideoDisplayReadyEvent = new VideoDisplayReadyEvent(VideoDisplayReadyEvent.DISPLAY_READY);
@@ -103,5 +131,5 @@
     ]]>
   </mx:Script>
 
- 
+  <mx:Canvas id="_displayHolder" borderColor="blue" backgroundColor="red"/>
 </ns:MDIWindow>

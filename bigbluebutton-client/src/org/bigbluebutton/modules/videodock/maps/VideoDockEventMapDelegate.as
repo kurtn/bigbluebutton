@@ -20,6 +20,7 @@ package org.bigbluebutton.modules.videodock.maps
   import org.bigbluebutton.modules.videodock.events.ShareCameraRequestEvent;
   import org.bigbluebutton.modules.videodock.events.StartBroadcastEvent;
   import org.bigbluebutton.modules.videodock.model.VideoConfOptions;
+  import org.bigbluebutton.modules.videodock.views.BroadcastStream;
   import org.bigbluebutton.modules.videodock.views.PublishWindow;
   import org.bigbluebutton.modules.videodock.views.SubscribeStream;
   import org.bigbluebutton.modules.videodock.views.ToolbarButton;
@@ -55,10 +56,15 @@ package org.bigbluebutton.modules.videodock.maps
     }
     
     public function handleCameraSetting(event:BBBEvent):void {      
-      var cameraName:String = event.payload.cameraIndex;
+      var cameraIndex:int = event.payload.cameraIndex;
       var camWidth:int = event.payload.cameraWidth;
       var camHeight:int = event.payload.cameraHeight;
-      LogUtil.debug("****** handleCameraSetting [" + cameraName + "][" + camWidth + "," + camHeight + "]");
+      if (webcamWindows.hasWindow(UsersUtil.getMyUserID())) {
+        var webcamWindow:WebcamWindow = webcamWindows.getWindow(UsersUtil.getMyUserID());
+//        var bStream:BroadcastStream = new BroadcastStream(UsersUtil.getMyUserID(), _conn.
+        webcamWindow.publish(cameraIndex, camWidth, camHeight);
+      }
+      
     }
     
     public function openWebcamWindows():void {

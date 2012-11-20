@@ -43,33 +43,12 @@ package org.bigbluebutton.modules.videodock.views
     public function setDisplayContainer(display:UIComponent):void {
       _displayContainer = display;
     }
-    
-    protected function switchRole(presenter:Boolean):void {
-//      _controlButtons.handleNewRoleEvent(presenter);
-    }
-    
-    protected function getVideoResolution(stream:String):Array {
-      var pattern:RegExp = new RegExp("(\\d+x\\d+)-([A-Za-z0-9]+)-\\d+", "");
-      if (pattern.test(stream)) {
-//        LogUtil.debug("The stream name is well formatted [" + stream + "]");
-        var uid:String = UsersUtil.getMyUserID();
-//        LogUtil.debug("Stream resolution is [" + pattern.exec(stream)[1] + "]");
-//        LogUtil.debug("Userid [" + pattern.exec(stream)[2] + "]");
-        sharerUserID = pattern.exec(stream)[2];
-        addControlButtons();
-        return pattern.exec(stream)[1].split("x");
-      } else {
-//        LogUtil.error("The stream name doesn't follow the pattern <width>x<height>-<userId>-<timestamp>.");
-//        LogUtil.error("However, the video resolution will be set to the lowest defined resolution in the config.xml: " + resolutions[0]);
-        return resolutions[0].split("x");
-      }
-    }
-    
-    protected function get paddingVertical():Number {
+           
+    private function get paddingVertical():Number {
       return _window.borderMetrics.top + _window.borderMetrics.bottom;
     }
     
-    protected function get paddingHorizontal():Number {
+    private function get paddingHorizontal():Number {
       return _window.borderMetrics.left + _window.borderMetrics.right;
     }
     

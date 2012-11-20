@@ -23,8 +23,7 @@ $Id: $
 <EventMap xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://mate.asfusion.com/">
 	<mx:Script>
 		<![CDATA[
-      import mx.events.FlexEvent;
-      
+      import mx.events.FlexEvent;      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.common.events.CloseWindowEvent;
       import org.bigbluebutton.common.events.OpenWindowEvent;
@@ -65,7 +64,7 @@ $Id: $
  -->
   
   <EventHandlers type="{ShareCameraRequestEvent.SHARE_CAMERA_REQUEST}">
-    <MethodInvoker generator="{VideoDockEventMapDelegate}" method="openWebcamPreview" />
+    <MethodInvoker generator="{VideoDockEventMapDelegate}" method="handleShareCameraRequestEvent" arguments="{event}"/>
   </EventHandlers>
   
   <EventHandlers type="{ConnectionEvent.UP}">

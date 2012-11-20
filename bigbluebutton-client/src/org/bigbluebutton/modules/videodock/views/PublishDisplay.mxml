@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:UIComponent xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
   <mx:Script>
     <![CDATA[
+      import mx.core.UIComponent;
       
+      private var _video:Video;
+      private var _videoHolder:UIComponent = new UIComponent();
+      private var aspectRatio:Number = 1;
+      
+      public function publish(cam:Camera):void {
+        _videoHolder.width = this.width;
+        _videoHolder.height = this.height;
+        
+        _video = new Video();
+        _video.attachCamera(cam);
+        
+        trace("BEFORE video=[" + _video.width + "x" + _video.height + "] holder=[" + _videoHolder.width + "x" + _videoHolder.height + "] this=[" + this.width + "x" + this.height + "]");
+        aspectRatio = (_video.width / _video.height);
+        
+        if (aspectRatio > _videoHolder.width / _videoHolder.height) {
+          _video.width = _videoHolder.width;
+          _video.height = _videoHolder.width / aspectRatio;
+          _video.x = 0;
+          _video.y = (_videoHolder.height - _video.height) / 2;
+        } else {
+          _video.width = _videoHolder.height * aspectRatio;
+          _video.height = _videoHolder.height;
+          _video.x = (_videoHolder.width - _video.width) / 2;
+          _video.y = 0;
+        }		
+        
+        trace("AFTER video=[" + _video.width + "x" + _video.height + "] holder=[" + _videoHolder.width + "x" + _videoHolder.height + "]this=[" + this.width + "x" + this.height + "]");
+        
+        _videoHolder.addChild(_video);
+        this.addChild(_videoHolder);
+      }
+      
+      public function unpublish():void {
+        _videoHolder.removeChild(_video);
+        _video = null;       
+      }
     ]]>
   </mx:Script>
-</mx:UIComponent>
+
+  <mx:Label text="BAR"/>
+</mx:Canvas>

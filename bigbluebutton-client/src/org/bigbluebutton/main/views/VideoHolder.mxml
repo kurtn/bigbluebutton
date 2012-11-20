@@ -2,13 +2,18 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
   <mx:Script>
     <![CDATA[
-      import mx.core.UIComponent;     
+      import mx.core.UIComponent;
+      
       import org.bigbluebutton.common.LogUtil;
       import org.bigbluebutton.util.i18n.ResourceUtil;
       private var hideWarningTimer:Timer = null;
            
       private function onCreationComplete():void {
           this.addChild(_videoHolder);
+      }
+      
+      public function remove(video:Video):void {
+        _videoHolder.removeChild(video);
       }
       
       public function add(video:Video):void {
