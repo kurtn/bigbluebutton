@@ -8,4 +8,7 @@ target
 tmp
 .history
 lib_managed
+.cache
+.target/
+bin/
 
