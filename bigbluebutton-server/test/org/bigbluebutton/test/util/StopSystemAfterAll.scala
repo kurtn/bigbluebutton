@@ -1,3 +1,5 @@
+package org.bigbluebutton.test.util
+
 import org.scalatest.{ Suite, BeforeAndAfterAll }
 import akka.testkit.TestKit
 

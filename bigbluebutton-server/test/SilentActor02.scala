@@ -6,6 +6,7 @@ import akka.testkit.TestActorRef
 import akka.actor.Actor
 import akka.actor.ActorRef
 import akka.actor.Props
+import org.bigbluebutton.test.util.StopSystemAfterAll
 
 object SilentActor02Protocol {                                         
   case class SilentMessage(data:String)                                
