@@ -107,32 +107,33 @@ class TestKitUsageSpec extends TestKit(ActorSystem("testsystem"))
           case msg: String => messages = msg :: messages
         }
       }
-//      messages.length should be(3)
-//      messages.reverse should be(List("some", "more", "text"))
+      messages.length == 3
+      messages.reverse  == List("some", "more", "text")
     }
   }
   "A SequencingActor" should {
     "receive an interesting message at some point " in {
-      within(1000 millis) {
+      within(2000 millis) {
     	  val randomHead = Random.nextInt(6)
           val randomTail = Random.nextInt(10)
-          val headList = List().padTo(randomHead, "0")
-          val tailList = List().padTo(randomTail, "1")
+          val headList = List().padTo(randomHead, "01")
+          val tailList = List().padTo(randomTail, "abc")
           val probe = TestProbe()
           val seqRef = system.actorOf(Props(new SequencingActor(probe.ref, headList, tailList)))
   
         seqRef ! "something"
-        probe.ignoreMsg {
-          case msg: String => {
-            println("ignoring [" + msg + "]")
-            msg != "something"
-          }
-        }
-    	probe.expectMsg("something")
-    	probe.ignoreMsg {
-    	  case msg: String =>  msg == "1"
-        }
-  //      probe.expectNoMsg
+        
+	        probe.ignoreMsg {
+	          case msg: String => {
+	            msg != "something"
+	          }
+	        }
+	        probe.expectMsg("something")
+	        probe.ignoreMsg {
+	        	case msg: String =>  msg == "abc"
+	        }
+//	        probe.expectNoMsg    	    
+
       }
     }
   }
