@@ -53,9 +53,26 @@ repositories {
             m2compatible = true
             addArtifactPattern "http://repository.springsource.com/maven/bundles/external/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
             addArtifactPattern "http://repository.springsource.com/maven/bundles/release/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
-        }        
+        }     
+        
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = "typesafe"
+            m2compatible = true
+            addArtifactPattern "http://repo.typesafe.com/typesafe/releases/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+            addArtifactPattern "http://repo.typesafe.com/typesafe/releases/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+        }    
+
+        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
+            name = "sonatype"
+            m2compatible = true
+            addArtifactPattern "https://oss.sonatype.org/content/groups/public/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+            addArtifactPattern "https://oss.sonatype.org/content/groups/public/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+        }  
+                 
    	}
 }
+
+
 
 dependencies {	 
 	// Servlet
@@ -113,6 +130,10 @@ dependencies {
    compile 'com.google.code.gson:gson:1.7.1'
    providedCompile 'commons:commons-lang3:3.0-beta'
    compile 'commons-lang:commons-lang:2.5'
+   
+   compile 'org.scalatest:scalatest_2.9.0:1.9.1@jar'
+   compile 'com.typesafe.akka:akka-testkit:2.0.2@jar'
+   compile 'com.typesafe.akka:akka-actor:2.0.2@jar'
 }
 
 test {
