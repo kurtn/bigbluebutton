@@ -7,8 +7,6 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,8 +17,6 @@ import redis.clients.jedis.JedisPubSub;
 
 public class RedisMessagingService implements MessagingService{
 
-	private static Logger log = Red5LoggerFactory.getLogger(RedisMessagingService.class, "bigbluebutton");
-	
 	private JedisPool redisPool;
 	private final Executor exec = Executors.newSingleThreadExecutor();
 	private Runnable pubsubListener;
@@ -33,7 +29,7 @@ public class RedisMessagingService implements MessagingService{
 	
 	@Override
 	public void start() {
-		log.debug("Starting redis pubsub...");		
+			
 		final Jedis jedis = redisPool.getResource();
 		try {
 			pubsubListener = new Runnable() {
@@ -43,7 +39,7 @@ public class RedisMessagingService implements MessagingService{
 			};
 			exec.execute(pubsubListener);
 		} catch (Exception e) {
-			log.error("Error subscribing to channels: " + e.getMessage());
+			
 		}
 	}
 
@@ -62,7 +58,7 @@ public class RedisMessagingService implements MessagingService{
 		try {
 			jedis.publish(channel, message);
 		} catch(Exception e){
-			log.warn("Cannot publish the message to redis", e);
+			
 		}finally{
 			redisPool.returnResource(jedis);
 		}
@@ -95,7 +91,7 @@ public class RedisMessagingService implements MessagingService{
 
 		@Override
 		public void onPMessage(String pattern, String channel, String message) {
-			log.debug("Message Received in channel: " + channel);
+			
 			Gson gson = new Gson();
 			HashMap<String,String> map = gson.fromJson(message, new TypeToken<Map<String, String>>() {}.getType());
 			
@@ -120,7 +116,7 @@ public class RedisMessagingService implements MessagingService{
 
 		@Override
 		public void onPSubscribe(String pattern, int subscribedChannels) {
-			log.debug("Subscribed to the pattern: " + pattern);
+			
 		}
 
 		@Override

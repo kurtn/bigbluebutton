@@ -22,10 +22,9 @@
 package org.bigbluebutton.conference.service.presentation;
 
 import java.util.Map;
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
+
 public class ConversionUpdatesProcessor {
-	private static Logger log = Red5LoggerFactory.getLogger(ConversionUpdatesProcessor.class, "bigbluebutton");
+	
 
 	private PresentationApplication presentationApplication;
 	
@@ -34,7 +33,7 @@ public class ConversionUpdatesProcessor {
 	}
 	
 	public void setPresentationApplication(PresentationApplication a) {
-		log.debug("Setting presentation application");
+		
 		presentationApplication = a;
 	}	
 }

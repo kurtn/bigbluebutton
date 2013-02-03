@@ -46,12 +46,10 @@ import org.freeswitch.esl.client.manager.ManagerConnection;
 import org.freeswitch.esl.client.transport.event.EslEvent;
 import org.freeswitch.esl.client.transport.message.EslMessage;
 import org.jboss.netty.channel.ExceptionEvent;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
+
 
 
 public class FreeswitchApplication extends Observable implements ConferenceServiceProvider, IEslEventListener {
-    private static Logger log = Red5LoggerFactory.getLogger(FreeswitchApplication.class, "bigbluebutton");
 
     private ManagerConnection manager;
     private ConferenceEventListener conferenceEventListener;
@@ -118,7 +116,6 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
             EslMessage response = c.sendSyncApiCommand(prc.getCommand(), prc.getCommandArgs());
             prc.handleResponse(response, conferenceEventListener);        	
         } else {
-        	log.warn("Can't send populate room request to FreeSWITCH as we are not connected.");
         	// Let's see if we can recover the connection.
         	startHeartbeatMonitor();
         }
@@ -130,9 +127,9 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
         if (c.canSend()) {
             MuteParticipantCommand mpc = new MuteParticipantCommand(room, participant, mute, USER);
             String jobId = c.sendAsyncApiCommand( mpc.getCommand(), mpc.getCommandArgs());
-            log.debug("mute called for room [{}] jobid [{}]", room, jobId);        	
+ 	
         }else {
-        	log.warn("Can't send mute request to FreeSWITCH as we are not connected.");
+
         	// Let's see if we can recover the connection.
         	startHeartbeatMonitor();
         }
@@ -145,9 +142,9 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
         if (c.canSend()) {
         	EjectParticipantCommand mpc = new EjectParticipantCommand(room, participant, USER);
             String jobId = c.sendAsyncApiCommand( mpc.getCommand(), mpc.getCommandArgs());
-            log.debug("eject/kick called for room [{}] jobid [{}]", room, jobId);        	
+                 	
         }else {
-        	log.warn("Can't send eject request to FreeSWITCH as we are not connected.");
+        	
         	// Let's see if we can recover the connection.
         	startHeartbeatMonitor();
         }
@@ -158,17 +155,16 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
     	String RECORD_DIR = "/var/freeswitch/meetings";        
     	String voicePath = RECORD_DIR + File.separatorChar + meetingid + "-" + System.currentTimeMillis() + ".wav";
     	
-    	if (log.isDebugEnabled())
-    		log.debug("Asking Freeswitch to start recording in {}", voicePath);
+
     	
     	Client c = manager.getESLClient();
         if (c.canSend()) {
         	RecordConferenceCommand rcc = new RecordConferenceCommand(room, USER, true, voicePath);
-        	log.debug(rcc.getCommand() + " " + rcc.getCommandArgs());
+        	
         	EslMessage response = manager.getESLClient().sendSyncApiCommand(rcc.getCommand(), rcc.getCommandArgs());
             rcc.handleResponse(response, conferenceEventListener);       	
         }else {
-        	log.warn("Can't send record request to FreeSWITCH as we are not connected.");
+        	
         	// Let's see if we can recover the connection.
         	startHeartbeatMonitor();
         }
@@ -185,19 +181,15 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
     	String shoutPath = icecastProtocol + "://" + icecastUsername + ":" + icecastPassword + "@" + icecastHost + ":" + icecastPort 
     			+ File.separatorChar + meetingid + "." + icecastStreamExtension;       
     	
-    	if (log.isDebugEnabled())
-    		log.debug("Broadcast to {}", shoutPath);
-    	
-    	log.debug("Broadcast to {}", shoutPath);
-    	
+
     	Client c = manager.getESLClient();
         if (c.canSend()) {
         	BroadcastConferenceCommand rcc = new BroadcastConferenceCommand(room, USER, true, shoutPath);
-        	log.debug(rcc.getCommand() + rcc.getCommandArgs());
+        	
         	EslMessage response = manager.getESLClient().sendSyncApiCommand(rcc.getCommand(), rcc.getCommandArgs());
             rcc.handleResponse(response, conferenceEventListener);       	
         }else {
-        	log.warn("Can't send record request to FreeSWITCH as we are not connected.");
+        	
         	// Let's see if we can recover the connection.
         	startHeartbeatMonitor();
         }    	
@@ -210,9 +202,7 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
             notifyObservers(event);
             return; //No need to log.debug or process further the Observer will act on this
         }
-        //Ignored, Noop This is all the NON-Conference Events except Heartbeat
-        log.debug( "eventReceived [{}]", event );
-
+     
     }
 
     @Override
@@ -265,7 +255,7 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
                     sb.append(entry.getValue());
                     sb.append("'\n");
                 }
-                log.debug ("NULL Conference Action [{}] Headers:\n{}\nEND", confName, sb.toString());
+               
             }
             return;
         }
@@ -277,7 +267,7 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
             pt = new ParticipantTalkingEvent(memberId, confName, false);
             conferenceEventListener.handleConferenceEvent(pt);        	
         } else {
-        	log.debug("Unknown conference Action [{}]", action);
+        	
         }
     }
 
@@ -306,21 +296,19 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
                     sb.append(entry.getValue());
                     sb.append("'\n");
                 }
-                log.debug ("NULL Conference Action [{}] Headers:\n{}\nEND", confName, sb.toString());
+                
             }
             return;
         }
         
-    	if (log.isDebugEnabled())
-    		log.debug("Handling conferenceEventRecord " + action);
+
     	
     	if (action.equals(START_RECORDING_EVENT)) {
             StartRecordingEvent sre = new StartRecordingEvent(123, confName, true);
             sre.setRecordingFilename(getRecordFilenameFromEvent(event));
             sre.setTimestamp(getRecordTimestampFromEvent(event));
             
-            if (log.isDebugEnabled())
-            	log.debug("Processing conference event - action: {} time: {} file: {}", new Object[] {action,  sre.getTimestamp(), sre.getRecordingFilename()});
+
             
             conferenceEventListener.handleConferenceEvent(sre);    		
     	} else if (action.equals(STOP_RECORDING_EVENT)) {
@@ -328,13 +316,11 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
             srev.setRecordingFilename(getRecordFilenameFromEvent(event));
             srev.setTimestamp(getRecordTimestampFromEvent(event));
             
-            if (log.isDebugEnabled())
-            	log.debug("Processing conference event - action: {} time: {} file: {}", new Object[] {action,  srev.getTimestamp(), srev.getRecordingFilename()});
+
             
             conferenceEventListener.handleConferenceEvent(srev);    		
     	} else {
-        	if (log.isDebugEnabled())
-        		log.warn("Processing UNKNOWN conference Action {}", action);
+
     	}
     }
 
@@ -345,7 +331,7 @@ public class FreeswitchApplication extends Observable implements ConferenceServi
 
     @Override
     public void backgroundJobResultReceived(EslEvent event) {
-        log.debug( "Background job result received [{}]", event );
+       
     }
 
     @Override

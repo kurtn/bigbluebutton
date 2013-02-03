@@ -18,8 +18,7 @@
 */
 package org.bigbluebutton.conference.service.participants;
 
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.Red5;
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,14 +27,14 @@ import org.bigbluebutton.conference.RoomsManager;
 import org.bigbluebutton.conference.Room;import org.bigbluebutton.conference.User;import org.bigbluebutton.conference.IRoomListener;
 
 public class ParticipantsApplication {
-	private static Logger log = Red5LoggerFactory.getLogger( ParticipantsApplication.class, "bigbluebutton" );	
+
 	private ConnectionInvokerService connInvokerService;
 	
 	private RoomsManager roomsManager;
 	
 	public boolean createRoom(String name) {
 		if(!roomsManager.hasRoom(name)){
-			log.info("Creating room " + name);
+			
 			roomsManager.addRoom(new Room(name));
 			return true;
 		}
@@ -44,10 +43,10 @@ public class ParticipantsApplication {
 	
 	public boolean destroyRoom(String name) {
 		if (roomsManager.hasRoom(name)) {
-			log.info("Destroying room " + name);
+			
 			roomsManager.removeRoom(name);
 		} else {
-			log.warn("Destroying non-existing room " + name);
+			
 		}
 		return true;
 	}
@@ -65,7 +64,7 @@ public class ParticipantsApplication {
 			roomsManager.addRoomListener(room, listener);
 			return true;
 		}
-		log.warn("Adding listener to a non-existant room " + room);
+		
 		return false;
 	}
 	
@@ -74,9 +73,9 @@ public class ParticipantsApplication {
 	}
 	
 	public Map getParticipants(String roomName) {
-		log.debug("getParticipants - " + roomName);
+		
 		if (! roomsManager.hasRoom(roomName)) {
-			log.warn("Could not find room " + roomName + ". Total rooms " + roomsManager.numberOfRooms());
+			
 			return null;
 		}
 
@@ -84,10 +83,10 @@ public class ParticipantsApplication {
 	}
 	
 	public boolean participantLeft(String roomName, String userid) {
-		log.debug("Participant " + userid + " leaving room " + roomName);
+		
 		if (roomsManager.hasRoom(roomName)) {
 			Room room = roomsManager.getRoom(roomName);
-			log.debug("Removing " + userid + " from room " + roomName);
+			
 			room.removeParticipant(userid);
 			return true;
 		}
@@ -97,15 +96,15 @@ public class ParticipantsApplication {
 	
 	@SuppressWarnings("unchecked")
 	public boolean participantJoin(String roomName, String userid, String username, String role, String externUserID, Map status) {
-		log.debug("participant joining room " + roomName);
+		
 		if (roomsManager.hasRoom(roomName)) {
 			User p = new User(userid, username, role, externUserID, status);			
 			Room room = roomsManager.getRoom(roomName);
 			room.addParticipant(p);
-			log.debug("participant joined room " + roomName);
+			
 			return true;
 		}
-		log.debug("participant failed to join room " + roomName);
+		
 		return false;
 	}
 	
@@ -113,7 +112,7 @@ public class ParticipantsApplication {
 		if (roomsManager.hasRoom(room)){
 			return roomsManager.getCurrentPresenter(room);			
 		}
-		log.warn("Getting presenter on a non-existant room " + room);
+		
 		return null;
 	}
 	
@@ -122,11 +121,11 @@ public class ParticipantsApplication {
 			roomsManager.assignPresenter(room, presenter);
 			return;
 		}
-		log.warn("Assigning presenter on a non-existant room " + room);	
+		
 	}
 	
 	public void setRoomsManager(RoomsManager r) {
-		log.debug("Setting room manager");
+		
 		roomsManager = r;
 	}
 	

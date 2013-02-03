@@ -23,36 +23,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.jcip.annotations.ThreadSafe;
-
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
-/**
- * This encapsulates access to LayoutRoom and messages. This class must be threadsafe.
- */
-@ThreadSafe
 public class LayoutRoomsManager {
-	private static Logger log = Red5LoggerFactory.getLogger( LayoutRoomsManager.class, "bigbluebutton" );
-	
+
 	private final Map <String, LayoutRoom> rooms;
 	
 	public LayoutRoomsManager() {
-		log.debug("In LayoutRoomsManager constructor");	
+		
 		rooms = new ConcurrentHashMap<String, LayoutRoom>();
 	}
 	
 	public void addRoom(LayoutRoom room) {
-		log.debug("In LayoutRoomsManager adding room " + room.getName());
+		
 		rooms.put(room.getName(), room);
 	}
 	
 	public void removeRoom(String name) {
-		log.debug("In LayoutRoomsManager remove room " + name);
+		
 		rooms.remove(name);
 	}
 		
 	public boolean hasRoom(String name) {
-		log.debug("In LayoutRoomsManager has Room " + name);
+		
 		return rooms.containsKey(name);
 	}
 	
@@ -61,7 +52,7 @@ public class LayoutRoomsManager {
 	 * Keeping getRoom private so that all access to ChatRoom goes through here.
 	 */
 	private LayoutRoom getRoom(String name) {
-		log.debug("In LayoutRoomsManager get room " + name);
+		
 		return rooms.get(name);
 	}
 	
@@ -71,7 +62,7 @@ public class LayoutRoomsManager {
 			r.addRoomListener(listener);
 			return;
 		}
-		log.warn("Adding listener to a non-existing room " + roomName);
+		
 	}
 	
 	public void removeRoomListener(String roomName, ILayoutRoomListener listener) {
@@ -80,7 +71,7 @@ public class LayoutRoomsManager {
 			r.removeRoomListener(listener);
 			return;
 		}	
-		log.warn("Removing listener to a non-existing room " + roomName);
+		
 	}
 	
 	public void lockLayout(String room, String userId, String layout) {
@@ -88,7 +79,7 @@ public class LayoutRoomsManager {
 		if (r != null) {
 			r.lockLayout(userId, layout);
 		} else {
-			log.warn("lockLayout: sending message to a non-existing room " + room);
+			
 		}
 	} 
 
@@ -97,7 +88,7 @@ public class LayoutRoomsManager {
 		if (r != null) {
 			r.unlockLayout();
 		} else {
-			log.warn("unlockLayout: sending message to a non-existing room " + room);
+			
 		}
 	}
 
@@ -106,7 +97,7 @@ public class LayoutRoomsManager {
 		if (r != null) {
 			return r.currentLayout();
 		} else {
-			log.warn("initLayout: sending message to a non-existing room " + room);
+			
 			return null;
 		}
 	}

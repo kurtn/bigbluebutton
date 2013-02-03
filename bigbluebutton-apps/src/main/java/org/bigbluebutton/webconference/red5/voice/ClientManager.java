@@ -31,12 +31,10 @@ import org.bigbluebutton.webconference.voice.events.ParticipantLeftEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantLockedEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantMutedEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantTalkingEvent;
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.so.ISharedObject;
-import org.slf4j.Logger;
 
 public class ClientManager implements ClientNotifier {
-	private static Logger log = Red5LoggerFactory.getLogger(ClientManager.class, "bigbluebutton");
 
 	private final ConcurrentMap<String, RoomInfo> voiceRooms;
 	private final ConcurrentMap<String, RoomInfo> webRooms;
@@ -47,7 +45,7 @@ public class ClientManager implements ClientNotifier {
 	}
 	
 	public void addSharedObject(String webRoom, String voiceRoom, ISharedObject so) {
-		log.debug("Adding SO for [" + webRoom + "," + voiceRoom + "]");
+		
 		RoomInfo soi = new RoomInfo(webRoom, voiceRoom, so);
 		voiceRooms.putIfAbsent(voiceRoom, soi);
 		webRooms.putIfAbsent(webRoom, soi);
@@ -59,7 +57,7 @@ public class ClientManager implements ClientNotifier {
 	}
 		
 	private void joined(String room, Integer participant, String name, Boolean muted, Boolean talking, Boolean locked){
-		log.debug("Participant " + name + "joining room " + room);
+		
 		RoomInfo soi = voiceRooms.get(room);
 		if (soi != null) {
 			List<Object> list = new ArrayList<Object>();
@@ -69,13 +67,13 @@ public class ClientManager implements ClientNotifier {
 			list.add(muted);
 			list.add(talking);
 			list.add(locked);
-			log.debug("Sending join to client " + name);
+		
 			soi.getSharedObject().sendMessage("userJoin", list);
 		}				
 	}
 	
 	private void left(String room, Integer participant){
-		log.debug("Participant [" + participant + "," + room + "] leaving");
+		
 		RoomInfo soi = voiceRooms.get(room);
 		if (soi != null) {
 			List<Object> list = new ArrayList<Object>();
@@ -85,7 +83,7 @@ public class ClientManager implements ClientNotifier {
 	}
 	
 	private void muted(String room, Integer participant, Boolean muted){
-		log.debug("Participant " + participant + " is muted = " + muted);
+		
 		RoomInfo soi = voiceRooms.get(room);
 		if (soi != null) {
 			List<Object> list = new ArrayList<Object>();
@@ -96,7 +94,7 @@ public class ClientManager implements ClientNotifier {
 	}
 	
 	private void locked(String room, Integer participant, Boolean locked){
-		log.debug("Participant " + participant + " is locked = " + locked);
+		
 		RoomInfo soi = voiceRooms.get(room);
 		if (soi != null) {
 			List<Object> list = new ArrayList<Object>();
@@ -107,7 +105,7 @@ public class ClientManager implements ClientNotifier {
 	}
 	
 	private void talking(String room, Integer participant, Boolean talking){
-		log.debug("Participant " + participant + " is talking = " + talking);
+		
 		RoomInfo soi = voiceRooms.get(room);
 		if (soi != null) {
 			List<Object> list = new ArrayList<Object>();

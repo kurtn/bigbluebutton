@@ -21,15 +21,14 @@ package org.bigbluebutton.conference.service.layout;
 
 import java.util.List;
 
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.so.ISharedObject;
 import org.red5.server.api.statistics.ISharedObjectStatistics;
-import org.slf4j.Logger;
+
 
 public class LayoutSender implements ILayoutRoomListener {
 
-private static Logger log = Red5LoggerFactory.getLogger( LayoutSender.class, "bigbluebutton" );
-	
+
 	private ISharedObject so;
 	private String name = "LAYOUT";
 	
@@ -44,16 +43,13 @@ private static Logger log = Red5LoggerFactory.getLogger( LayoutSender.class, "bi
 
 	@Override
 	public void updateLayout(List<Object> args) {
-		log.debug("Sending update layout");
-		
-		if (so.isLocked()) log.info("Layout SO is locked");
-		if (so.isAcquired()) log.info("Layout SO is acquired");
+
+
 		ISharedObjectStatistics stats = so.getStatistics();
-		log.debug("Before: Layout SO stats [total-sends=" + stats.getTotalSends() + "]");
+		
 		so.sendMessage("remoteUpdateLayout", args);
-		log.debug("After: Layout SO stats [total-sends=" + stats.getTotalSends() + "]");
-		if (so.isLocked()) log.info("Layout SO is locked");
-		if (so.isAcquired()) log.info("Layout SO is acquired");
+		
+
 	}
 
 }

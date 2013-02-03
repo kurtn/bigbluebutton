@@ -21,13 +21,10 @@ package org.bigbluebutton.conference.service.layout;
 
 import java.util.List;
 
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
 
 public class LayoutApplication {
 
-	private static Logger log = Red5LoggerFactory.getLogger( LayoutApplication.class, "bigbluebutton" );	
-		
+
 	private LayoutRoomsManager roomsManager;
 	public LayoutHandler handler;
 	
@@ -52,12 +49,12 @@ public class LayoutApplication {
 			roomsManager.addRoomListener(room, listener);
 			return true;
 		}
-		log.warn("Adding listener to a non-existant room " + room);
+		
 		return false;
 	}
 	
 	public void setRoomsManager(LayoutRoomsManager r) {
-		log.debug("Setting room manager");
+		
 		roomsManager = r;
 	}
 

@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
 import org.red5.server.api.Red5;import org.bigbluebutton.conference.BigBlueButtonSession;
 import org.bigbluebutton.conference.ClientMessage;
 import org.bigbluebutton.conference.ConnectionInvokerService;
@@ -35,8 +33,7 @@ import org.bigbluebutton.conference.service.chat.ChatRoom;import org.bigbluebut
 
 public class ChatApplication {
 
-	private static Logger log = Red5LoggerFactory.getLogger( ChatApplication.class, "bigbluebutton" );	
-		
+
 	private ChatRoomsManager roomsManager;
 	public ChatHandler handler;
 	private ConnectionInvokerService connInvokerService;
@@ -62,7 +59,7 @@ public class ChatApplication {
 			roomsManager.addRoomListener(room, listener);
 			return true;
 		}
-		log.warn("Adding listener to a non-existant room " + room);
+		
 		return false;
 	}
 	
@@ -98,7 +95,7 @@ public class ChatApplication {
 	}
 	
 	public void setRoomsManager(ChatRoomsManager r) {
-		log.debug("Setting room manager");
+		
 		roomsManager = r;
 	}
 	

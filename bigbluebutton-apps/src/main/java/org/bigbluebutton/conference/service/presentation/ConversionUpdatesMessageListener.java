@@ -21,16 +21,15 @@
 */
 package org.bigbluebutton.conference.service.presentation;
 
-import org.slf4j.Logger;
+
 import org.apache.commons.lang.StringEscapeUtils;
-import org.red5.logging.Red5LoggerFactory;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ConversionUpdatesMessageListener {
-	private static Logger log = Red5LoggerFactory.getLogger(ConversionUpdatesMessageListener.class, "bigbluebutton");
-    
+
     private ConversionUpdatesProcessor conversionUpdatesProcessor;
 
 	public static final String OFFICE_DOC_CONVERSION_SUCCESS_KEY = "OFFICE_DOC_CONVERSION_SUCCESS";
@@ -45,7 +44,7 @@ public class ConversionUpdatesMessageListener {
 	public static final String CONVERSION_COMPLETED_KEY = "CONVERSION_COMPLETED";
     
 	public void start() {
-		log.debug("Starting conversion updates receiver.");
+		
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -64,7 +63,7 @@ public class ConversionUpdatesMessageListener {
 			message.put("presentationName", presentationName);
 			message.put("messageKey", messageKey);
 			
-			log.debug("Message: " + messageKey + "[ " + presentationName + "]");
+			
 			
 			if(messageKey.equalsIgnoreCase(OFFICE_DOC_CONVERSION_SUCCESS_KEY)||
 					messageKey.equalsIgnoreCase(OFFICE_DOC_CONVERSION_FAILED_KEY)||
@@ -97,19 +96,19 @@ public class ConversionUpdatesMessageListener {
 				conversionUpdatesProcessor.process(message);
 			}
 			else{
-				log.error("Cannot handle recieved message.");
+				
 			}
     	}catch(Exception ex){
-    		log.warn(ex.getMessage());
+    		
     	}		
 	}
 	
 	public void stop() {
-		log.debug("Stopping conversion updates receiver.");
+		
 	}
 
 	public void setConversionUpdatesProcessor(ConversionUpdatesProcessor p) {
-		log.debug("Setting ConversionUpdatesProcessor");
+		
 		conversionUpdatesProcessor = p;
 	}	
 }

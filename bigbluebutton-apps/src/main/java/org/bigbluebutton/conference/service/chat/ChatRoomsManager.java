@@ -18,39 +18,31 @@
 */
 package org.bigbluebutton.conference.service.chat;
 
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-/**
- * This encapsulates access to ChatRoom and messages. This class must be threadsafe.
- */
-@ThreadSafe
+
 public class ChatRoomsManager {
-	private static Logger log = Red5LoggerFactory.getLogger( ChatRoomsManager.class, "bigbluebutton" );
-	
+
 	private final Map <String, ChatRoom> rooms;
 	
 	public ChatRoomsManager() {
-		log.debug("In ChatRoomsManager constructor");	
+
 		rooms = new ConcurrentHashMap<String, ChatRoom>();
 	}
 	
 	public void addRoom(ChatRoom room) {
-		log.debug("In ChatRoomsManager adding room " + room.getName());
+
 		rooms.put(room.getName(), room);
 	}
 	
 	public void removeRoom(String name) {
-		log.debug("In ChatRoomsManager remove room " + name);
+
 		rooms.remove(name);
 	}
 		
 	public boolean hasRoom(String name) {
-		log.debug("In ChatRoomsManager has Room " + name);
+
 		return rooms.containsKey(name);
 	}
 	
@@ -59,7 +51,7 @@ public class ChatRoomsManager {
 	 * Keeping getRoom private so that all access to ChatRoom goes through here.
 	 */
 	private ChatRoom getRoom(String name) {
-		log.debug("In ChatRoomsManager get room " + name);
+
 		return rooms.get(name);
 	}
 	
@@ -68,7 +60,7 @@ public class ChatRoomsManager {
 		if (r != null) {
 			return r.getChatMessages();
 		}
-		log.warn("Getting messages from a non-existing room " + room);
+		
 		return null;
 	}
 	
@@ -77,7 +69,7 @@ public class ChatRoomsManager {
 		if (r != null) {
 			r.sendMessage(chatobj);
 		} else {
-			log.warn("Sending message to a non-existing room " + room);
+			
 		}
 	} 
 	
@@ -87,7 +79,7 @@ public class ChatRoomsManager {
 			r.addRoomListener(listener);
 			return;
 		}
-		log.warn("Adding listener to a non-existing room " + roomName);
+		
 	}
 	
 	//TODO: roomName?	

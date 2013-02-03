@@ -22,16 +22,16 @@
 
 package org.bigbluebutton.conference.service.presentation;
 
-import org.slf4j.Logger;
+
 import org.bigbluebutton.conference.ClientMessage;
 import org.bigbluebutton.conference.ConnectionInvokerService;
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.Red5;import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PresentationApplication {
-	private static Logger log = Red5LoggerFactory.getLogger( PresentationApplication.class, "bigbluebutton" );	
+
 		
 	private PresentationRoomsManager roomsManager;
 	private ConnectionInvokerService connInvokerService;
@@ -57,7 +57,7 @@ public class PresentationApplication {
 			roomsManager.addRoomListener(room, listener);
 			return true;
 		}
-		log.warn("Adding listener to a non-existant room " + room);
+		
 		return false;
 	}
 	
@@ -69,14 +69,14 @@ public class PresentationApplication {
 			roomsManager.sendUpdateMessage(message);
 			return;
 		}
-		log.warn("Sending update message to a non-existant room " + room);	
+		
 	}
 		
 	public ArrayList<String> getPresentations(String room){
 	   if (roomsManager.hasRoom(room)){
             return roomsManager.getPresentations(room);           
         }
-        log.warn("Getting presentations on a non-existant room " + room);
+        
         return null;
 	}
 	
@@ -84,7 +84,7 @@ public class PresentationApplication {
        if (roomsManager.hasRoom(room)){
             roomsManager.removePresentation(room, name);           
         } else {
-        	log.warn("Removing presentation from a non-existant room " + room);
+        	
         }
     }
 	
@@ -92,7 +92,7 @@ public class PresentationApplication {
 		if (roomsManager.hasRoom(room)){
 			return roomsManager.getCurrentSlide(room);			
 		}
-		log.warn("Getting slide on a non-existant room " + room);
+		
 		return -1;
 	}
 	
@@ -100,7 +100,7 @@ public class PresentationApplication {
 		if (roomsManager.hasRoom(room)){
 			return roomsManager.getCurrentPresentation(room);			
 		}
-		log.warn("Getting current presentation on a non-existant room " + room);
+		
 		return null;
 	}
 	
@@ -108,7 +108,7 @@ public class PresentationApplication {
 		if (roomsManager.hasRoom(room)){
 			return roomsManager.getPresenterSettings(room);			
 		}
-		log.warn("Getting settings information on a non-existant room " + room);
+		
 		return null;
 	}
 	
@@ -116,13 +116,13 @@ public class PresentationApplication {
 		if (roomsManager.hasRoom(room)){
 			return roomsManager.getSharingPresentation(room);			
 		}
-		log.warn("Getting share information on a non-existant room " + room);
+		
 		return null;
 	}
 	
 	public void sendCursorUpdate(String room, Double xPercent, Double yPercent) {	
 		if (roomsManager.hasRoom(room)){
-			log.debug("Request to update cursor[" + xPercent + "," + yPercent + "]");
+			
 			roomsManager.sendCursorUpdate(room, xPercent, yPercent);
 			
 			Map<String, Object> message = new HashMap<String, Object>();	
@@ -134,40 +134,40 @@ public class PresentationApplication {
 			return;
 		}
 				
-		log.warn("Sending cursor update on a non-existant room " + room);
+		
 	}
 	
 	public void resizeAndMoveSlide(String room, Double xOffset, Double yOffset, Double widthRatio, Double heightRatio) {
 		if (roomsManager.hasRoom(room)){
-			log.debug("Request to resize and move slide[" + xOffset + "," + yOffset + "," + widthRatio + "," + heightRatio + "]");
+			
 			roomsManager.resizeAndMoveSlide(room, xOffset, yOffset, widthRatio, heightRatio);
 			return;
 		}
-		log.warn("resizeAndMoveSlide on a non-existant room " + room);		
+			
 	}
 		
 	public void gotoSlide(String room, int slide){
 		if (roomsManager.hasRoom(room)){
-			log.debug("Request to go to slide " + slide + " for room " + room);
+			
 			roomsManager.gotoSlide(room, slide);
 			return;
 		}
-		log.warn("Changing slide on a non-existant room " + room);	
+		
 	}
 	
 	public void sharePresentation(String room, String presentationName, Boolean share){
 		if (roomsManager.hasRoom(room)){
-			log.debug("Request to share presentation " + presentationName + " " + share + " for room " + room);
+			
 			roomsManager.sharePresentation(room, presentationName, share);
 			return;
 		}
-		log.warn("Sharing presentation on a non-existant room " + room);	
+		
 	}
 	
 	public void setRoomsManager(PresentationRoomsManager r) {
-		log.debug("Setting room manager");
+		
 		roomsManager = r;
-		log.debug("Done setting room manager");
+		
 	}
 
 	private String getMeetingId(){

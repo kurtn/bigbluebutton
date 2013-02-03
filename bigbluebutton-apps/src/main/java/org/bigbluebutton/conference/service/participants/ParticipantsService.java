@@ -19,9 +19,7 @@
 
 package org.bigbluebutton.conference.service.participants;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.Red5;
 import org.red5.server.api.scope.IScope;
 
@@ -33,12 +31,12 @@ import java.util.Map;import org.bigbluebutton.conference.User;
 
 public class ParticipantsService {
 
-	private static Logger log = Red5LoggerFactory.getLogger( ParticipantsService.class, "bigbluebutton" );	
+	
 	private ParticipantsApplication application;
 
 	@SuppressWarnings("unchecked")
 	public void assignPresenter(String userid, String name, Long assignedBy) {
-		log.info("Receive assignPresenter request from client [" + userid + "," + name + "," + assignedBy + "]");
+		
 		IScope scope = Red5.getConnectionLocal().getScope();
 		ArrayList<String> presenter = new ArrayList<String>();
 		presenter.add(userid);
@@ -50,11 +48,11 @@ public class ParticipantsService {
 		if (curPresenter != null){ 
 			String curUserid = (String) curPresenter.get(0);
 			if (! curUserid.equals(userid)){
-				log.info("Changing the current presenter [" + curPresenter.get(0) + "] to viewer.");
+				
 				application.setParticipantStatus(scope.getName(), curPresenter.get(0), "presenter", false);
 			}
 		} else {
-			log.info("No current presenter. So do nothing.");
+			
 		}
 		application.assignPresenter(scope.getName(), presenter);
 	}
@@ -62,16 +60,16 @@ public class ParticipantsService {
 	@SuppressWarnings("unchecked")
 	public Map getParticipants() {
 		String roomName = Red5.getConnectionLocal().getScope().getName();
-		log.info("Client is requesting for list of participants in [" + roomName + "].");
+		
 		Map p = application.getParticipants(roomName);
 		Map participants = new HashMap();
 		if (p == null) {
 			participants.put("count", 0);
-			log.debug("partipants of " + roomName + " is null");
+			
 		} else {		
 			
 			participants.put("count", p.size());
-			log.debug("number of partipants is " + p.size());
+			
 			if (p.size() > 0) {
 				/**
 				 * Somehow we need to convert to Map so the client will be
@@ -92,12 +90,12 @@ public class ParticipantsService {
 	
 	public void setParticipantStatus(String userid, String status, Object value) {
 		String roomName = Red5.getConnectionLocal().getScope().getName();
-		log.debug("Setting participant status " + roomName + " " + userid + " " + status + " " + value);
+		
 		application.setParticipantStatus(roomName, userid, status, value);
 	}
 	
 	public void setParticipantsApplication(ParticipantsApplication a) {
-		log.debug("Setting Participants Applications");
+		
 		application = a;
 	}
 }

@@ -10,18 +10,18 @@
     </rollingPolicy>
 
     <layout class="ch.qos.logback.classic.PatternLayout">
-      <Pattern>%date{ISO8601} [%thread] %-5level %logger{35} %X{akkaSource} -bar %msg%n</Pattern>
+      <Pattern>%date{ISO8601} [%thread] %-5level %logger{35} -bar %msg%n</Pattern>
     </layout>
   </appender> 
   
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
   <encoder>
-    <pattern>%date{ISO8601} %-5level %logger{36} %X{akkaSource} -bar %msg%n</pattern>
+    <pattern>%date{ISO8601} %-5level %logger{36} -**bar** %msg%n</pattern>
   </encoder>
 </appender>
 
 	<root>
 		<level value="DEBUG" />
-		<appender-ref ref="BIGBLUEBUTTON" />
+		<appender-ref ref="STDOUT" />
 	</root>		
 </configuration>

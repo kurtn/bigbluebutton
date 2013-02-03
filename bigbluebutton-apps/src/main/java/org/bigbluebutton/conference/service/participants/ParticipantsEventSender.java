@@ -20,19 +20,17 @@
 package org.bigbluebutton.conference.service.participants;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Map;
+
+
 import org.bigbluebutton.conference.service.recorder.Recorder;
 import org.bigbluebutton.conference.IRoomListener;
-import org.bigbluebutton.conference.BigBlueButtonUtils;import org.red5.server.api.so.ISharedObject;
+import org.red5.server.api.so.ISharedObject;
 import org.bigbluebutton.conference.User;
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
+
 
 public class ParticipantsEventSender implements IRoomListener {
 
-	private static Logger log = Red5LoggerFactory.getLogger( ParticipantsEventSender.class, "bigbluebutton" );
-	
+
 	Recorder recorder;
 	private ISharedObject so;	
 	String name = "PARTICIPANT_EVENT_SENDER";
@@ -56,17 +54,17 @@ public class ParticipantsEventSender implements IRoomListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void assignPresenter(ArrayList<String> presenter) {
-		log.debug("calling assignPresenterCallback " + presenter.get(0) + ", " + presenter.get(1) + " " + presenter.get(2));
+		
 		so.sendMessage("assignPresenterCallback", presenter);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void participantJoined(User p) {
-		log.debug("A participant has joined " + p.getInternalUserID());
+		
 		ArrayList args = new ArrayList();
 		args.add(p.toMap());
-		log.debug("Sending participantJoined " + p.getExternalUserID() + " to client.");
+		
 		so.sendMessage("participantJoined", args);
 	}
 
@@ -81,7 +79,7 @@ public class ParticipantsEventSender implements IRoomListener {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void participantStatusChange(User p, String status, Object value) {
-		log.debug("A participant's status has changed " + p.getInternalUserID() + " " + status + " " + value);
+		
 		ArrayList args = new ArrayList();
 		args.add(p.getInternalUserID());
 		args.add(status);

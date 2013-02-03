@@ -21,18 +21,14 @@
 */
 package org.bigbluebutton.webconference.voice.freeswitch;
 
-import java.net.ConnectException;
 
 import org.freeswitch.esl.client.inbound.Client;
 import org.freeswitch.esl.client.inbound.InboundConnectionFailure;
 import org.freeswitch.esl.client.manager.ManagerConnection;
 import org.bigbluebutton.webconference.voice.ConferenceServiceProvider;
 import org.bigbluebutton.webconference.voice.events.ConferenceEventListener;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
 
 public class FreeswitchServiceProvider implements ConferenceServiceProvider {
-	private static Logger log = Red5LoggerFactory.getLogger(FreeswitchServiceProvider.class, "bigbluebutton");
 	
 	private ConferenceServiceProvider appDelegate;
 	private ManagerConnection connection;
@@ -68,7 +64,7 @@ public class FreeswitchServiceProvider implements ConferenceServiceProvider {
 		if ((connection != null) ) {
 			Client c = connection.getESLClient();
 			if((c != null ) && c.canSend()) {
-				log.info("Logging off fom [" + connection.toString() + "]");
+				
 				connection.disconnect();
             }
 		}
@@ -78,7 +74,7 @@ public class FreeswitchServiceProvider implements ConferenceServiceProvider {
 	@Override
 	public boolean startup() {
 		if (connection == null) {
-			log.error("Cannot start application as ESL Client has not been set.");
+			
 			return false;
 		}
 
@@ -90,12 +86,12 @@ public class FreeswitchServiceProvider implements ConferenceServiceProvider {
 	}
 	
 	private boolean connect() {
-		log.info("Logging in as [" + connection.getPassword() + "] to [" + connection.getHostname() + ":" + connection.getPort() + "]");
+		
 		try {
 			connection.connect();
 			return true;
         } catch ( InboundConnectionFailure e ) {
-			log.error( "Connect to FreeSwitch ESL socket failed", e );
+			
 		} 
 		return true;
 	}

@@ -8,12 +8,10 @@ import org.bigbluebutton.webconference.voice.events.ParticipantLockedEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantMutedEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantTalkingEvent;
 import org.bigbluebutton.webconference.voice.events.StartRecordingEvent;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
+
 
 public class VoiceEventRecorder {
-	private static final Logger log = Red5LoggerFactory.getLogger(VoiceEventRecorder.class, "bigbluebutton");
-	
+
 	private RecorderApplication recorder;
 	
 	public void recordConferenceEvent(ConferenceEvent event, String room) {
@@ -30,7 +28,7 @@ public class VoiceEventRecorder {
 		} else if (event instanceof StartRecordingEvent) {
 			recordStartRecordingEvent(event, room);
 		} else {
-			log.debug("Processing UnknownEvent " + event.getClass().getName() + " for room: " + event.getRoom() );
+			
 		}		
 	}
 	
@@ -42,7 +40,7 @@ public class VoiceEventRecorder {
 		evt.setBridge(event.getRoom());
 		evt.setRecordingTimestamp(sre.getTimestamp());
 		evt.setFilename(sre.getRecordingFilename());
-		System.out.println("*** Recording voice " + sre.startRecord() + " timestamp: " + evt.toMap().get("recordingTimestamp") + " file: " + evt.toMap().get("filename"));
+		
 		recorder.record(room, evt);
 	}
 	

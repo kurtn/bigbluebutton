@@ -20,36 +20,31 @@
 package org.bigbluebutton.conference.service.layout;
 import java.util.List;
 
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.Red5;
-import org.slf4j.Logger;
+
 
 public class LayoutService {
 	
-	private static Logger log = Red5LoggerFactory.getLogger( LayoutService.class, "bigbluebutton" );
-	
+
 	private LayoutApplication application;
 
 	public List<Object> init() {
-		log.debug("Initializing layout");
 		String roomName = Red5.getConnectionLocal().getScope().getName();
 		return application.currentLayout(roomName);
 	}
 	
 	public void lock(String userId, String layout) {
-		log.debug("Layout locked");
 		String roomName = Red5.getConnectionLocal().getScope().getName();
 		application.lockLayout(roomName, userId, layout);
 	}
 	
 	public void unlock() {
-		log.debug("Layout unlocked");
 		String roomName = Red5.getConnectionLocal().getScope().getName();
 		application.unlockLayout(roomName);
 	}
 	
 	public void setLayoutApplication(LayoutApplication a) {
-		log.debug("Setting layout application");
 		application = a;
 	}
 }

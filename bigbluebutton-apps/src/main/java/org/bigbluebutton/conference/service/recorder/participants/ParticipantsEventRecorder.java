@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import org.bigbluebutton.conference.IRoomListener;
 import org.bigbluebutton.conference.User;
 import org.bigbluebutton.conference.service.recorder.RecorderApplication;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
+
 
 public class ParticipantsEventRecorder implements IRoomListener {
-	private static Logger log = Red5LoggerFactory.getLogger(ParticipantsEventRecorder.class, "bigbluebutton");
+	
 	private final RecorderApplication recorder;
 	private final String session;
 	
@@ -64,7 +63,7 @@ public class ParticipantsEventRecorder implements IRoomListener {
 
 	@Override
 	public void assignPresenter(ArrayList<String> presenter) {
-		log.debug("RECORD module:presentation event:assign_presenter");
+
 		AssignPresenterRecordEvent event = new AssignPresenterRecordEvent();
 		event.setMeetingId(session);
 		event.setTimestamp(System.currentTimeMillis());

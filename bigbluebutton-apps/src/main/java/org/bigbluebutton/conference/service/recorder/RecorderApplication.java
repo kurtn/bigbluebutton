@@ -21,8 +21,7 @@
 */
 package org.bigbluebutton.conference.service.recorder;
 
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,14 +32,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * The class follows the same standard as the others modules of BigBlueButton Apps.
  */
 public class RecorderApplication {
-	private static Logger log = Red5LoggerFactory.getLogger(RecorderApplication.class, "bigbluebutton");
-	
+
 	private final Map<String, String> recordingSessions;
 	private Recorder recorder;
 	
 	public RecorderApplication() {
 		recordingSessions = new ConcurrentHashMap<String, String>();
-		log.debug("Instantiated ArchiveApplication");
+
 	}
 	
 	/**
@@ -69,7 +67,7 @@ public class RecorderApplication {
 	
 	public void setRecorder(Recorder recorder) {
 		this.recorder = recorder;
-		log.debug("setting recorder");
+
 	}
 }
 

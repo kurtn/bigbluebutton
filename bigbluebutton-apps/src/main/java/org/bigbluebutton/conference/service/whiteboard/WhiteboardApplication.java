@@ -29,28 +29,27 @@ import org.bigbluebutton.conference.BigBlueButtonSession;
 import org.bigbluebutton.conference.ClientMessage;
 import org.bigbluebutton.conference.ConnectionInvokerService;
 import org.bigbluebutton.conference.Constants;
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.adapter.IApplication;
 import org.red5.server.adapter.MultiThreadedApplicationAdapter;
 import org.red5.server.api.IClient;
 import org.red5.server.api.IConnection;
 import org.red5.server.api.Red5;
 import org.red5.server.api.scope.IScope;
-import org.slf4j.Logger;
+
 import org.bigbluebutton.conference.service.recorder.RecorderApplication;
 import org.bigbluebutton.conference.service.recorder.whiteboard.WhiteboardEventRecorder;
 import org.bigbluebutton.conference.service.whiteboard.shapes.Annotation;
 
 public class WhiteboardApplication extends MultiThreadedApplicationAdapter implements IApplication {	
-	private static Logger log = Red5LoggerFactory.getLogger(WhiteboardApplication.class, "bigbluebutton");
-	
+
 	private WhiteboardRoomManager roomManager;
 	private RecorderApplication recorderApplication;
 	private ConnectionInvokerService connInvokerService;
 	
 	@Override
 	public boolean appStart(IScope app) {
-		log.info("Starting Whiteboard Application");
+
 		this.scope = app;
 		return true;
 	}
@@ -198,12 +197,12 @@ public class WhiteboardApplication extends MultiThreadedApplicationAdapter imple
 
 	@Override
 	public boolean roomConnect(IConnection connection, Object[] params) {
-		log.debug("WHITEBOARD - getting record parameters");
+	
 		if (getBbbSession().getRecord()){
 			log.debug("WHITEBOARD - recording : true");
 			WhiteboardEventRecorder recorder = new WhiteboardEventRecorder(getMeetingId(), recorderApplication);
 			roomManager.getRoom(getMeetingId()).addRoomListener(recorder);
-			log.debug("event session is " + getMeetingId());
+		
 		}
     	return true;
 	}

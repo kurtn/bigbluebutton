@@ -26,18 +26,15 @@ import org.bigbluebutton.webconference.voice.events.ConferenceEventListener;
 import org.bigbluebutton.webconference.voice.events.ParticipantJoinedEvent;
 import org.bigbluebutton.webconference.voice.freeswitch.response.XMLResponseConferenceListParser;
 import org.bigbluebutton.webconference.voice.freeswitch.response.ConferenceMember;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
+
 import org.xml.sax.SAXException;
 
 public class PopulateRoomCommand extends FreeswitchCommand {
-    private static Logger log = Red5LoggerFactory.getLogger(PopulateRoomCommand.class, "bigbluebutton");
 
     public PopulateRoomCommand(String room, Integer requesterId) {
             super(room, requesterId);
@@ -58,7 +55,7 @@ public class PopulateRoomCommand extends FreeswitchCommand {
         //E.g. Conference 85115 not found
         
         if(!firstLine.startsWith("<?xml")) {
-            log.error("Not XML: [{}]", firstLine);
+            
             return;
         }
 
@@ -76,7 +73,7 @@ public class PopulateRoomCommand extends FreeswitchCommand {
             
             String responseBody = org.springframework.util.StringUtils.collectionToDelimitedString(response.getBodyLines(), "\n");
 
-            log.debug("xml_list responce\n{}\nEND", responseBody);
+            
 
             //http://mark.koli.ch/2009/02/resolving-orgxmlsaxsaxparseexception-content-is-not-allowed-in-prolog.html
             //This Sux!
@@ -89,7 +86,7 @@ public class PopulateRoomCommand extends FreeswitchCommand {
             ParticipantJoinedEvent pj;
 
             for(ConferenceMember member : confXML.getConferenceList()) {
-                log.debug("conf list member [{}] for room [{}].", member.getId(), confXML.getConferenceRoom());
+                
                 //Foreach found member in conference create a JoinedEvent
                 pj = new ParticipantJoinedEvent(member.getId(), confXML.getConferenceRoom(),
                                 member.getCallerId(), member.getCallerIdName(), member.getMuted(), member.getSpeaking());
@@ -97,11 +94,11 @@ public class PopulateRoomCommand extends FreeswitchCommand {
             }
 
         }catch(SAXException se) {
-            log.error("Cannot parse repsonce. ", se);
+            
         }catch(ParserConfigurationException pce) {
-            log.error("ParserConfigurationException. ", pce);
+           
         }catch (IOException ie) {
-            log.error("Cannot parse repsonce. IO Exception. ", ie);
+           
         }
     }
 

@@ -27,18 +27,17 @@ import java.util.Map;
 import org.bigbluebutton.conference.BigBlueButtonSession;
 import org.bigbluebutton.conference.Constants;
 import org.bigbluebutton.conference.service.whiteboard.shapes.Annotation;
-import org.red5.logging.Red5LoggerFactory;
+
 import org.red5.server.api.Red5;
-import org.slf4j.Logger;
+
 
 public class WhiteboardService {
 
-	private static Logger log = Red5LoggerFactory.getLogger(WhiteboardService.class, "bigbluebutton");
-	
+
 	private WhiteboardApplication application;
 	
 	public void setWhiteboardApplication(WhiteboardApplication a){
-		log.debug("Setting whiteboard application instance");
+		
 		this.application = a;
 	}
 	
@@ -75,38 +74,38 @@ public class WhiteboardService {
 	}
 	
 	public void setActivePage(Map<String, Object> message){		
-		log.info("WhiteboardApplication - Getting number of shapes for page: " + (Integer) message.get("pageNum"));
+		
 		application.changePage((Integer) message.get("pageNum"));
 	}
 	
 	public void requestAnnotationHistory(Map<String, Object> message) {
-		log.info("WhiteboardApplication - requestAnnotationHistory");
+		
 		application.sendAnnotationHistory(getBbbSession().getInternalUserID(), 
 				(String) message.get("presentationID"), (Integer) message.get("pageNumber"));
 	}
 		
 	public void clear() {
-		log.info("WhiteboardApplication - Clearing board");
+		
 		application.clear();
 	}
 	
 	public void undo() {
-		log.info("WhiteboardApplication - Deleting last graphic");
+		
 		application.undo();
 	}
 	
 	public void toggleGrid() {
-		log.info("WhiteboardApplication - Toggling grid mode");
+		
 		application.toggleGrid();
 	}
 	
 	public void setActivePresentation(Map<String, Object> message) {		
-		log.info("WhiteboardApplication - Setting active presentation: " + (String)message.get("presentationID"));
+		
 		application.setActivePresentation((String)message.get("presentationID"), (Integer) message.get("numberOfSlides"));
 	}
 	
 	public void enableWhiteboard(Map<String, Object> message) {
-		log.info("WhiteboardApplication - Setting whiteboard enabled: " + (Boolean)message.get("enabled"));
+		
 		application.enableWhiteboard((Boolean)message.get("enabled"));
 	}
 	

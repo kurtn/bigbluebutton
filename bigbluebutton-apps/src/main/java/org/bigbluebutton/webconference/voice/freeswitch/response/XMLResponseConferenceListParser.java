@@ -21,28 +21,21 @@
 */
 package org.bigbluebutton.webconference.voice.freeswitch.response;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
+
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import org.xml.sax.helpers.DefaultHandler;
 
-/**
- *
- * @author leif
- */
+
 public class XMLResponseConferenceListParser extends DefaultHandler {
-    private static Logger log = Red5LoggerFactory.getLogger(XMLResponseConferenceListParser.class, "bigbluebutton");
+  
 
     private List<ConferenceMember> myConfrenceMembers;
     private String tempVal;
@@ -60,10 +53,10 @@ public class XMLResponseConferenceListParser extends DefaultHandler {
     }
 
     public void printConferneceMemebers() {
-        log.info("Number of Members found in room [{}] was ({}).", room, myConfrenceMembers.size());
+        
         Iterator<ConferenceMember> it = myConfrenceMembers.iterator();
         while(it.hasNext()) {
-            log.info("room [{}] member: [{}]", room, it.next().toString());
+            
         }
     }
 
@@ -147,7 +140,7 @@ public class XMLResponseConferenceListParser extends DefaultHandler {
             try {
                 tempMember.setId(Integer.parseInt(tempVal));
             } catch(NumberFormatException nfe) {
-                log.error("cannot set ConferenceMember Id value [{}] NFE.", tempVal);
+                
             }
         }else if (qName.equalsIgnoreCase("uuid")) {
             tempMember.setUUID(tempVal);
@@ -159,13 +152,13 @@ public class XMLResponseConferenceListParser extends DefaultHandler {
             try {
                 tempMember.setJoinTime(Integer.parseInt(tempVal));
             } catch(NumberFormatException nfe) {
-                log.debug("cannot set setJoinTime value [{}] NFE.", tempVal);
+               
             }
         }else if (qName.equalsIgnoreCase("last_talking")) {
             try {
                 tempMember.setLastTalking(Integer.parseInt(tempVal));
             } catch(NumberFormatException nfe) {
-                log.debug("cannot set setLastTalking value [{}] NFE.", tempVal);
+                
             }
         }
 

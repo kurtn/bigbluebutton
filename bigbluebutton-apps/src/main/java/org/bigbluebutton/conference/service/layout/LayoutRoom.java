@@ -25,17 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.jcip.annotations.ThreadSafe;
-
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
-/**
- * Contains information about a LayoutRoom. 
- */
-@ThreadSafe
 public class LayoutRoom {
-	private static Logger log = Red5LoggerFactory.getLogger( LayoutRoom.class, "bigbluebutton" );
-	
+
 	private final String name;
 	private final Map<String, ILayoutRoomListener> listeners;
 	private boolean locked = false;
@@ -53,21 +44,21 @@ public class LayoutRoom {
 	
 	public void addRoomListener(ILayoutRoomListener listener) {
 		if (! listeners.containsKey(listener.getName())) {
-			log.debug("adding room listener");
+			
 			listeners.put(listener.getName(), listener);			
 		}
 	}
 	
 	public void removeRoomListener(ILayoutRoomListener listener) {
-		log.debug("removing room listener");
+		
 		listeners.remove(listener);		
 	}
 	
 	private void updateLayout() {
 		for (Iterator<ILayoutRoomListener> iter = listeners.values().iterator(); iter.hasNext();) {
-			log.debug("calling on listener");
+			
 			ILayoutRoomListener listener = (ILayoutRoomListener) iter.next();
-			log.debug("calling updateLayout on listener " + listener.getName());
+			
 			listener.updateLayout(currentLayout());
 		}
 	}

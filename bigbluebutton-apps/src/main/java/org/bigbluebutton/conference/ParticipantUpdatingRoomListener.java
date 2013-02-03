@@ -24,16 +24,14 @@ import java.util.HashMap;
 
 import org.bigbluebutton.conference.service.messaging.MessagingConstants;
 import org.bigbluebutton.conference.service.messaging.MessagingService;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
+
 
 import com.google.gson.Gson;
 
 
 public class ParticipantUpdatingRoomListener implements IRoomListener{
 
-	private static Logger log = Red5LoggerFactory.getLogger(ParticipantUpdatingRoomListener.class, "bigbluebutton");
-	
+
 	MessagingService messagingService;
 	private Room room;
 	
@@ -58,7 +56,7 @@ public class ParticipantUpdatingRoomListener implements IRoomListener{
 			
 			Gson gson= new Gson();
 			messagingService.send(MessagingConstants.PARTICIPANTS_CHANNEL, gson.toJson(map));
-			log.debug("Publishing a status change in: " + this.room.getName());
+			
 		}
 	}
 	
@@ -74,7 +72,7 @@ public class ParticipantUpdatingRoomListener implements IRoomListener{
 			
 			Gson gson= new Gson();
 			messagingService.send(MessagingConstants.PARTICIPANTS_CHANNEL, gson.toJson(map));
-			log.debug("Publishing message participant joined in " + this.room.getName());
+			
 		}
 	}
 	
@@ -87,7 +85,7 @@ public class ParticipantUpdatingRoomListener implements IRoomListener{
 			
 			Gson gson= new Gson();
 			messagingService.send(MessagingConstants.PARTICIPANTS_CHANNEL, gson.toJson(map));
-			log.debug("Publishing message participant left in " + this.room.getName());
+			
 		}
 	}
 

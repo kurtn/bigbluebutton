@@ -19,22 +19,16 @@
 
 package org.bigbluebutton.conference;
 
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
-import net.jcip.annotations.ThreadSafe;
+
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-/**
- * Contains information about a Room and it's Participants. 
- * Encapsulates Participants and RoomListeners.
- */
-@ThreadSafe
+
 public class Room implements Serializable {
-	private static Logger log = Red5LoggerFactory.getLogger( Room.class, "bigbluebutton" );	
+	
 	ArrayList<String> currentPresenter = null;
 	private String name;
 	private Map <String, User> participants;
@@ -56,26 +50,23 @@ public class Room implements Serializable {
 
 	public void addRoomListener(IRoomListener listener) {
 		if (! listeners.containsKey(listener.getName())) {
-			log.debug("adding room listener");
 			listeners.put(listener.getName(), listener);			
 		}
 	}
 
 	public void removeRoomListener(IRoomListener listener) {
-		log.debug("removing room listener");
 		listeners.remove(listener);		
 	}
 
 	public void addParticipant(User participant) {
 		synchronized (this) {
-			log.debug("adding participant " + participant.getInternalUserID());
 			participants.put(participant.getInternalUserID(), participant);
 //			unmodifiableMap = Collections.unmodifiableMap(participants)
 		}
-		log.debug("Informing roomlisteners " + listeners.size());
+		
 		for (Iterator it = listeners.values().iterator(); it.hasNext();) {
 			IRoomListener listener = (IRoomListener) it.next();
-			log.debug("calling participantJoined on listener " + listener.getName());
+			
 			listener.participantJoined(participant);
 		}
 	}
@@ -86,14 +77,14 @@ public class Room implements Serializable {
 		synchronized (this) {
 			present = participants.containsKey(userid);
 			if (present) {
-				log.debug("removing participant");
+				
 				p = participants.remove(userid);
 			}
 		}
 		if (present) {
 			for (Iterator it = listeners.values().iterator(); it.hasNext();) {
 				IRoomListener listener = (IRoomListener) it.next();
-				log.debug("calling participantLeft on listener " + listener.getName());
+				
 				listener.participantLeft(p);
 			}
 		}
@@ -105,7 +96,7 @@ public class Room implements Serializable {
 		synchronized (this) {
 			present = participants.containsKey(userid);
 			if (present) {
-				log.debug("change participant status");
+				
 				p = participants.get(userid);
 				p.setStatus(status, value);
 				//participants.put(userid, p);
@@ -115,7 +106,7 @@ public class Room implements Serializable {
 		if (present) {
 			for (Iterator it = listeners.values().iterator(); it.hasNext();) {
 				IRoomListener listener = (IRoomListener) it.next();
-				log.debug("calling participantStatusChange on listener " + listener.getName());
+				
 				listener.participantStatusChange(p, status, value);
 			}
 		}		
@@ -124,7 +115,7 @@ public class Room implements Serializable {
 	public void endAndKickAll() {
 		for (Iterator it = listeners.values().iterator(); it.hasNext();) {
 			IRoomListener listener = (IRoomListener) it.next();
-			log.debug("calling endAndKickAll on listener " + listener.getName());
+			
 			listener.endAndKickAll();
 		}
 	}
@@ -138,7 +129,7 @@ public class Room implements Serializable {
 	}
 
 	public int getNumberOfParticipants() {
-		log.debug("Returning number of participants: " + participants.size());
+		
 		return participants.size();
 	}
 
@@ -150,7 +141,7 @@ public class Room implements Serializable {
 				sum++;
 			}
 		} 
-		log.debug("Returning number of moderators: " + sum);
+		
 		return sum;
 	}
 
@@ -161,9 +152,9 @@ public class Room implements Serializable {
 	public void assignPresenter(ArrayList<String> presenter){
 		currentPresenter = presenter;
 		for (Iterator iter = listeners.values().iterator(); iter.hasNext();) {
-			log.debug("calling on listener");
+			
 			IRoomListener listener = (IRoomListener) iter.next();
-			log.debug("calling sendUpdateMessage on listener " + listener.getName());
+			
 			listener.assignPresenter(presenter);
 		}	
 	}

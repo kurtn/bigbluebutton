@@ -29,20 +29,12 @@ import java.util.concurrent.Executors;
 import org.freeswitch.esl.client.manager.ManagerConnection;
 import org.freeswitch.esl.client.transport.event.EslEvent;
 import org.jboss.netty.channel.ExceptionEvent;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
 
-import net.jcip.annotations.ThreadSafe;
 import org.freeswitch.esl.client.inbound.Client;
 import org.freeswitch.esl.client.inbound.InboundConnectionFailure;
 
-/**
- *
- * @author leif
- */
-@ThreadSafe
+
 public class FreeswitchHeartbeatMonitor implements Observer {
-    private static Logger log = Red5LoggerFactory.getLogger(FreeswitchHeartbeatMonitor.class, "bigbluebutton");
 
     public static final String EVENT_HEARTBEAT = "HEARTBEAT";
 
@@ -62,11 +54,9 @@ public class FreeswitchHeartbeatMonitor implements Observer {
     public FreeswitchHeartbeatMonitor(ManagerConnection connection, FreeswitchApplication eventListner) {
     	this.connection = connection;
         this.eventListner = eventListner;
-    	log.info("Freeswitch HeartbeatMonitor Created");
     }
 
     public void start() {
-        log.info("HeartbeatMonitor Starting");
         if (!running) {
             running = true;
             monitorProcess = new Runnable() {
@@ -100,23 +90,23 @@ public class FreeswitchHeartbeatMonitor implements Observer {
                 //if not reconnect
                 try {
                     Client c = connection.getESLClient();
-                    log.info("HeartbeatMonitor did not get a heartbeat event in time... reconnecting");
+
                     if(c.canSend()) { //Otherwise disconnect will throw ISE
-                        log.info("Logging off fom [" + connection.toString() + "]");
+                      
                         connection.disconnect();
                     }
-                    log.info("Logging in as [" + connection.getPassword() + "] to [" + connection.getHostname() + ":" + connection.getPort() + "]");
+                   
                     try {
                         connection.connect();
                         eventListner.startup(); //Re-call startup to setup eventListner and filters...
                         lastHeartbeat = System.currentTimeMillis(); //Reset 
                     } catch ( InboundConnectionFailure ce ) {
-                        log.error( "HeartbeatMonitor Connect to FreeSwitch ESL socket failed, will retry...", ce );
+                        
                     }
                 } catch (IllegalStateException ise) {
-                    log.error( "HeartbeatMonitor Ex", ise);
+                    
                 } catch (Exception e) {
-                    log.error( "HeartbeatMonitor Ex", e);
+                    
                 }
             }
 
@@ -124,7 +114,7 @@ public class FreeswitchHeartbeatMonitor implements Observer {
                 Calendar cal = Calendar.getInstance();
                 cal.setTimeInMillis(lastHeartbeat);
 
-                log.debug("HeartbeatMonitor running... last HB [{}] diff [{}]", cal.getTime(), timeDiff);
+                
                 intervalLoopCount = 0;
             }
             intervalLoopCount++;
@@ -174,7 +164,7 @@ public class FreeswitchHeartbeatMonitor implements Observer {
 
         } else if (arg instanceof ExceptionEvent) {
             //Exception....
-            log.info("HeartbeaMonitor notifed of caught Exception Event [{}]", arg);
+            
             return;
         }
         throw new UnsupportedOperationException("Not supported yet.");

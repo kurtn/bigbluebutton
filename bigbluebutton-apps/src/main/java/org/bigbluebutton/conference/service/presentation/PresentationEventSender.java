@@ -25,11 +25,9 @@ package org.bigbluebutton.conference.service.presentation;
 import java.util.ArrayList;
 import java.util.Map;
 import org.bigbluebutton.conference.service.recorder.Recorder;import org.red5.server.api.so.ISharedObject;
-import org.slf4j.Logger;
-import org.red5.logging.Red5LoggerFactory;
+
 
 public class PresentationEventSender implements IPresentationRoomListener {
-	private static Logger log = Red5LoggerFactory.getLogger( PresentationEventSender.class, "bigbluebutton" );
 
 	private static final String OFFICE_DOC_CONVERSION_SUCCESS_KEY = "OFFICE_DOC_CONVERSION_SUCCESS";
     private static final String OFFICE_DOC_CONVERSION_FAILED_KEY = "OFFICE_DOC_CONVERSION_FAILED";
@@ -48,7 +46,7 @@ public class PresentationEventSender implements IPresentationRoomListener {
 	String APP_NAME = "PRESENTATION";
 	
 	public void acceptRecorder(Recorder recorder){
-		log.debug("Accepting IRecorder");
+
 		this.recorder = recorder;
 	}
 	
@@ -81,8 +79,7 @@ public class PresentationEventSender implements IPresentationRoomListener {
 		list.add(presentationName);
 		list.add(messageKey);
 		
-		log.debug("message " + messageKey + "[" + presentationName + "]");
-		
+
 		if(messageKey.equalsIgnoreCase(OFFICE_DOC_CONVERSION_SUCCESS_KEY)||
 				messageKey.equalsIgnoreCase(OFFICE_DOC_CONVERSION_FAILED_KEY)||
 				messageKey.equalsIgnoreCase(SUPPORTED_DOCUMENT_KEY)||
@@ -109,14 +106,14 @@ public class PresentationEventSender implements IPresentationRoomListener {
 			so.sendMessage("conversionCompletedUpdateMessageCallback", list);
 		}
 		else{
-			log.error("Cannot handle recieved message.");
+			
 		}			
 	}
 	
 	
 	@SuppressWarnings("unchecked")
 	public void removePresentation(String name){
-	   log.debug("calling removePresentationCallback " + name);
+	   
 	   ArrayList list=new ArrayList();
 	   list.add(name);
 	   so.sendMessage("removePresentationCallback", list);
@@ -124,7 +121,7 @@ public class PresentationEventSender implements IPresentationRoomListener {
 	
 	@SuppressWarnings("unchecked")
 	public void gotoSlide(int slide){
-		log.debug("calling gotoSlideCallback " + slide);
+		
 		ArrayList list=new ArrayList();
 		list.add(slide);
 		so.sendMessage("gotoSlideCallback", list);	
@@ -133,7 +130,7 @@ public class PresentationEventSender implements IPresentationRoomListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void sharePresentation(String presentationName, Boolean share){
-		log.debug("calling sharePresentationCallback " + presentationName + " " + share);
+		
 		ArrayList list=new ArrayList();
 		list.add(presentationName);
 		list.add(share);
@@ -155,7 +152,7 @@ public class PresentationEventSender implements IPresentationRoomListener {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void resizeAndMoveSlide(Double xOffset, Double yOffset, Double widthRatio, Double heightRatio) {
-		log.debug("calling moveCallback[" + xOffset + "," + yOffset + "," + widthRatio + "," + heightRatio + "]");
+		
 		ArrayList list=new ArrayList();
 		list.add(xOffset);
 		list.add(yOffset);

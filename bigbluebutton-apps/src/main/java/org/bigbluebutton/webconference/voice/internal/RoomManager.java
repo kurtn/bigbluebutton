@@ -31,13 +31,10 @@ import org.bigbluebutton.webconference.voice.events.ParticipantLockedEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantMutedEvent;
 import org.bigbluebutton.webconference.voice.events.ParticipantTalkingEvent;
 import org.bigbluebutton.webconference.voice.events.StartRecordingEvent;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
-import net.jcip.annotations.ThreadSafe;
 
-@ThreadSafe
+
 public class RoomManager {
-	private static final Logger log = Red5LoggerFactory.getLogger(RoomManager.class, "bigbluebutton");
+
 	
 	private final ConcurrentHashMap<String, RoomImp> rooms;
 	private ConferenceService confService;
@@ -48,7 +45,7 @@ public class RoomManager {
 	}
 	
 	public void createRoom(String name,boolean record, String meetingid) {
-		log.debug("Creating room: " + name);
+		
 		RoomImp r = new RoomImp(name,record,meetingid);
 		rooms.putIfAbsent(name, r);
 	}
@@ -64,7 +61,7 @@ public class RoomManager {
 	}
 	
 	public void destroyRoom(String name) {
-		log.debug("Destroying room: " + name);
+		
 		RoomImp r = rooms.remove(name);
 		if (r != null) r = null;
 	}
@@ -81,10 +78,10 @@ public class RoomManager {
 	}
 	
 	public ArrayList<Participant> getParticipants(String room) {
-		log.debug("Getting participants for room: " + room);
+		
 		RoomImp rm = rooms.get(room);		
 		if (rm == null) {
-			log.info("Getting participants for non-existing room: " + room);
+			
 		}
 		return rm.getParticipants();
 	}
@@ -112,10 +109,10 @@ public class RoomManager {
 	 * @param event
 	 */
 	public void processConferenceEvent(ConferenceEvent event) {
-		log.debug("Processing event for room: " + event.getRoom());
+		
 		RoomImp rm = rooms.get(event.getRoom());
 		if (rm == null) {
-			log.warn("Processing event for non-existing room: " + event.getRoom());
+			
 			return;
 		}
 		
@@ -133,7 +130,7 @@ public class RoomManager {
 			// do nothing but let it through.
 			// later on we need to dispatch an event to the client that the voice recording has started.
 		} else {
-			log.debug("Processing UnknownEvent " + event.getClass().getName() + " for room: " + event.getRoom() );
+			
 			return;
 		}
 		
@@ -144,12 +141,12 @@ public class RoomManager {
 	}
 
 	private void handleParticipantJoinedEvent(ConferenceEvent event, RoomImp rm) {
-		log.debug("Processing ParticipantJoinedEvent for room: " + event.getRoom());
+		
 		ParticipantJoinedEvent pje = (ParticipantJoinedEvent) event;
 		ParticipantImp p = new ParticipantImp(pje.getParticipantId(), pje.getCallerIdName());
 		p.setMuted(pje.getMuted());
 		p.setTalking(pje.getSpeaking());
-		log.debug("Joined [" + p.getId() + "," + p.getName() + "," + p.isMuted() + "," + p.isTalking() + "] to room " + rm.getName());
+		
 		
 		rm.add(p);
 		
@@ -161,8 +158,6 @@ public class RoomManager {
 				 * trigger recording for both Asterisk and FreeSWITCH.
 				 */
 				rm.recording(true);
-				log.debug("Starting recording of voice conference");
-				log.warn(" ** WARNING: Prototyping only. Works only with FreeSWITCH for now. We need to come up with a generic way to trigger recording for both Asterisk and FreeSWITCH.");
 				confService.recordSession(event.getRoom(), rm.getMeeting());
 			}
 			
@@ -178,25 +173,23 @@ public class RoomManager {
 	}
 	
 	private void handleParticipantLeftEvent(ConferenceEvent event, RoomImp rm) {
-		log.debug("Processing ParticipantLeftEvent for room: " + event.getRoom());
+		
 		rm.remove(event.getParticipantId());	
 		
 		if ((rm.numParticipants() == 0) && (rm.record())) {
-			log.debug("Stopping recording of voice conference");
-			log.warn(" ** WARNING: Prototyping only. Works only with FreeSWITCH for now. We need to come up with a generic way to trigger recording for both Asterisk and FreeSWITCH.");
 			rm.recording(false);
 		}			
 	}
 	
 	private void handleParticipantMutedEvent(ConferenceEvent event, RoomImp rm) {
-		log.debug("Processing ParticipantMutedEvent for room: " + event.getRoom());
+
 		ParticipantMutedEvent pme = (ParticipantMutedEvent) event;
 		ParticipantImp p = (ParticipantImp) rm.getParticipant(event.getParticipantId());
 		if (p != null) p.setMuted(pme.isMuted());		
 	}
 	
 	private void handleParticipantTalkingEvent(ConferenceEvent event, RoomImp rm) {
-		log.debug("Processing ParticipantTalkingEvent for room: " + event.getRoom());
+		
 		ParticipantTalkingEvent pte = (ParticipantTalkingEvent) event;
 		ParticipantImp p = (ParticipantImp) rm.getParticipant(event.getParticipantId());
 		if (p != null) p.setTalking(pte.isTalking());		
