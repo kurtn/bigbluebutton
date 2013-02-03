@@ -135,7 +135,7 @@ dependencies {
    compile 'com.typesafe.akka:akka-testkit:2.0.2@jar'
    compile 'com.typesafe.akka:akka-actor:2.0.2@jar'
    compile 'com.typesafe.akka:akka-slf4j:2.0.2@jar'
-   compile 'ch.qos.logback:logback-classic:1.0.7@jar'
+//   compile 'ch.qos.logback:logback-classic:1.0.7@jar'
  //  compile 'org.slf4j:com.springsource.slf4j.api:1.6.1@jar'
 }
 

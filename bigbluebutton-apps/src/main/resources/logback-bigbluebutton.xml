@@ -18,10 +18,10 @@
   <encoder>
     <pattern>%date{ISO8601} %-5level %logger{36} %X{akkaSource} -bar %msg%n</pattern>
   </encoder>
-</appender
+</appender>
 
 	<root>
 		<level value="DEBUG" />
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="BIGBLUEBUTTON" />
 	</root>		
 </configuration>
