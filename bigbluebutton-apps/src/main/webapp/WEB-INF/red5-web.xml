@@ -26,7 +26,9 @@
 		<property name="virtualHosts" value="${webapp.virtualHosts}" />
 	</bean>
 
-	<bean id="web.handler" class="org.bigbluebutton.conference.BigBlueButtonApplication">
+	<bean id="web.handler" class="org.bigbluebutton.live.BigBlueButtonApp"/>
+
+	<bean id="web.handler2" class="org.bigbluebutton.conference.BigBlueButtonApplication">
 		<property name="participantsApplication"> <ref bean="participantsApplication"/></property>		
 		<property name="applicationListeners">
     		<set>
@@ -42,7 +44,7 @@
   		<property name="connInvokerService"> <ref bean="connInvokerService"/></property>
   		<property name="version" value="${version}"/>		
 	</bean>
-	
+		
 	<bean id="connInvokerService" class="org.bigbluebutton.conference.ConnectionInvokerService"/>
 	
 	<import resource="bbb-apps.xml" />

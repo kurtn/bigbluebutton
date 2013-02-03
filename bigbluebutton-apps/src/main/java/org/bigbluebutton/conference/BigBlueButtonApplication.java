@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.Set;
 import org.red5.server.api.Red5;import org.bigbluebutton.conference.service.participants.ParticipantsApplication;
 import org.bigbluebutton.conference.service.recorder.RecorderApplication;
+import org.bigbluebutton.live.IBigBlueButtonSystem;
 import org.red5.logging.Red5LoggerFactory;
 import org.red5.server.adapter.IApplication;
 import org.red5.server.adapter.MultiThreadedApplicationAdapter;
@@ -40,12 +41,14 @@ public class BigBlueButtonApplication extends MultiThreadedApplicationAdapter {
 	private RecorderApplication recorderApplication;
 	private AbstractApplicationContext appCtx;
 	private ConnectionInvokerService connInvokerService;
+	private IBigBlueButtonSystem bbbSystem;
 	
 	private String version;
 	
 	@Override
     public boolean appStart(IScope app) {
         log.debug("Starting BigBlueButton version " + version); 
+        bbbSystem.hello();
         IContext context = app.getContext();
         appCtx = (AbstractApplicationContext) context.getApplicationContext();
         appCtx.addApplicationListener(new ShutdownHookListener());
@@ -53,6 +56,10 @@ public class BigBlueButtonApplication extends MultiThreadedApplicationAdapter {
         return super.appStart(app);
     }
     
+	public void setBigBlueButtonSystem(IBigBlueButtonSystem s) {
+		bbbSystem = s;
+	}
+	
 	@Override
     public void appStop(IScope app) {
         log.debug("Stopping BigBlueButton version " + version);

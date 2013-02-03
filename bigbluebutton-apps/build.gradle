@@ -134,6 +134,9 @@ dependencies {
    compile 'org.scalatest:scalatest_2.9.0:1.9.1@jar'
    compile 'com.typesafe.akka:akka-testkit:2.0.2@jar'
    compile 'com.typesafe.akka:akka-actor:2.0.2@jar'
+   compile 'com.typesafe.akka:akka-slf4j:2.0.2@jar'
+   compile 'ch.qos.logback:logback-classic:1.0.7@jar'
+ //  compile 'org.slf4j:com.springsource.slf4j.api:1.6.1@jar'
 }
 
 test {
@@ -142,7 +145,7 @@ test {
 
 war.doLast {
   ant.unzip(src: war.archivePath, dest: "$buildDir/$appName")
-  ant.copy(file: "$buildDir/$appName/WEB-INF/logback-bigbluebutton.xml", todir: "$buildDir/$appName/WEB-INF/classes")
+//  ant.copy(file: "$buildDir/$appName/WEB-INF/logback-bigbluebutton.xml", todir: "$buildDir/$appName/WEB-INF/classes")
 }
 
 
