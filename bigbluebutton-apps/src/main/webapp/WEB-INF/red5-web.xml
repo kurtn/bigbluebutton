@@ -28,6 +28,7 @@
 
 	<bean id="web.handler" class="org.bigbluebutton.live.BigBlueButtonApp"/>
 
+<!--
 	<bean id="web.handler2" class="org.bigbluebutton.conference.BigBlueButtonApplication">
 		<property name="participantsApplication"> <ref bean="participantsApplication"/></property>		
 		<property name="applicationListeners">
@@ -50,4 +51,6 @@
 	<import resource="bbb-apps.xml" />
 	<import resource="bbb-voice-app.xml" />
   <import resource="bbb-voice-freeswitch.xml" />
+  
+  -->
 </beans>
